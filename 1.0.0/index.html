@@ -15649,7 +15649,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <img src="images/cb.png">
     </div>
     
-    <p class="version">Kiosk v1.0.0 (test close button)</p>
+    <p class="version">Kiosk v1.0.0</p>
   </template>
 
   <script>  
@@ -31799,12 +31799,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       MBirdSdk.UserInterface.CloseButton(alignment, closeImage, xPadding, yPadding)    
       .then(function(result) {
         // Silent success
-        console.log(result);
-        MBirdSdk.Board.ShowNotification("CloseButton debug", JSON.stringify(result), MBirdSdk.NotificationType.HtmlContent, "", false);
+        //MBirdSdk.Board.ShowNotification("CloseButton debug", JSON.stringify(result), MBirdSdk.NotificationType.HtmlContent, "", false);
       }).catch(function(error) {
         // Silent fail
-        console.log(error);
-        MBirdSdk.Board.ShowNotification("CloseButton debug error", JSON.stringify(error), MBirdSdk.NotificationType.HtmlContent, "", false);
+        //MBirdSdk.Board.ShowNotification("CloseButton debug error", JSON.stringify(error), MBirdSdk.NotificationType.HtmlContent, "", false);
       });
     }
     
