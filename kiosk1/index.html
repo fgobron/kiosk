@@ -58,13 +58,14 @@
     
     // Service worker registration    
     if('serviceWorker' in navigator) {
-      console.log('Delete old registration');
+      
       
       navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        console.log('Delete old registration 2');
         registrations.forEach(function(v) { console.log(v); v.unregister(); });
       });
       
-      navigator.serviceWorker.register('./service-worker.js', { scope: '/kiosk/kiosk1' });
+      navigator.serviceWorker.register('./service-worker.js', { scope: '/kiosk/kiosk1/' });
     }
     
     app.connectivity = true;
