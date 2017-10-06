@@ -1,0 +1,219 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="./planet-kiosk-activity-behavior.html">
+
+<script>
+  /**
+   * Activity helpers
+   *
+   * @polymerBehavior ActivityBehavior
+   */
+  ActivityBehavior = {
+    _formatPrice: function (price, decimals) {
+      return (price / Math.pow(10, decimals)).toFixed(decimals);
+    },
+    _getFirstHour : function (item) {
+      return item.dates[0].hours[0];
+    },
+    _getFirstDuration: function (localize, item) {
+      if (typeof item.duration !== 'undefined') {
+        return this.localize('activity_session', 'duration', item.duration);
+      }
+
+      var duration = this._getFirstHour(item).duration;
+      return this.localize('activity_session', 'duration', duration);
+    },
+    _getDurationInterval: function(localize, item) {
+      var result = '';
+
+      if (item.begin && item.end) {
+        var begin = moment(item.begin, 'HH:mm:ss');
+        var end = moment(item.end, 'HH:mm:ss');
+
+        result = 'De ' +  begin.format('HH') + 'h' + (begin.minute() ? begin.format('mm') : '') + ' à ';
+        result += end.format('HH') + 'h' + (end.minute() ? end.format('mm') : '');
+        result += ' - ';
+      }
+
+      return result
+    },
+    _getFirstLocation : function (item) {
+      if (item.location) {
+        return ' - ' + item.location;
+      }
+
+      var location = this._getFirstHour(item).location;
+      if (location) {
+        return ' - ' + location;
+      }
+
+      return '';
+    },
+    _isFree : function(item) {
+      if (typeof item.price !== 'undefined') {
+        return item.price.value == 0;
+      }
+      return this._getFirstHour(item).price.value == 0;
+    },
+    _getFirstPrice: function (item) {
+      if (typeof item.price !== 'undefined') {
+        return this._formatPrice(item.price.value, 2);
+      }
+
+      return this._formatPrice(this._getFirstHour(item).price.value, 2);
+    },
+    _getMinMaxHoursLabel: function (localize, item) {
+      var min, max;
+      var dates = item.dates;
+      dates.forEach(function (date) {
+        var hours = date.hours;
+        hours.forEach(function (hour) {
+          if (min) {
+            if (hour.begin < min) {
+              min = hour.begin;
+            }
+          } else {
+            min = hour.begin;
+          }
+          if (max) {
+            if (hour.end > max) {
+              max = hour.end;
+            }
+          } else {
+            max = hour.end;
+          }
+        });
+      });
+      // format
+      min = moment(min, 'HH:mm:ss').format('HH:mm');
+      max = moment(max, 'HH:mm:ss').format('HH:mm');
+      return this.localize('activity_hours', 'begin', min, 'end', max);
+    },
+    _getAge: function (localize, item) {
+      var min = item.age.min;
+      var max = item.age.max;
+      if (min === null && max === null) {
+        return this.localize('activity_ageall');
+      }
+      if (min !== null && max === null) {
+        return this.localize('activity_agefrom' ,'age', min);
+      }
+      if (min === null && max !== null) {
+        return this.localize('activity_ageto' ,'age', max);
+      }
+      return this.localize('activity_agefromto', 'minAge', min, 'maxAge', max);
+    },
+    _getMessageWarning: function (localize, item) {
+      var min = item.age.min;
+      if (min < 18) {
+        return this.localize('activity_warning');
+      } else {
+        return this.localize('activity_warning_adults');
+      }
+
+    },
+    _getAgeWarning: function (localize, item, scope) {
+      var min = item.age.min;
+      var max = item.age.max;
+      if (min === null && max === null) {
+        return '';
+      }
+      if (min !== null && max === null) {
+        return this.localize(scope + '_from', 'minAge', min);
+      }
+      if (min === null && max !== null) {
+        return this.localize(scope + '_to', 'maxAge', max);
+      }
+      return this.localize(scope + '_from_to', 'minAge', min, 'maxAge', max);
+    },
+    _getDates: function (item, from, to)  {
+      return item.dates.slice(from, to);
+    },
+    _getMaxAvailability: function (item) {
+      var nbItemsInCart = globals.cart.computeNbItemsForCode(item.code);
+      return Number(item.availability - nbItemsInCart);
+    },
+    _hasAgeWarning: function (localize, item) {
+      var scope = 'activity_warning';
+      return this._getAgeWarning(localize, item, scope) !== '';
+    },
+    _hasCondition: function (item) {
+      return item.information !== null;
+    },
+    _isFacility: function (item) {
+      return item.type === "Facility";
+    },
+    _getSessions: function (localize, item, day, hour) {
+      var session = item.dates[day];
+      var hour = session.hours[hour];
+      var dateLabel = moment(session.date, 'YYYY-MM-DD').format('L');
+      var hourLabel = moment(hour.begin, 'HH:mm:ss').format('LT');
+
+      return this.localize('basket_session', 'date', dateLabel, 'hour', hourLabel);
+    },
+    _getDate: function (localize, item, day) {
+      var session = item.dates[day];
+      return session.date;
+    },
+    _getBegin: function (localize, item, day, hour) {
+      var session = item.dates[day];
+      var hour = session.hours[hour];
+      return hour.begin;
+    },
+    _getPrice: function (localize, item, day, hour) {
+      var session = item.dates[day];
+      var hour = session.hours[hour];
+      return this._formatPrice(hour.price.value, 2);
+    },
+    _getDuration: function (localize, item, day, hour) {
+      var session = item.dates[day];
+      var hour = session.hours[hour];
+      return hour.duration;
+    },
+    _getLocation: function (localize, item, day, hour) {
+      var session = item.dates[day];
+      var hour = session.hours[hour];
+      return hour.location;
+    },
+    _sessionAsActivity: function(session, activity) {
+      var result = {};
+
+      for (var key in session) {
+        result[key] = session[key];
+      }
+
+
+      result.title = activity.title;
+      result.category = activity.category;
+      result.age = activity.age;
+      result.information = activity.information;
+      result.image = activity.image;
+      result.description = activity.description;
+      result.code = activity.code;
+      result.dates = activity.dates;
+
+      return result;
+    },
+    _sortSession: function (s1, s2) {
+      var s1Begin = moment(s1.begin, "HH:mm:ss").unix();
+      var s2Begin = moment(s2.begin, "HH:mm:ss").unix();
+
+      if (s1Begin < s2Begin) {
+        return -1;
+      }
+      else if (s1Begin > s2Begin) {
+        return 1;
+      }
+      else { // If both start at the same time, sort by alphabetical order
+        var alphaC = s1.title.localeCompare(s2.title);
+        if (alphaC < 0) {
+          return -1;
+        }
+        else if (alphaC > 0) {
+          return 1;
+        }
+        return 0;
+      }
+    }
+  };
+</script>

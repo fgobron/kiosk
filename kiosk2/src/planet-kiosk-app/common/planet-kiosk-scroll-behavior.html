@@ -1,0 +1,110 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../planet-kiosk-scroll-button.html">
+
+<script>
+  /**
+   * Scroll helper
+   *
+   * @polymerBehavior ScrollBehavior
+   */
+  ScrollBehavior = {
+    _buttonUp: null,
+    _buttonDown: null,
+
+    properties: {
+      scrollAmount: {
+        type: Number,
+        value: 900
+      },
+      visibleTimeoutDuration: {
+        type: Number,
+        value: 5000
+      },
+      visible: {
+        type:Boolean,
+        observer:'_onVisibilityChanged'
+      },
+      _showButtons: {
+        type: Boolean,
+        value: false
+      },
+      _visibleTimeout: {
+        type: Object,
+        value: null
+      }
+    },
+    attached: function () {
+      this._buttonUp = this._createScrollButton({'direction':'up'}, this.scrollUp.bind(this));
+      this._buttonDown = this._createScrollButton({'direction':'down'}, this.scrollDown.bind(this));
+      window.addEventListener('scroll', this._onScroll.bind(this), true);
+    },
+    scrollUp: function () {
+      window.scrollBy({ top: -this.get('scrollAmount'), left: 0, behavior: 'smooth' });
+    },
+    scrollDown: function () {
+      window.scrollBy({ top: this.get('scrollAmount'), left: 0, behavior: 'smooth' });
+    },
+    contentChanged: function () {
+      this._clearVisibleTimeout();
+      this._setButtonsVisibility(false);
+      var timeout = setTimeout(this._setButtonsVisibility.bind(this, true), this.get('visibleTimeoutDuration'));
+      this.set('_visibleTimeout', timeout);
+    },
+    updateScrollButton: function () {
+      var showButtons = this.get('_showButtons');
+      if (!this._buttonDown || !this._buttonDown) {
+        return;
+      }
+      if (!document.documentElement.scrollTop || !showButtons) { // TOP of the screen
+        this._buttonUp.set('hidden', true);
+      }
+      else {
+        this._buttonUp.set('hidden', false);
+      }
+      if (document.documentElement.scrollTop + window.innerHeight === document.documentElement.scrollHeight || !showButtons) {
+        this._buttonDown.set('hidden', true);
+      }
+      else {
+        this._buttonDown.set('hidden', false);
+      }
+    },
+    _onScroll:function () {
+      this.contentChanged();
+    },
+    _onVisibilityChanged: function (value) {
+      if (value && !this.get('_visibleTimeout')) { // Page is shown
+        var timeout = setTimeout(this._setButtonsVisibility.bind(this, true), this.get('visibleTimeoutDuration'));
+        this.set('_visibleTimeout', timeout);
+      }
+      else if (!value) {
+        this._clearVisibleTimeout();
+        this._setButtonsVisibility(false);
+      }
+    },
+    _setButtonsVisibility: function(visible) {
+      this.set('_showButtons', visible);
+      this.updateScrollButton();
+    },
+    _clearVisibleTimeout: function () {
+      if (this.get('_visibleTimeout')) {
+        clearTimeout(this.get('_visibleTimeout'));
+        this.set('_visibleTimeout', null);
+      }
+    },
+    _createScrollButton: function(properties, listener) {
+      var button = document.createElement('planet-kiosk-scroll-button');
+
+      for(var key in properties) {
+        if (properties.hasOwnProperty(key)) {
+          button.set(key, properties[key]);
+        }
+      }
+      if (listener) {
+        button.addEventListener('tap', listener);
+      }
+      this.appendChild(button);
+
+      return button;
+    }
+  };
+</script>

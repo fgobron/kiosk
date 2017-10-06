@@ -1,0 +1,52 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../bower_components/iron-overlay-behavior/iron-overlay-behavior.html">
+
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<link rel="import" href="./generic/app-localize-behavior.html">
+
+<dom-module id="planet-kiosk-cgu">
+  <template>
+    <style include="planet-kiosk-page-styles">
+    :host {
+        text-align: center;
+    }
+    
+    object {
+      width: 100em;
+      height: 100em;
+      margin-bottom: 4em;      
+      overflow: auto;
+      border: 1px solid var(--planet-color-theme-border);
+      background-color: var(--planet-color-theme-opposite);
+    }
+    </style>
+    <h2>[[localize('cgu_title')]]</h2>
+    <object type="text/html" data="./data/CGU/CGU_BORNES_CENTERS_PARCS_VDEF_[[dynamicLanguage]].html"></object>
+    <paper-button class="primary confirm" on-tap="_confirm">[[localize('cgu_close_button')]]</paper-button>
+  </template>
+
+  <script>  
+  Polymer({
+    is: 'planet-kiosk-cgu',
+    behaviors: [        
+      AppLocalizeBehavior,
+      Polymer.IronOverlayBehavior
+    ],
+    properties: {
+      dynamicLanguage: {
+        type: String,
+        computed: '_getUpperLanguage(language)'
+      }
+    },
+    _confirm : function () {
+      this.close();
+    },
+    _getUpperLanguage: function (language) {      
+      return language.toUpperCase();
+    }
+  });
+
+  </script>
+</dom-module>

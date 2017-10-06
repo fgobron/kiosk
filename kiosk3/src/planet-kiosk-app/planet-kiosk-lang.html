@@ -1,0 +1,58 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="./generic/app-localize-behavior.html">
+<link rel="import" href="./planet-kiosk-lang-block.html">
+
+<dom-module id="planet-kiosk-lang">
+  <template>
+    <style include="planet-kiosk-page-styles">
+      .payment {
+        text-align: center;
+      }
+      .payment p {
+        font-size: 4em;
+        font-family: var(--planet-font-family-book);
+        color: var(--planet-color-theme-information);
+        width: 16em;
+        margin: 40px auto;
+      }
+      
+      p.version {
+        position: fixed;                
+        bottom: 5.5em;
+        width: 100%;
+        text-align: center;
+        font-size: 2em;
+      }
+    </style>
+    
+    <h2>[[localize('language_select')]]</h2>
+    
+    <div class="content">
+        <planet-kiosk-lang-block lang="fr" language="[[language]]">FR</planet-kiosk-lang-block>
+        <planet-kiosk-lang-block lang="en" language="[[language]]">EN</planet-kiosk-lang-block>
+        <planet-kiosk-lang-block lang="nl" language="[[language]]">NL</planet-kiosk-lang-block>
+        <planet-kiosk-lang-block lang="de" language="[[language]]">DE</planet-kiosk-lang-block>
+    </div>
+    
+    <div class="payment">
+      <p>[[localize('language_payment_desc')]]</p>
+      <img src="../../images/cb.png">
+    </div>
+    
+    <p class="version">Kiosk v0.8.8.1</p>
+  </template>
+
+  <script>  
+  Polymer({
+    is: 'planet-kiosk-lang',
+    behaviors: [
+      AppLocalizeBehavior
+    ],
+    _prmNotActive: function () {
+      return !globals.pmr;
+    }
+  });
+
+  </script>
+</dom-module>

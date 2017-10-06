@@ -1,0 +1,202 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<!-- Component !-->
+<link rel="import" href="../../bower_components/iron-form/iron-form.html">
+<link rel="import" href="../../bower_components/iron-input/iron-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="./planet-kiosk-login-popin.html">
+<!-- Behavior !-->
+<link rel="import" href="./generic/app-localize-behavior.html">
+<link rel="import" href="./planet-kiosk-login-behavior.html">
+
+<dom-module id="planet-kiosk-login-info">
+  <style include="iron-flex iron-flex iron-flex-alignment planet-kiosk-page-styles planet-kiosk-form-styles">
+    .form {      
+      margin: 9em 5em 4em 5em;
+    }
+    
+    input[name='lastname'] {
+      text-transform: uppercase;
+    }
+
+    /*
+    * Hide little arrow on input of type number (used to increase or decrease the value)
+    */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      margin: 0;
+    }
+
+  </style>
+  
+  <template>
+
+    <h2>[[localize('login_title')]]</h2>
+    <p class="sub-title">[[localize('login_hub_title_info')]]</p>
+    
+    <iron-meta-query id="appconfig" key="config" value="{{appconfig}}"></iron-meta-query>
+  
+    <div class="form">      
+      <template is="dom-if" if="[[_isEqualToInitial]]">
+        <form is="iron-form" id="initialform" method="get" action="[[appconfig.api]]/getUserKiosk" on-iron-form-presubmit="_infoPreSubmit" on-iron-form-error="fail" on-iron-form-response="didReceiveResponse">
+          <div class="layout vertical center">
+            <label>[[localize('login_cottage_title')]]</label>
+            <input name="villa" type="number" is="iron-input" placeholder="[[localize('login_cottage_placeholder')]]" autocomplete="off" required="">
+            <label>[[localize('login_name_title')]]</label>
+            <input name="lastname" is="iron-input" placeholder="[[localize('login_name_placeholder')]]" autocomplete="off" maxlength="3" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{2}$" required="">  
+          </div>          
+        </form>
+      </template>
+      
+      <template is="dom-if" if="[[_isEqualToDate]]">
+        <form is="iron-form" id="dateform" method="get" action="[[appconfig.api]]/getUserKiosk" on-iron-form-presubmit="_datePreSubmit" on-iron-form-error="fail" on-iron-form-response="didReceiveResponse">
+          <div class="layout vertical center">
+            <label>[[localize('login_date_title')]]</label>
+            <div class="layout horizontal center">
+              <input name="DD" is="iron-input" type="number" min="1" max="31" class="date dd" placeholder="JJ" autocomplete="off" required="">
+              <input name="MM" is="iron-input" type="number" min="1" max="12" class="date mm" placeholder="MM" autocomplete="off" required="">
+              <input name="YYYY" is="iron-input" type="number" min="2000" max="2099" class="date yyyy" placeholder="AAAA" autocomplete="off" required="">
+            </div>            
+          </div>
+        </form>
+      </template>
+    </div>    
+    
+    <div class="buttons layout horizontal center-justified">      
+      <paper-button class="primary cancel" on-tap="cancel">[[localize('login_cancel_button')]]</paper-button>
+      <paper-button class="primary confirm" on-tap="_confirm">[[localize('login_validate_button')]]</paper-button>          
+    </div>
+    
+  </template>
+
+  <script>  
+  Polymer({
+    is: 'planet-kiosk-login-info',
+    behaviors: [
+      AppLocalizeBehavior,
+      LoginBehavior
+    ],
+    properties: {
+      visible: Boolean,
+      // State : initial, date matching subforms
+      state: {
+        type: String,
+        value: 'initial'        
+      },
+      
+      lastName: String,
+      
+      villa: String,
+      
+      _isEqualToInitial: {
+        type: String,
+        computed:'_isEqualTo(state, "initial")'
+      },
+      _isEqualToDate: {
+        type: String,
+        computed:'_isEqualTo(state, "date")'
+      }
+    },
+    observers: [
+      '_visibiltyChanged(visible)'
+    ],
+    authByDate: function () {
+      this.set('state', 'date');
+    },
+    fail: function () {
+      var buttons = [
+        {
+          label: this.localize('login_error_abandon_button'),
+          class: 'button primary cancel',
+          callback: this.cancel.bind(this)
+        },
+        {
+          label: this.localize('login_error_tryagain_button'),
+          class: 'button primary confirm',
+          callback: this.retry.bind(this)
+        }
+      ];
+      this.showPopIn(this.localize('login_error_title'), this.localize('login_error_desc'), '', buttons);
+    },
+    retry: function () {
+      this.set('state', 'initial');
+    },
+    _isEqualTo : function (state, value) {
+      return state === value;
+    },
+    _visibiltyChanged : function (visible) {  
+      if (visible) {
+        this._resetForm();
+      }
+    },
+    _getForm: function () {      
+      return document.getElementById(this.get('state') + 'form');
+    },
+    _resetFields: function (form) {
+      for (var el, i = 0; el = form.elements[i], i < form.elements.length; i++) {
+        el.value = '';
+        el.removeAttribute('aria-invalid');
+      }
+    },
+    _resetForm: function () {
+      var form = this._getForm();
+      this._resetFields(form);      
+    },
+    _serializeAndStore: function (form) {      
+      var data = form.serialize();
+      this.set('villa', data.villa);
+      this.set('lastName', data.lastname);
+    },
+    _infoPreSubmit : function (e) {
+      var form = e.currentTarget;
+      var request = form.request;
+      request.params.siteCode = globals.siteCode;
+      request.headers = globals.headers;      
+    },
+    _datePreSubmit : function (e) {
+      var form = e.currentTarget;
+      var request = form.request;
+      var params = request.params;
+      var formatedDate = params.YYYY + '-' + params.MM + '-' + params.DD;
+      var ehancedParams = {        
+        "villa": this.get('villa'),
+        "lastname": this.get('lastName'),
+        "arrivalDate": formatedDate        
+      };
+      request.headers = globals.headers;
+      request.params = ehancedParams;
+      request.params.siteCode = globals.siteCode;
+    },
+    _validate: function (form) {      
+      var firstInvalid = false;
+      for (var el, i = 0; el = form.elements[i], i < form.elements.length; i++) {
+        if (el.checkValidity()) {
+          el.removeAttribute('aria-invalid');
+        } else {
+          if (!firstInvalid) {            
+            el.focus();
+            firstInvalid = true;
+          }
+          el.setAttribute('aria-invalid', 'true');
+        }
+      }
+      return !firstInvalid;
+    },
+    _confirm: function () {
+      var form = this._getForm();
+      if (this.get('state') === 'initial') {
+        this._serializeAndStore(form); // store villa and lastName infos
+      }
+      if (this._validate(form)) {
+        this.showPopIn('', this.localize('login_authenticating'), '', []);
+        this.debounce('_submitForm', function() {
+            form.submit();
+          }, 300);
+      }      
+    },
+  });
+
+  </script>
+</dom-module>

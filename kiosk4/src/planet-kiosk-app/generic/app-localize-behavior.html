@@ -1,0 +1,27 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+    
+<link rel="import" href="../../../bower_components/app-localize-behavior/app-localize-behavior.html">
+
+<script>
+/**
+ * i8n management Implementation
+ *
+ * @polymerBehavior AppLocalizeBehaviorImpl
+ */
+AppLocalizeBehaviorImpl = {
+  properties: {
+    language: {
+      value: 'fr',      
+    }
+  },
+  attached: function() {
+    this.useKeyIfMissing = true;
+    this.resources = globals.resources;
+    this.language = globals.language;    
+  }
+};
+/**
+ * @polymerBehavior
+ */
+AppLocalizeBehavior = [AppLocalizeBehaviorImpl, Polymer.AppLocalizeBehavior];
+</script>

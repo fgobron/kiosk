@@ -1,0 +1,110 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="./common/planet-kiosk-icons.html">
+<link rel="import" href="./planet-kiosk-alphaselector-letter.html">
+
+<dom-module id="planet-kiosk-alphaselector">
+  <template>
+    <style>      
+      :host {
+				--planet-kiosk-alphaselector-letter-label: {
+					font-size: 2.6em;
+					font-family: var(--planet-font-family-book);										
+				}
+				
+				--planet-kiosk-alphaselector-letter-mini: {					
+					background: none;
+					box-shadow: none;					
+					color: var(--planet-color-theme-desc);
+					margin-bottom: 0.8em;
+				}
+
+				--planet-kiosk-alphaselector-letter-activated: {
+					color: var(--planet-color-theme-opposite);
+					background-color:var(--planet-color-theme-primary);
+				}
+				--planet-kiosk-alphaselector-letter-disabled: {
+					background: none;
+					color: var(--planet-color-theme-disabled);
+				}
+      }
+    </style>		
+		
+    <template id="letterlist" is="dom-repeat" items="[[letters]]" as="letter">			
+      <planet-kiosk-alphaselector-letter disabled="[[_isDisabled(letter)]]" label="[[letter]]" rank="[[index]]" mini=""></planet-kiosk-alphaselector-letter>
+    </template>
+        
+  </template>
+
+  <script>  
+
+  Polymer({
+
+    is: 'planet-kiosk-alphaselector',
+    
+    properties: {
+			letters: {
+				type: Array,
+				value: function () {
+          return this._charsGenerator();
+				}
+			},
+			activeLetters : {
+				type: Array
+			}
+		},
+		attached: function () {						
+			document.addEventListener('alpha-letter-change', this._onAlphaLetterChange.bind(this));
+		},
+    _charsGenerator: function () {
+			var temp = [];
+      for(var i=0; i<26; i++) {
+        temp.push(String.fromCharCode(65+i));
+      }
+			return temp;
+    },
+		_onAlphaLetterChange: function (e) {
+			this._scrollToZone(e.detail.rank);
+		},
+		_isDisabled: function (letter) {
+			var activeLetters = this.get('activeLetters');			
+			return !activeLetters.includes(letter);			
+		},
+		_highlightElement: function (index) {			
+			// Reset previous active element
+			var previousActivated = document.querySelector('planet-kiosk-alphaselector-letter[activated]');
+			var currentActivated = document.querySelector('planet-kiosk-alphaselector-letter[rank="' + index + '"]');
+			if (previousActivated !== null) {
+				previousActivated.set('activated', false);
+			}			
+			currentActivated.set('activated', true);			
+		},
+		_scrollToZone: function (index) {
+			var letter = String.fromCharCode(65+index);
+			var anchor = document.querySelector('a[href="#' + letter + '"]');
+			if (anchor) {
+				anchor.scrollIntoView({block: "end", behavior: "smooth"});				
+			}			
+		},
+		highLightFirstLetter: function () {			
+			var activeLetters = this.get('activeLetters');
+			if (activeLetters.length > 0) {
+				var index = activeLetters[0].charCodeAt(0) - 65;
+				this._highlightElement(index);
+			}			
+		},
+		highLightLetter: function (letter) {			
+			var index = letter.charCodeAt(0) - 65;
+			this._highlightElement(index);
+		},
+		highLightLastLetter: function () {			
+			var activeLetters = this.get('activeLetters');
+			if (activeLetters.length > 0) {
+				var index = activeLetters[activeLetters.length-1].charCodeAt(0) - 65;
+				this._highlightElement(index);
+			}			
+		},
+  });
+
+  </script>
+</dom-module>

@@ -1,0 +1,209 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<!-- Components !-->
+<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<!-- Behaviors !-->
+<link rel="import" href="./generic/app-localize-behavior.html">
+<!-- Styles !-->
+<link rel="import" href="./common/planet-kiosk-page-styles.html">
+<link rel="import" href="./common/planet-kiosk-icons.html">
+
+<dom-module is="planet-kiosk-hour-filter">
+  <template>
+    <style include="planet-kiosk-page-styles">
+      :host {
+        width:100%;
+        @apply(--layout-horizontal);
+        @apply(--layout-around-justified);
+
+        --paper-checkbox-size: 4.5em;
+        --paper-checkbox-margin: 2.25em;
+
+        --paper-checkbox-unchecked-background-color: none;
+        --paper-checkbox-unchecked-color: var(--planet-color-theme-btn);
+
+        --paper-checkbox-checked-color: var(--planet-color-theme-primary);
+        --paper-checkbox-checked-ink-color: var(--planet-color-theme-primary);
+        --paper-checkbox-checkmark-color: var(--planet-color-theme-opposite);
+
+        --paper-fab-background: none;
+        --paper-fab-keyboard-focus-background: transparent;
+        --paper-fab: {
+          padding:0;
+          width: 9em;
+          height: 9em;
+        }
+
+
+      }
+      /*
+      Fab
+      */
+      paper-fab {
+        box-shadow: none;
+        margin: 0.8em 0;
+        color: var(--planet-color-theme-btn);
+        --paper-fab-label: {
+          font-size: 2.3em;
+          font-family: var(--planet-font-family-book);
+          width: 2.7em;
+          white-space: normal;
+        }
+      }
+
+      paper-fab.label {
+        --paper-fab-label: {
+          font-size: 2em;
+          font-family: var(--planet-font-family-book);
+          width: 5em;
+          white-space: normal;
+        };
+      }
+
+      paper-fab.activated {
+        background-color:var(--planet-color-theme-primary);
+        color: var(--planet-color-theme-opposite);
+      }
+
+      paper-fab[disabled] {
+        background: none;
+      }
+
+      paper-fab[disabled].activated {
+        color: var(--planet-color-theme-btn);
+      }
+
+      .uppercase {
+        text-transform: uppercase;
+      }
+      /*
+      Buttons
+      */
+      paper-button.stripes {
+        border-radius: 50%;
+      }
+
+      .stripes iron-icon {
+        width: 9em;
+        height: 9em;
+      }
+
+      .stripes iron-icon.default {
+        fill: none;
+        stroke: var(--planet-color-theme-btn);
+        color: var(--planet-color-theme-btn);
+      }
+
+      .stripes[disabled] {
+        background: none;
+      }
+
+      .stripes[disabled] iron-icon {
+        fill: none;
+        stroke: var(--planet-color-theme-disabled);
+        color: var(--planet-color-theme-disabled);
+      }
+
+      .stripes iron-icon.flip {
+        transform: scale(-1);
+      }
+    </style>
+
+    <paper-fab label="[[localize('planning_hour_filter_label')]]" disabled="true" class="label uppercase"></paper-fab>
+    <paper-button on-tap="_decreaseStartingIndex" class="stripes" disabled="{{_isPrevDisabled(startingIndex)}}">
+      <iron-icon class="default" icon="buttons:stripe-circle"></iron-icon>
+    </paper-button>
+
+    <template is="dom-repeat" items="[[hours]]">
+      <template is="dom-if" if="[[_isHourDisplayed(index, startingIndex, nbElem)]]">
+        <paper-fab label="[[item.label]]" on-tap="_hourTapHandler" class$="[[_getFabClass(index, selectedHour)]]" index="[[index]]"></paper-fab>
+      </template>
+    </template>
+
+    <paper-button on-tap="_increaseStartingIndex" class="stripes" disabled="{{_isNextDisabled(startingIndex)}}">
+      <iron-icon class="default flip" icon="buttons:stripe-circle"></iron-icon>
+    </paper-button>
+
+  </template>
+
+  <script>
+    Polymer({
+      is:'planet-kiosk-hour-filter',
+      behaviors: [AppLocalizeBehavior],
+      properties: {
+        hours: {
+          type: Array,
+          value: []
+        },
+        selectedHour: {
+          type: Number,
+          value: -1,
+          notify: true
+        },
+        startingIndex: {
+          type: Number,
+          value: 0,
+          notify: true
+        },
+        nbElem: {
+          type: Number,
+          value: 7,
+          notify: true
+        },
+        step: {
+          type: Number,
+          value: 6,
+          notify: true
+        }
+      },
+      _isHourDisplayed: function (index, start, nbElem) {
+        var end = start + nbElem;
+
+        return index >= start && index < end;
+      },
+      _getFabClass: function(index, selectedHour) {
+        if (selectedHour === index) {
+          return 'activated';
+        }
+        return '';
+      },
+      _hourTapHandler: function (e) {
+        var hourIndex = e.model.index;
+        var selectedHour = this.get('selectedHour');
+
+        if (hourIndex === selectedHour) {
+          this.set('selectedHour', -1);
+        }
+        else {
+          this.set('selectedHour', hourIndex);
+        }
+      },
+      _isPrevDisabled: function(index) {
+          return index === 0;
+      },
+      _decreaseStartingIndex: function(e) {
+        var localStartingIndex = this.get('startingIndex');
+        localStartingIndex -= this.get('step');
+
+        if (localStartingIndex < 0) {
+          localStartingIndex = 0;
+        }
+        this.set('startingIndex', localStartingIndex);
+      },
+      _isNextDisabled: function(index) {
+        return index + this.get('step') >= this.get('hours').length;
+      },
+      _increaseStartingIndex: function(e) {
+        var localStartingIndex = this.get('startingIndex');
+        localStartingIndex += this.get('step');
+
+        if (localStartingIndex >= this.get('hours').length) { // End of the list
+          return;
+        }
+        this.set('startingIndex', localStartingIndex);
+      }
+    });
+  </script>
+</dom-module>

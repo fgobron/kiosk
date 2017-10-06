@@ -1,0 +1,102 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="planet-kiosk-cart">
+  <script>  
+     Polymer({
+        is: 'planet-kiosk-cart',
+        properties: {
+            cart: {
+                type: Array,
+                value: function() {
+                    return [];
+                },
+                notify: true
+            },
+            nbItems: {
+                type: Number,
+                computed: '_computeNbItems(cart.splices)',
+                notify: true
+            },
+            total: {
+                type: Number,
+                computed: '_computeTotal(cart.splices)',
+                notify: true
+            }
+        },
+        _computeNbItems: function() {
+          if (this.cart) {
+              return this.cart.reduce(function(total, entry) {
+                  return total + entry.quantity;
+              }, 0);
+          }
+          return 0;
+        },
+        _computeTotal: function() {
+          if (this.cart) {
+              return this.cart.reduce(function(total, entry) {
+                  return total + entry.quantity * entry.unitPrice;
+              }, 0);
+          }
+          return 0;
+        },        
+        _getItem: function(code, session) {
+          return this.get('cart').find(function(entry) {
+              return entry.code === code && entry.session === session;
+          });
+        },
+        _getItemIndex: function(code, session) {
+          return this.get('cart').findIndex(function(entry) {
+              return entry.code === code && entry.session === session;
+          });
+        },
+        addItem: function(item) {
+          var found = this._getItem(item.code, item.session);
+          var index = this._getItemIndex(item.code, item.session);
+          if (typeof(found) === 'undefined') {
+              // add new item
+              this.push('cart', item);
+          } else {
+              // modify quantity on existing session
+              var newQuantity = found.quantity + item.quantity;
+              item.quantity = newQuantity;
+              this.splice('cart', index, 1, item);
+          }
+        },
+        notifyErrorChange: function(item, index) {          
+          this.notifyPath('cart.' + index + '.incorrect', item.incorrect);
+          this.notifyPath('cart.' + index + '.errors', item.errors);
+        },
+        editItem: function(item, index) {          
+          this.splice('cart', index, 1, item);
+        },
+        deleteItem: function(index) {
+          this.splice('cart', index, 1);
+        },
+        getItemByIndex: function(index) {
+          return this.get('cart')[index];
+        },        
+        computeNbItemsForCode: function(code) {
+          if (this.cart) {
+              return this.cart.filter(function(entry) {
+                  return entry.code === code;
+              }).reduce(function(total, entry) {
+                  return total + entry.quantity;
+              }, 0);
+          }
+          return 0;
+        },        
+        groupBy: function(prop) {
+          return this.get('cart').reduce(function(groups, item, index) {              
+              var val = item[prop];
+              item.token = item.code + '_' + index;
+              groups[val] = groups[val] || [];
+              groups[val].push(item);
+              return groups;
+          }, {});
+        },
+        clear: function() {
+          this.cart = [];
+        }       
+    });
+  </script>
+</dom-module>

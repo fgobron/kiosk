@@ -1,0 +1,27 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<script>
+/**
+ * Activities List helpers
+ *
+ * @polymerBehavior ActivitiesBehavior
+ */
+ActivitiesBehavior = {
+  properties: {
+    activities: {
+      type: Object      
+    }
+  },
+  _getActivityIndex: function (item) {    
+    return this.get('activities').indexOf(item);
+  },
+  _getActivityByCode: function (code) {    
+    return this.get('activities').find(function (activity) {      
+      return activity.code === code;
+    });
+  },
+  _getActivityIndexByCode: function (code) {    
+    return this._getActivityIndex(this._getActivityByCode(code));
+  }
+};
+</script>

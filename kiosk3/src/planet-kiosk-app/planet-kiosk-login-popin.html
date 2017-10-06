@@ -1,0 +1,52 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<!-- Component !-->
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<!-- Behaviors !-->
+<link rel="import" href="./generic/app-localize-behavior.html">
+<link rel="import" href="../../bower_components/iron-overlay-behavior/iron-overlay-behavior.html">
+
+<dom-module id="planet-kiosk-error-popin">
+  <template>
+    <style include="planet-kiosk-page-styles planet-kiosk-popin-styles"></style>
+
+    <img src="../../images/loader.png">
+    <h2>[[title]]</h2>
+    <p class="message">[[line1]]</p>
+    <p class="message">[[line2]]</p>
+    <template is="dom-repeat" items="{{buttons}}">
+      <paper-button class$="[[item.class]]" on-tap="_onButtonTap"> [[item.label]] </paper-button>
+    </template>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'planet-kiosk-error-popin',
+      behaviors: [ AppLocalizeBehavior, Polymer.IronOverlayBehavior ],
+      properties : {
+        title: {
+          type: String,
+          value: ''
+        },
+        line1: {
+          type: String,
+          value: ''
+        },
+        line2: {
+          type:String,
+          value: ''
+        },
+        buttons: {
+          type: Array,
+          value: []
+        }
+      },
+      _onButtonTap: function(e) {
+        if (e.model.item.callback) {
+          this.close();
+          e.model.item.callback();
+        }
+      }
+    });
+  </script>
+</dom-module>

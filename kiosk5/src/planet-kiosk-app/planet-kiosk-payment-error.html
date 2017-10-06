@@ -1,0 +1,54 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../bower_components/iron-overlay-behavior/iron-overlay-behavior.html">
+
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<link rel="import" href="./generic/app-localize-behavior.html">
+
+<dom-module id="planet-kiosk-payment-error">
+  <template>
+    <style include="planet-kiosk-page-styles planet-kiosk-popin-styles"></style>
+    
+    <h2>[[localize('payment_error_title')]]</h2>
+    
+    <p class="message">[[localize('payment_error_desc')]]</p>
+    
+    <p class="info">[[localize('payment_error_info')]]</p>
+    
+    <p class="info">[[localize('payment_error_info_bis')]]</p>
+    
+    <div class="buttons">
+      <paper-button class="primary cancel" on-tap="_cancel">[[localize('payment_error_abandon_button')]]</paper-button>
+      <paper-button class="primary confirm" on-tap="_confirm">[[localize('payment_error_tryagain_button')]]</paper-button>  
+    </div>
+    
+  </template>
+
+  <script>  
+  Polymer({
+    is: 'planet-kiosk-payment-error',
+    behaviors: [        
+      AppLocalizeBehavior,
+      Polymer.IronOverlayBehavior
+    ],
+    _cancel: function () {
+      var payment = document.querySelector('planet-kiosk-payment');
+      this.close();
+      globals.router.set('route.path', '/hub');
+      this.async(function() {
+        payment.cancel();
+      }, 1200);
+      this.close();      
+    },
+    _confirm : function () {
+      var payment = document.querySelector('planet-kiosk-payment');
+      this.close();
+      this.async(function() {
+        payment.pay();
+      }, 1200);
+    }
+  });
+
+  </script>
+</dom-module>

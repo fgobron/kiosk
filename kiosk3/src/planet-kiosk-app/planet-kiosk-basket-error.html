@@ -1,0 +1,43 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../bower_components/iron-overlay-behavior/iron-overlay-behavior.html">
+
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<link rel="import" href="./generic/app-localize-behavior.html">
+
+<dom-module id="planet-kiosk-basket-error">
+  <template>
+    <style include="planet-kiosk-page-styles planet-kiosk-popin-styles"></style>
+    
+    <h2>[[localize('basket_payment_error_title')]]</h2>
+    
+    <p class="message">[[localize('basket_payment_error_desc')]]</p>
+    
+    <p class="info">[[localize('basket_payment_error_info')]]</p>
+    
+    <div class="buttons">
+      <paper-button class="primary cancel" on-tap="_cancel">[[localize('basket_payment_error_abandon_button')]]</paper-button>
+      <paper-button class="primary confirm" on-tap="_confirm">[[localize('basket_payment_error_tryagain_button')]]</paper-button>  
+    </div>
+    
+  </template>
+
+  <script>  
+  Polymer({
+    is: 'planet-kiosk-basket-error',
+    behaviors: [        
+      AppLocalizeBehavior,
+      Polymer.IronOverlayBehavior
+    ],
+    _cancel: function () {
+      this.close();
+      globals.router.set('route.path', '/hub');
+    },
+    _confirm : function () {
+      this.close();
+    }
+  });
+
+  </script>
+</dom-module>

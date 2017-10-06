@@ -1,0 +1,94 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="./generic/app-localize-behavior.html">
+<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
+
+<dom-module id="planet-kiosk-age-filter">
+  <template>
+    <style include="planet-kiosk-page-styles">
+      /* Days */
+      :host {
+        width:100%;
+        @apply(--layout-horizontal);
+        @apply(--layout-around-justified);
+        --paper-fab-background: none;
+        --paper-fab-keyboard-focus-background: transparent;
+        --paper-fab: {
+          padding:0;
+          width: 9em;
+          height: 9em;
+        }
+      }
+
+      paper-fab[normal] {
+        box-shadow: none;
+        margin: 0.8em;
+        color: var(--planet-color-theme-btn);
+        --paper-fab-label: {
+          font-size: 2.3em;
+          font-family: var(--planet-font-family-book);
+          width: 2.7em;
+          white-space: normal;
+        }
+      }
+
+      paper-fab[activated] {
+        background-color:var(--planet-color-theme-primary);
+        color: var(--planet-color-theme-opposite);
+      }
+    </style>
+
+    <template is="dom-repeat" items="{{ages}}">
+      <paper-fab class="age" label="[[_getAgeFilterLabel(item.min, item.max)]]" on-tap="_ageTapHandler" normal=""></paper-fab>
+    </template>
+
+  </template>
+  <script>
+    Polymer({
+      is: 'planet-kiosk-age-filter',
+      behaviors: [ AppLocalizeBehavior ],
+      properties: {
+        filters: {
+          type: Array,
+          notify: true,
+          value: []
+        },
+        ages: Array
+      },
+      _getAgeFilterLabel: function(min, max) {
+        var ageLabel = this.localize('age_filter');
+
+        if (min && max) {
+          return min + '-' + max + ' ' + ageLabel;
+        }
+        else if (min) {
+          return '+'  + min + ' ' + ageLabel;
+        }
+        else if (max) {
+          return '-' + max + ' ' + ageLabel;
+        }
+      },
+      _ageTapHandler: function(e) {
+        var currentIndex = e.model.index;
+        var currentElement =  Polymer.dom(this.root).querySelectorAll('paper-fab')[currentIndex];
+        var filters = this.get('filters');
+        var filterIndex = filters.indexOf(currentIndex);
+
+        if (filterIndex === -1) {
+          this.push('filters', currentIndex)
+        }
+        else {
+          this.splice('filters', filterIndex, 1);
+        }
+
+        if (currentElement.getAttribute('activated')) {
+          currentElement.removeAttribute('activated');
+        }
+        else {
+          currentElement.setAttribute('activated', '1');
+        }
+      }
+    });
+  </script>
+
+</dom-module>

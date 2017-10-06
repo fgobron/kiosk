@@ -1,0 +1,41 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="planet-kiosk-services">  
+  <script>  
+  Polymer({
+    is: 'planet-kiosk-services',    
+    // Always fullfilled promise
+    // kioskId error managment in index.html
+    getNestIdentifier : function () {
+      var promise = new Promise(function(resolve, reject) {
+        if (MBirdSdk.isConnected()) {
+          MBirdSdk.Environment.About().then(function (result) {
+            resolve(result.NestIdentifier);
+          }).catch(function (error) {
+            resolve('');
+          });
+        } else {
+          resolve('com.pvcp.desktop');
+        }
+      });
+      return promise;
+    },
+    // Always fullfilled promise
+    // kiosk availability  error managment in index.html
+    checkEssentialPeripherals: function () {
+      var promise = new Promise(function(resolve, reject) {
+        if (MBirdSdk.isConnected()) {
+          MBirdSdk.Peripherals.Status().then(function (result) {
+            resolve(result.IsPaymentAvailable && result.IsPrinterAvailable);  
+          }).catch(function (error) {
+            resolve(-1);
+          });
+        } else {
+          resolve(-1);
+        }
+      });
+      return promise;
+    }
+  });
+  </script>
+</dom-module>

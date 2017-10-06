@@ -1,0 +1,141 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<!-- Components !-->
+<link rel="import" href="../../bower_components/app-layout/app-layout.html">
+<link rel="import" href="./planet-kiosk-activity.html">
+<link rel="import" href="./planet-kiosk-age-filter.html">
+<!-- Behaviors !-->
+<link rel="import" href="./generic/app-localize-behavior.html">
+<link rel="import" href="./common/planet-kiosk-scroll-behavior.html">
+
+<dom-module id="planet-kiosk-age">
+  <template>
+    <style include="planet-kiosk-page-styles">
+      :host {
+        --info-pres : {
+          font-size: 1.7em;
+          font-family: var(--planet-font-family-book);
+          padding-left: 0.4em;
+        }
+      }
+
+      app-header, .sticky-header {
+        background-color: var(--planet-color-theme-mainbg);
+        margin-bottom: 2em;
+      }
+
+      .content {
+        display: block;
+        margin: 0 5em 19em 8em;
+      }
+    </style>
+    <div class="content">
+      <app-header-layout id="layout">
+        <app-header fixed="" condenses="">
+          <h2>[[localize('age_title')]]</h2>
+          <p class="sub-title">[[localize('age_title')]]</p>
+          <div sticky="" class="sticky-header">
+            <planet-kiosk-age-filter id="agefilter" ages="[[ages]]" filters="{{selectedFilters}}"></planet-kiosk-age-filter>
+            <p class="sub-title"> [[localize('age_count','nbActivity', activityCount)]] </p>
+          </div>
+        </app-header>
+        <template id="list" is="dom-repeat" items="{{activities}}" sort="_sort" filter="_filter" rendered-item-count="{{activityCount}}">
+          <planet-kiosk-activity activity="[[item]]" display="column"></planet-kiosk-activity>
+        </template>
+      </app-header-layout>
+    </div>
+  </template>
+
+  <script>
+
+    Polymer({
+      is: 'planet-kiosk-age',
+      behaviors: [
+        AppLocalizeBehavior,
+        ActivityBehavior,
+        ScrollBehavior
+      ],
+      properties: {
+        visible: {
+          type: Boolean,
+          observer: '_refreshLayout'
+        },
+        activities: {
+          type: Object
+        },
+        ages: {
+          type: Array,
+          value: [
+            {min: 0, max: 3},
+            {min: 4, max: 7},
+            {min: 8, max: 12},
+            {min: 13, max: 0}
+          ]
+        },
+        selectedFilters: {
+          type: Array,
+          value: []
+        },
+        activityCount: {
+          type: Number
+        },
+        _readyToFilter: {
+          type: Boolean,
+          value: false
+        }
+      },
+      observers: [
+        '_selectedFiltersChanged(selectedFilters.*)'
+      ],
+      _refreshLayout: function () {
+        // Hack to avoid wrong positioning of the content in the layout
+        this.$.layout.resetLayout();
+      },
+      _selectedFiltersChanged: function() {
+        if (this._readyToFilter) { // Avoid filtering the first time #HACK
+          this.$.list.render();
+          this.contentChanged();
+        }
+        this._readyToFilter = true;
+      },
+      _sort: function(a, b) {
+        if (a.age.min === b.age.min) return 0;
+        return a.age.min < b.age.min ? -1 : 1;
+      },
+      _filter: function(activity) {
+        var filters = this.get('ages');
+        var selectedFilters = this.get('selectedFilters');
+
+        if (!selectedFilters.length || (!activity.age.min && !activity.age.max)) { // No age on activity or no filter
+          return true;
+        }
+
+        for (var i = 0; i < selectedFilters.length; i++) {
+          var currentFilter = filters[selectedFilters[i]];
+
+          var min = !activity.age.max || !(currentFilter.min && activity.age.max < currentFilter.min);
+          var max = !activity.age.min || !(currentFilter.max && activity.age.min >= currentFilter.max);
+
+          if (max && min) {
+            return true;
+          }
+        }
+
+        return false;
+      },
+
+      _isInRange: function(value, min, max) {
+        var ageFilter = this.get('ages')[this.get('selectedAge')];
+
+        if (!ageFilter) {
+          return true;
+        }
+
+        var min = !activity.age.min || ((!ageFilter.min || activity.age.min <= ageFilter.min) && (!ageFilter.max || activity.age.min < ageFilter.max));
+        var max = !activity.age.max || ((!ageFilter.min || activity.age.max > ageFilter.min) && (!ageFilter.max || activity.age.max >= ageFilter.max));
+
+        return min && max;
+      }
+    });
+
+  </script>
+</dom-module>
