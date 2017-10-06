@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head>
+<!doctype html>
+<html lang="en">
+  <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 
@@ -28,7 +30,7 @@
   </head>
   <body>
     <template id="app" is="dom-bind">
-      <iron-ajax auto="" url="./appconfig.json" handle-as="json" last-response="{{appconfig}}" on-response="configResponse"></iron-ajax>
+      <iron-ajax auto url="./appconfig.json" handle-as="json" last-response="{{appconfig}}" on-response="configResponse"></iron-ajax>
       <iron-meta id="appconfig" key="config" value$="{{appconfig}}"></iron-meta>
       <iron-ajax id="subconfig" handle-as="json" on-response="subConfigResponse"></iron-ajax>      
       <iron-ajax id="localWordings" url="./data/getWordings.json" handle-as="json" on-response="localWordingsResponse"></iron-ajax>
@@ -56,7 +58,11 @@
     
     // Service worker registration    
     if('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./service-worker.js', { scope: './' });        
+      navigator.serviceWorker.register('./service-worker.js', { scope: './' });
+      
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        registrations.forEach(function(v) { console.log(v) });
+      });
     }
     
     app.connectivity = true;
@@ -167,6 +173,5 @@
       });
     }
    </script>
-  
-
-</body></html>
+  </body>
+</html>
