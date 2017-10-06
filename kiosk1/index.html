@@ -58,7 +58,8 @@
     
     // Service worker registration    
     if('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./service-worker.js', { scope: './' });
+      console.log('Root registration');
+      navigator.serviceWorker.register('./service-worker.js', { scope: '/' });
       
       navigator.serviceWorker.getRegistrations().then(function(registrations) {
         registrations.forEach(function(v) { console.log(v) });
