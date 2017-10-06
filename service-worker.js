@@ -13,8 +13,7 @@ this.addEventListener('activate', function(event) {
     caches.keys().then(function(cacheNames) {
       return Promise.all(
         cacheNames.map(function(cacheName) {
-          if(cacheName === CURRENT_CACHE) {
-            console.log('cache delete')
+          if(cacheName != CURRENT_CACHE) {            
             return caches.delete(cacheName);
           }
         })
@@ -32,7 +31,7 @@ this.addEventListener('fetch', function(event) {
             
             event.respondWith(            
                 caches.match(event.request)
-                .then(function(response) {                
+                .then(function(response) {
                 if (response) {
                     // Cache hit - direct response return                
                     return response;
@@ -59,7 +58,7 @@ this.addEventListener('fetch', function(event) {
                                 cache.delete(req);
                             })
                         }).then(function () {                        
-                            //cache.put(event.request, responseToCache);
+                            cache.put(event.request, responseToCache);
                         });                    
                     });
     
