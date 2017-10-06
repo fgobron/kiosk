@@ -1,0 +1,49 @@
+<dom-module id="planet-kiosk-form-styles">
+    <template>
+      <style>
+        input {
+            font-family: var(--planet-font-family-book);
+            color: var(--planet-color-theme-title);
+            border:none;
+            font-size: 2em;
+            width: 25em;
+            height: 4.5em;
+            padding-left: 1.5em;
+            margin-bottom: 2em;
+            outline: none;
+            @apply(--shadow-elevation-4dp);
+        }
+        
+        input[aria-invalid]:invalid {
+            border: 2px solid var(--planet-color-theme-warning);
+            box-shadow: none;   
+        }
+        
+        ::-webkit-input-placeholder {
+            color: var(--planet-color-theme-desc);
+        }
+        
+        input.date {
+          margin-left: 1.5em;
+          text-align: center;
+          padding-left: 0;
+        }
+
+        input.dd,
+        input.mm {
+            width: 6.7em;            
+        }
+        
+        input.yyyy {
+            width: 7.65em;            
+        }
+        
+        label {
+            font-family: var(--planet-font-family-heavy);
+            color: var(--planet-color-theme-title);
+            font-size: 3em;
+            margin-bottom: 1em;
+        }
+      </style>
+    </template>
+</dom-module>

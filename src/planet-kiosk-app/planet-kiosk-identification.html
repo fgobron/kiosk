@@ -1,0 +1,48 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="./generic/app-localize-behavior.html">
+<link rel="import" href="./planet-kiosk-hub-block.html">
+
+<dom-module id="planet-kiosk-identification">
+  <style include="iron-flex iron-flex iron-flex-alignment planet-kiosk-page-styles">
+    .content {
+      margin-top: 50em;
+    }
+
+    .buttons  {
+      clear: both;
+      padding-top: 8em;
+    }
+  </style>
+  
+  <template>
+
+    <h2>[[localize('login_hub')]]</h2>
+    
+    <div class="content">
+      <planet-kiosk-hub-block prefix="login" suffix="info" language="[[language]]">LOGIN</planet-kiosk-hub-block>
+      <planet-kiosk-hub-block prefix="login" suffix="qrcode" language="[[language]]">E-TICKET</planet-kiosk-hub-block>
+    </div>
+    
+    <div class="buttons layout horizontal center-justified">      
+       <paper-button class="primary cancel" on-tap="_cancel">[[localize('login_hub_cancel')]]</paper-button>       
+     </div>
+    
+  </template>
+
+  <script>  
+  Polymer({
+    is: 'planet-kiosk-identification',
+    behaviors: [
+      AppLocalizeBehavior
+    ],
+    properties: {
+      action: String
+    },
+    _cancel: function () {
+      window.history.back();
+    }
+  });
+
+  </script>
+</dom-module>

@@ -1,0 +1,50 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="./generic/app-localize-behavior.html">
+
+<link rel="import" href="./planet-kiosk-hub-block.html">
+
+<dom-module id="planet-kiosk-hub">
+  <style include="planet-kiosk-page-styles">
+    .payment {
+      text-align: center;
+    }
+    .payment p {
+      font-size: 4em;
+      font-family: var(--planet-font-family-book);
+      color: var(--planet-color-theme-information);
+      width: 16em;
+      margin: 40px auto;
+    }
+  </style>
+
+  <template>
+
+    <h2>[[localize('hub_title_activity')]]</h2>
+
+    <div class="content">
+      <planet-kiosk-hub-block prefix="hub" suffix="now" language="[[language]]">NOW</planet-kiosk-hub-block>
+      <planet-kiosk-hub-block prefix="hub" suffix="planning" language="[[language]]">PLANNING</planet-kiosk-hub-block>
+      <planet-kiosk-hub-block prefix="hub" suffix="age" language="[[language]]">AGE</planet-kiosk-hub-block>
+      <planet-kiosk-hub-block prefix="hub" suffix="az" language="[[language]]">AZ</planet-kiosk-hub-block>
+    </div>
+
+    <div class="payment">
+      <p>[[localize('language_payment_desc')]]</p>
+      <img src="../../images/cb.png">
+    </div>
+
+    <planet-kiosk-tabbar collection="full" language="[[language]]" highlighted-page="home"></planet-kiosk-tabbar>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'planet-kiosk-hub',
+      behaviors: [
+        AppLocalizeBehavior
+      ]
+    });
+
+  </script>
+</dom-module>

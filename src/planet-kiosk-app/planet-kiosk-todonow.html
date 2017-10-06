@@ -1,0 +1,183 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<!-- Components !-->
+<link rel="import" href="./planet-kiosk-activity.html">
+<!-- Behaviors !-->
+<link rel="import" href="./generic/app-localize-behavior.html">
+<link rel="import" href="./common/planet-kiosk-scroll-behavior.html">
+
+<dom-module id="planet-kiosk-todonow">
+  <template>
+    <style include="planet-kiosk-page-styles">
+      :host {
+        --info-pres : {
+          font-size: 1.7em;
+          font-family: var(--planet-font-family-book);
+          padding-left: 0.4em;
+        }
+      }
+
+      .content {
+        display: block;
+        margin: 6em 5em 19em 5em;
+      }
+
+      .lead {
+        background-color: #e9eee9;
+        margin-top: 0;
+        padding: 1em;
+      }
+
+      .interval-title {
+        width: 100%;
+        padding: 0 0 0.75em 0;
+        margin: 1.5em 0 0 0;
+        border-bottom: 1px solid var(--planet-color-theme-disabled);
+        font-size: 2.5em;
+        text-transform: uppercase;
+        color: var(--planet-color-theme-desc);
+        font-family: var(--planet-font-family-heavy);
+        font-weight: lighter;
+      }
+    </style>
+
+    <h2>[[localize('now_title')]]</h2>
+    <p class="sub-title">[[localize('now_desc')]]</p>
+
+    <div class="content">
+      <template is="dom-if" if="[[_noActivity]]">
+        <p class="sub-title lead">[[localize('now_empty')]]</p>
+      </template>
+      <template id="list" is="dom-repeat" items="{{intervals}}">
+        <!-- Do not display the interval if there is no session associated !-->
+        <template is="dom-if" if="[[item.sessions.length]]">
+          <h3 class="interval-title">[[_getIntervalTitle(item)]]</h3>
+          <template is="dom-repeat" items="{{item.sessions}}" sort="_sortSession">
+            <planet-kiosk-activity activity="[[item]]" display="row"></planet-kiosk-activity>
+          </template>
+        </template>
+      </template>
+    </div>
+  </template>
+
+  <script>
+
+    Polymer({
+      is: 'planet-kiosk-todonow',
+      behaviors: [
+        AppLocalizeBehavior,
+        ActivityBehavior,
+        ScrollBehavior
+      ],
+      properties: {
+        activities: {
+          type: Array,
+          observer: '_activitiesChanged'
+        },
+        _noActivity: {
+          type: Boolean,
+          value: false
+        },
+        intervals: {
+          type: Array,
+          value: []
+        },
+        _nbIntervals: {
+          type: Number,
+          value: 2
+        }
+      },
+      _getIntervalTitle: function(item) {
+        var fromH = moment(item.from).format('HH');
+        var fromM = moment(item.from).format('mm') !== '00' ? moment(item.from).format('mm') : '';
+        var toH = moment(item.to).format('HH');
+        var toM = moment(item.to).format('mm') !== '00' ? moment(item.to).format('mm') : '';
+
+        return this.localize('now_interval_title', 'fromH', fromH, 'fromM', fromM, 'toH', toH, 'toM', toM);
+      },
+      _activitiesChanged: function (e) {
+        this._getActivities(e);
+      },
+      _getActivities: function(activities) { // TODO : Externalize
+        var intervals = [];
+        var counter = 0;
+        var now = moment();
+
+        this.set('_noActivity', false);
+        // Choose between half-hour or full-hours
+        if (now.minutes() >= 30) {
+          now.minutes(30).startOf('minute');
+        }
+        else {
+          now.startOf('hour');
+        }
+        while (this._intervalsEmpty(intervals) && counter < 12) { // Avoid infinite loop by setting a maximum number of loop // TODO : Externalize max loop
+          if (counter) {
+            now.add(this.get('_nbIntervals'), 'hours');
+          }
+          intervals = this._getDateIntervalArray(now, this.get('_nbIntervals'));
+          for (var i = 0; i < activities.length; i++) {
+            this._getSessions(activities[i], intervals);
+          }
+          if (counter) { // If the intervals is not the first one, then set _noActivity flag to true to display a message to the user
+            this.set('_noActivity', true);
+          }
+          counter++;
+        }
+        this.set('intervals', intervals);
+      },
+      _getSessions: function(activity, intervals) { // TODO : Externalize
+        for (var i = 0; i < activity.dates.length; i++) {
+          var day = activity.dates[i];
+
+          for (var j = 0; j < day.hours.length; j++) {
+            // Check availability of the session
+            if (day.hours[j].availability == 0) { // TODO : Better check
+              continue;
+            }
+            for (var k = 0; k < intervals.length; k++) {
+              // Interval contains the session
+              if (this._isInBetween(moment(day.date + ' ' + day.hours[j].begin), intervals[k])) {
+                var session = this._sessionAsActivity(day.hours[j], activity);
+                session.dayIndex = i;
+                session.hourIndex = j;
+                intervals[k].sessions.push(session);
+              }
+              // Sessions contains the interval
+              // TODO : Doesn't work with session of two hours ex : Quand je serais grand ...
+              /*else if (this._contains( // TODO : Only one if
+                  {
+                    from: moment(day.date + ' ' + day.hours[j].begin),
+                    to: moment(day.date + ' ' + day.hours[j].end)
+                  }, intervals[k])) {
+                intervals[k].sessions.push(this._sessionAsActivity(day.hours[j], activity));
+              }*/
+            }
+          }
+        }
+      }, // TIME INTERVAL
+      _getDateIntervalArray: function(date, size) { // TODO : Externalize
+        var result = [];
+
+        for (var i = 0; i < size; i++) {
+          result.push({ from: moment(date).add(i, 'h'), to: moment(date).add(i+1, 'h'), sessions:[] });
+        }
+        return result;
+      },
+      _intervalsEmpty: function(intervals) { // TODO : Externalize
+        for (var i = 0; i < intervals.length; i++) {
+            if (intervals[i].sessions && intervals[i].sessions.length) {
+              return false;
+            }
+        }
+        return true;
+      },
+      _isInBetween: function(date, interval) { // TODO : Externalize
+        return date.unix() >= interval.from.unix() && date.unix() < interval.to.unix();
+      },
+      _contains: function(container, interval) {
+        return container.from.unix() <= interval.from.unix() && container.to.unix() >= interval.to.unix();
+      }
+    });
+
+  </script>
+</dom-module>

@@ -1,0 +1,57 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../bower_components/iron-overlay-behavior/iron-overlay-behavior.html">
+<link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
+
+<link rel="import" href="./generic/app-localize-behavior.html">
+<link rel="import" href="./common/planet-kiosk-icons.html">
+
+<dom-module id="planet-kiosk-loader">
+  <template>
+    <style>
+    :host {
+        text-align: center;
+    }
+    p.info {
+        font-size: 4em;
+        font-family: var(--planet-font-family-book);
+        color: var(--planet-color-theme-title);
+    }
+    p.percent {
+        font-size: 7em;
+        font-family: var(--planet-font-family-medium);
+        color: var(--planet-color-theme-information);
+        margin: 0;
+    }
+    paper-progress {
+       --paper-progress-active-color: var(--planet-color-theme-primary);
+       width: 100%;
+    }
+    </style>
+    <img src="../../images/loader.png">
+    <p class="info">[[localize('loader_wait')]]</p>
+    <p class="percent" hidden$="[[indeterminate]]">[[progress]][[localize('loader_wait%')]]</p>
+    <paper-progress value="[[progress]]" indeterminate$="[[indeterminate]]"></paper-progress>
+  </template>
+
+  <script>  
+  Polymer({
+    is: 'planet-kiosk-loader',
+    behaviors: [        
+      AppLocalizeBehavior,
+      Polymer.IronOverlayBehavior
+    ],
+    properties: {
+      progress: {
+        type: Number,
+        value: 0
+      },
+      indeterminate: {
+        type: Boolean,
+        value: false        
+      }
+    }
+  });
+
+  </script>
+</dom-module>
