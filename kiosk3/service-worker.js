@@ -25,8 +25,9 @@ this.addEventListener('activate', function(event) {
 // Fetch Handler
 this.addEventListener('fetch', function(event) {
     try {
-        // Paris Activities request filter
-        if (event.request.url.indexOf('getBookingParisActivities') > 0) {        
+        // Paris Activities request filter        
+        if (event.request.url.indexOf('getBookingParisActivities') > 0) {
+            console.log(event);
             var lang = event.request.headers.get('lang');
             
             event.respondWith(            
