@@ -1,0 +1,24 @@
+{
+  "status": {
+    "retC": 0,
+    "retCDescription": "ok"
+  },
+  "results": {
+    "en": {
+      "unavailable_title": "Kiosk not available",      
+      "unavailable_desc": "The kiosk is temporarily unavailable, thank you for presenting you at the reception."
+    },
+    "fr": {
+      "unavailable_title": "Borne indisponible",
+      "unavailable_desc": "La Borne est momentanément indisponible, merci de vous présenter à la réception."
+    },
+    "de": {      
+      "unavailable_title": "Nicht verfügbar Terminal",
+      "unavailable_desc": "Das Terminal ist vorübergehend nicht verfügbar, wir danken Ihnen an der Rezeption zu präsentieren."
+    },
+    "nl": {            
+      "unavailable_title": "Beschikbaar terminal",
+      "unavailable_desc": "De terminal is tijdelijk niet beschikbaar, dank u te presenteren bij de receptie."      
+    }
+  }
+}
