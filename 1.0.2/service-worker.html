@@ -34,7 +34,7 @@
         
         <p>Service worker list</p>        
         <template is="dom-repeat" id="list" items="{{registrations}}">
-          <p>{{item.scope}}</p>
+          <p data-index$="{{index}}" on-tap="_unregister">{{index}} - {{item.scope}}</p>
         </template>
       </div>
       
@@ -54,8 +54,15 @@
         this.registrations = [];
         navigator.serviceWorker.getRegistrations().then(function(registrations) {          
           registrations.forEach(function(w) { console.log(w); self.push('registrations', w);});          
-        });        
-        console.log(this.registrations);
+        });
+      },
+      _unregister: function (e) {
+        var target = e.currentTarget;
+        var index = target.getAttribute('data-index');
+        var self = this;
+        this.registrations[index].unregister().then(function(boolean) {
+          self._refresh();
+        });
       }
     });
   
