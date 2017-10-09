@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=no">
+
+    <title>planet-kiosk</title>
+    <meta name="description" content="planet-kiosk service worker">
+    
+    <link rel="icon" href="./images/favicon.ico">
+
+    <link rel="manifest" href="./manifest.json">
+
+    <script src="./bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        
+    <link rel="import" href="./bower_components/polymer/polymer.html">
+    <link rel="import" href="./bower_components/paper-button/paper-button.html">
+    
+  </head>
+  <body>
+    <dom-module id="service-worker">
+    <template>
+      <style>
+        h2 {          
+          text-align: center;
+        }
+      </style>
+          
+      <h2>
+        Service worker administration
+        <paper-button label="refresh" on-tap="_refresh">refresh</paper-button>
+      </h2>
+      
+      <div class="content">
+        
+        <p>Service worker list</p>        
+        <template is="dom-repeat" id="list" items="{{registrations}}">
+          <p>{{item.scope}}</p>
+        </template>
+      </div>
+      
+    </template>
+  
+    <script>  
+    Polymer({
+      is: 'service-worker',
+      properties : {
+        registrations: {
+          type: Array,
+          value: []
+        }
+      },
+      _refresh: function () {
+        var self = this;
+        this.registrations = [];
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {          
+          registrations.forEach(function(w) { console.log(w); self.push('registrations', w);});          
+        });        
+        console.log(this.registrations);
+      }
+    });
+  
+    </script>
+  </dom-module>
+    <template id="worker" is="dom-bind">
+      <service-worker></service-worker>
+    </template>       
+  </body>
+</html>
