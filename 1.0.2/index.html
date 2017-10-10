@@ -31797,17 +31797,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       //Clean old registrations
       var regList = [];
       navigator.serviceWorker.getRegistrations().then(function(registrations) {          
-	  registrations.forEach(function(w) {
-	      regList.push(w);
-	  });          
-      });
-      console.log(regList);
-      if (regList.length > 1) {
-	debugger;
-        for(var i=0; i<regList.length - 2; i++) {
-          console.log(regList[i]);
+          registrations.forEach(function(w) {
+              regList.push(w);
+          });
+          if (regList.length > 1) {        
+          for(var i=0; i<regList.length - 2; i++) {
+            console.log(regList[i]);
+          }
         }
-      }
+      });
     }
     
     app.connectivity = true;
