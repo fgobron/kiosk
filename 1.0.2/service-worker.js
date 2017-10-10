@@ -25,7 +25,7 @@ this.addEventListener('activate', function(event) {
     
     //Clean old registrations
     var regList = [];
-    navigator.serviceWorker.getRegistrations().then(function(registrations) {          
+    this.getRegistrations().then(function(registrations) {          
         registrations.forEach(function(w) {
             regList.push(w);
         });          
