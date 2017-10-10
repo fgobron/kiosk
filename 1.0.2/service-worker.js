@@ -3,13 +3,16 @@ var CURRENT_CACHE = 'kiosk';
 
 // Skip waiting on lifeCycle
 this.addEventListener('install', function(event) {
+    console.log('install4');
     event.waitUntil(this.skipWaiting());
 });
 
 // Auto activation on update
 this.addEventListener('activate', function(event) {
+    console.log('activated4');
     event.waitUntil(this.clients.claim());
     
+    // Clean cache
     caches.keys().then(function(cacheNames) {
       return Promise.all(
         cacheNames.map(function(cacheName) {
@@ -20,6 +23,14 @@ this.addEventListener('activate', function(event) {
       );
     });
     
+    //Clean old registrations
+    var regList = [];
+    navigator.serviceWorker.getRegistrations().then(function(registrations) {          
+        registrations.forEach(function(w) {
+            regList.push(w);
+        });          
+    });
+    console.log(regList);
 });
 
 // Fetch Handler
