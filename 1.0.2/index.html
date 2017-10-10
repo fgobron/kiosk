@@ -31795,14 +31795,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     if('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./service-worker.js');
       //Clean old registrations
-      var regList = [];
-      navigator.serviceWorker.getRegistrations().then(function(registrations) {          
-          registrations.forEach(function(w) {
-              regList.push(w);
-          });
-          if (regList.length > 1) {        
-          for(var i=0; i<regList.length - 1; i++) {
-            console.log(regList[i]);
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {                    
+          if (registrations.length > 1) {        
+          for(var i=0; i<registrations.length - 1; i++) {
+            console.log(registrations[i]);
           }
         }
       });
