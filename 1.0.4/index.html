@@ -13330,7 +13330,7 @@ AppLocalizeBehavior = [AppLocalizeBehaviorImpl, Polymer.AppLocalizeBehavior];
         gtmId: {
           type: String
         },
-        uid: {
+        session: {
           type: String
         },
         kioskId: {
@@ -13349,7 +13349,7 @@ AppLocalizeBehavior = [AppLocalizeBehaviorImpl, Polymer.AppLocalizeBehavior];
       },            
       _setDataLayer: function () {
         dataLayer = [{
-          'uid': this.uid, 
+          'session': this.session, 
           'id_kiosk': this.kioskId,
           'type_session': this.mode,
           'language': this.lang
@@ -14229,38 +14229,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           margin: 0.4em 0;
         }
         
-      </style>
-    </template>
-</dom-module><dom-module id="app-page-pmr-styles" assetpath="src/planet-kiosk-app/pmr/">
-    <template>
-      <style>
-        .prmWrapper {
-            position: absolute;            
-            min-height: 600px;            
-            bottom: 55px;
-            left: 0;            
-            width: 100%;
-        }
-        
-        h2 {
-          font-size: 3em;
-          font-family: var(--planet-font-family-roman);
-          color: var(--planet-color-theme-maintitle);        
-          text-align: center;
-        }
-      
-        .description {
-            font-size: 1em;
-            font-family: var(--planet-font-family-book);
-            color: var(--planet-color-theme-desc);
-            text-align: center;  
-        }
-      
-        .content {
-            display: block;
-            margin-top: 1em;
-        }
-      
       </style>
     </template>
 </dom-module><script>
@@ -15649,7 +15617,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <img src="images/cb.png">
     </div>
     
-    <p class="version">Kiosk v1.0.3</p>
+    <p class="version">Kiosk v1.0.4</p>
   </template>
 
   <script>  
@@ -15740,6 +15708,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       suffix: {
         type: String
+      },
+      tracking: {
+        type: String
       }
     },
     _getPage: function (suffix) {
@@ -15781,8 +15752,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           return ''
       }
     },
+    _getEventCategory: function () {      
+      switch (this.prefix) {
+        case 'login':
+          return 'Login';
+          break;
+        default:
+          return 'Activities search type'
+      }
+    },
     _track: function () {
-      this.trackEvent('Activities search type', this.suffix, 'click', 'noevent');      
+      this.trackEvent(this._getEventCategory(), this.suffix, 'click', 'noevent');      
     }
   });
 
@@ -20970,6 +20950,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             globals.token = results.token;
             globals.bookingId = results.bookingId;
             globals.cottageNumbers = results.cottageNumbers;
+            globals.uid = results.uid;
+            this._trackAuthentification();
             this.redirectAfterLogin();
             break;
           case -231:
@@ -21020,6 +21002,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._popIn.center();
         this._popIn.open();
       }
+    },
+    _trackAuthentification: function() {
+      var layer = {
+        'eventCategory': 'Login',
+        'eventAction': 'authentification',
+        'eventLabel': 'success',
+        'event': 'noevent',
+        'uid': globals.uid     
+      };
+      dataLayer.push(layer);
     }
   };
 </script><dom-module id="planet-kiosk-login-info" assetpath="src/planet-kiosk-app/">
@@ -29352,8 +29344,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         });
         return products;
       },
-      _trackTransaction: function (data) {
+      _trackTransaction: function (data) {              
         var layer = {
+          'eventCategory': 'Basket',
+          'eventAction': 'purchase',
+          'eventLabel': 'transaction',
+          'event': 'noevent',
           'transactionId': data.transaction,
           'transactionTotal': data.total.value,
           'transactionProducts': this._getProducts()
@@ -30177,258 +30173,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   });
 
   </script>
-</dom-module><dom-module id="planet-kiosk-abandon" assetpath="src/planet-kiosk-app/">
-  <template>
-    <style include="planet-kiosk-page-styles planet-kiosk-popin-styles"></style>
-    
-    <p class="message">[[localize('session_abandon_msg')]]</p>
-    
-    
-    <div class="buttons">
-      <paper-button class="primary cancel" on-tap="_cancel">[[localize('session_abandon_cancel')]]</paper-button>
-      <paper-button class="primary confirm" on-tap="_confirm">[[localize('session_abandon_confirm')]]</paper-button>  
-    </div>
-    
-  </template>
-
-  <script>  
-  Polymer({
-    is: 'planet-kiosk-abandon',
-    behaviors: [        
-      AppLocalizeBehavior,
-      TagManagerBehavior,
-      Polymer.IronOverlayBehavior
-    ],
-    properties: {
-      number: String
-    },    
-    _cancel: function () {      
-      this.close();
-      this.trackEvent('Are you sure to quit ?', 'no', 'click', 'noevent');
-    },
-    _confirm : function () {
-      this.trackEvent('Are you sure to quit ?', 'yes', 'click', 'noevent');
-      document.location.reload(true);
-    }
-  });
-
-  </script>
-</dom-module><dom-module id="planet-kiosk-pmr-tabbar" assetpath="src/planet-kiosk-app/pmr/">
-  <template>
-    <style include="iron-flex iron-flex-alignment">      
-      app-toolbar {
-        position: fixed;
-        background-color: var(--planet-color-theme-primary);       
-        width:100%;
-        height: 2.75em;
-        bottom: 0;
-        padding: 0;      
-      }
-      
-      paper-button {
-        font-family: var(--planet-font-family-book);
-        font-size: 1.1em;
-        text-transform: none;
-        color: var(--planet-color-theme-opposite);
-        background-color: var(--planet-color-theme-primary);        
-        height: 2.5em;
-        padding: 0;
-        margin: 0;
-        border-left: solid 1px var(--planet-color-theme-opposite);
-        text-align: center;        
-      }
-      
-      paper-button.s {
-        width: 8.181818182em;
-      }
-      
-      paper-button.m {
-        width: 9.818181818em;
-      }
-      
-      paper-button.l {
-        width: 12.272727273em;
-      }
-      
-      paper-button.xl {
-        width: 16.363636364em;
-      }
-      
-      paper-button span.highlighted {
-        display: block;
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        height: 1px;
-        background-color: var(--planet-color-theme-opposite);
-      }
-      
-      paper-button.warning {
-        background-color: var(--planet-color-theme-warning);        
-      }
-      
-      paper-button.last,
-      paper-button.first {
-        border: none;
-      }
-      
-      iron-icon {
-        width:2em;
-        height:2em;
-        padding: 0.4em;
-      }
-      
-      a {
-        text-decoration: none;
-      }
-    </style>
-    
-    <template is="dom-if" if="{{_isEqualTo(collection, 'pmr')}}">
-      <app-toolbar class="horizontal layout center-justified">
-        <a on-tap="_backPMR">
-          <paper-button class="first m">
-            <iron-icon icon="tabbar:pmr"></iron-icon>
-            {{localize('tabbar_normal')}}
-          </paper-button>
-        </a>
-      </app-toolbar>
-    </template>
-    
-    <template is="dom-if" if="{{_isEqualTo(collection, 'full')}}">
-      <app-toolbar>
-        <a href="#">
-          <paper-button class$="first [[size]]">
-            <iron-icon icon="tabbar:home"></iron-icon>
-            {{localize('tabbar_home')}}
-            <span hidden$="[[!_isHighlighted('home')]]" class="highlighted"></span>
-          </paper-button>
-        </a>
-        <a href="#" hidden="[[_paymentNotActive()]]">
-          <paper-button class$="[[size]]">
-            <iron-icon icon="tabbar:basket"></iron-icon>
-            {{localize('tabbar_basket')}}
-            <span hidden$="[[!_isHighlighted('basket')]]" class="highlighted"></span>
-          </paper-button>
-        </a>
-        <a href="#/map" on-tap="_trackNavigation">
-          <paper-button class$="[[size]]">
-            <iron-icon icon="tabbar:map"></iron-icon>
-            {{localize('tabbar_map')}}
-            <span hidden$="[[!_isHighlighted('map')]]" class="highlighted"></span>
-          </paper-button>
-        </a>
-        <a on-tap="_back" hidden="[[_prmNotActive()]]">
-          <paper-button class$="[[size]]">
-            <iron-icon icon="tabbar:pmr"></iron-icon>
-            {{localize('tabbar_normal')}}
-          </paper-button>
-        </a>
-        <paper-button class$="warning last [[size]]" on-tap="_reset">
-          <iron-icon icon="tabbar:abandon"></iron-icon>
-          {{localize('tabbar_abandon')}}
-        </paper-button>
-      </app-toolbar>
-    </template>
-    
-    <planet-kiosk-abandon id="abandon" language="[[language]]" with-backdrop="" no-cancel-on-outside-click=""></planet-kiosk-abandon>    
-  </template>
-
-  <script>  
-  Polymer({
-    is: 'planet-kiosk-pmr-tabbar',
-    behaviors: [
-      AppLocalizeBehavior,
-      TagManagerBehavior
-    ],
-    properties: {
-      highlightedPage: {
-        type: String,
-        value: ''
-      },
-      size: {
-        type: String,
-        default: ''
-      },
-      collection: String
-    },
-    listeners: {
-      'tap': '_onGlobalTap',        
-    },
-    attached: function () {      
-      this._setSize();      
-    },
-    _paymentNotActive: function () {
-      return !globals.payment;
-    },
-    _prmNotActive: function () {
-      return !globals.pmr;
-    },
-    _setSize: function () {
-      if (globals.payment && globals.pmr) {
-        this.set('size','m');
-      } else {
-        if (globals.payment || globals.pmr) {
-          this.set('size','l');  
-        } else {
-          this.set('size', 'xl');
-        }        
-      }      
-    },
-    _isHighlighted: function (itemName) {
-      return this.highlightedPage === itemName;
-    },
-    _isEqualTo : function (collection, value) {
-      return collection === value;
-    },
-    _onGlobalTap: function () {
-      // restore empty queryParams for futur navigation
-      // remove edit mode after detail activity modification in basket
-      globals.router.set('queryParams', {});
-    },
-    _backPMR: function () {            
-      window.history.back();
-      this.trackEvent('Language selection', 'pmr button', 'click', 'noevent');
-      this.setDataLayerItem('type_session', 'normal');
-      
-    },
-    _back: function () {      
-      window.history.back();
-      this.trackEvent('Navigation bar', 'pmr', 'click', 'noevent');
-      this.setDataLayerItem('type_session', 'normal');
-    },
-    _trackNavigation: function (e) {
-      var target = e.currentTarget;
-      var tab = target.getAttribute('href').replace('#/', '');
-      this.trackEvent('Navigation bar', tab, 'click', 'noevent');      
-    },
-    _reset: function () {
-      this.$.abandon.open();
-      this.trackEvent('Navigation bar', 'abandon', 'click', 'noevent');
-    }
-  });
-
-  </script>
-</dom-module><dom-module id="planet-kiosk-pmr" assetpath="src/planet-kiosk-app/pmr/">
-  <template>
-    <style include="app-page-pmr-styles"></style>
-    
-    <div class="prmWrapper">
-      <h2>PMR MODE</h2>
-      <h2>Sorry PRM Mode is not yet available.</h2>  
-    </div>    
-    
-  </template>
-
-  <script>  
-  Polymer({
-    is: 'planet-kiosk-pmr',
-    behaviors: [
-      AppLocalizeBehavior
-    ]
-  });
-
-  </script>
 </dom-module><!--
 @license
 Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
@@ -30660,7 +30404,43 @@ Custom property | Description | Default
     })
   </script>
 </dom-module>
-<dom-module id="planet-kiosk-tabbar" assetpath="src/planet-kiosk-app/">
+<dom-module id="planet-kiosk-abandon" assetpath="src/planet-kiosk-app/">
+  <template>
+    <style include="planet-kiosk-page-styles planet-kiosk-popin-styles"></style>
+    
+    <p class="message">[[localize('session_abandon_msg')]]</p>
+    
+    
+    <div class="buttons">
+      <paper-button class="primary cancel" on-tap="_cancel">[[localize('session_abandon_cancel')]]</paper-button>
+      <paper-button class="primary confirm" on-tap="_confirm">[[localize('session_abandon_confirm')]]</paper-button>  
+    </div>
+    
+  </template>
+
+  <script>  
+  Polymer({
+    is: 'planet-kiosk-abandon',
+    behaviors: [        
+      AppLocalizeBehavior,
+      TagManagerBehavior,
+      Polymer.IronOverlayBehavior
+    ],
+    properties: {
+      number: String
+    },    
+    _cancel: function () {      
+      this.close();
+      this.trackEvent('Are you sure to quit ?', 'no', 'click', 'noevent');
+    },
+    _confirm : function () {
+      this.trackEvent('Are you sure to quit ?', 'yes', 'click', 'noevent');
+      document.location.reload(true);
+    }
+  });
+
+  </script>
+</dom-module><dom-module id="planet-kiosk-tabbar" assetpath="src/planet-kiosk-app/">
   <template>
     <style include="iron-flex iron-flex-alignment">      
       :host {
@@ -30863,7 +30643,8 @@ Custom property | Description | Default
       // remove edit mode after detail activity modification in basket
       globals.router.set('queryParams', {});
     },        
-    _trackPMR: function () {      
+    _trackPMR: function (e) {
+      e.preventDefault();
       this.trackEvent('Language selection', 'pmr button', 'click', 'noevent');
       this.setDataLayerItem('type_session', 'pmr');
     },
@@ -30872,7 +30653,8 @@ Custom property | Description | Default
       var tab = target.getAttribute('href').replace('#/', '');
       this.trackEvent('Navigation bar', tab, 'click', 'noevent');
       if (tab === 'pmr') {
-        this.setDataLayerItem('type_session', 'pmr');  
+        this.setDataLayerItem('type_session', 'pmr');
+        e.preventDefault();
       }      
     },
     _reset: function () {
@@ -31627,8 +31409,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       
       <planet-kiosk-outage name="outage" language="[[language]]"></planet-kiosk-outage>
       
-      <planet-kiosk-pmr name="pmr" language="[[language]]"></planet-kiosk-pmr>
-      
     </iron-pages>
     
     <planet-kiosk-loader id="loader" language="[[language]]" with-backdrop="" no-cancel-on-outside-click=""></planet-kiosk-loader>
@@ -31899,7 +31679,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // Tag manager settings
       var tm = document.querySelector('app-tag-manager');
       tm.gtmId = globals.gtmId;
-      tm.uid = globals.kioskId + '_' + moment().unix();
+      tm.session = globals.kioskId + '_' + moment().unix();
       tm.kioskId = globals.kioskId;
       tm.mode = "normal"; // Default vue mode
       tm.lang = globals.language;
