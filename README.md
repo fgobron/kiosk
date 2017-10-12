@@ -1,2 +1,2 @@
 # kiosk
-Projet test - Development purpose
+Project releases tests
