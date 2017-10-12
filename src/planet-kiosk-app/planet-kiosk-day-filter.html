@@ -1,0 +1,76 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<!-- Components !-->
+<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
+<!-- Behaviors !-->
+<link rel="import" href="./generic/app-localize-behavior.html">
+
+<dom-module is="planet-kiosk-day-filter">
+  <template>
+    <style include="planet-kiosk-page-styles">
+      :host {
+        width:100%;
+        @apply(--layout-horizontal);
+        @apply(--layout-around-justified);
+        --paper-fab-background: none;
+        --paper-fab-keyboard-focus-background: transparent;
+        --paper-fab: {
+          padding:0;
+          width: 9em;
+          height: 9em;
+        }
+      }
+
+      paper-fab {
+        box-shadow: none;
+        margin: 0.8em;
+        color: var(--planet-color-theme-btn);
+        text-transform: uppercase;
+        --paper-fab-label: {
+          font-size: 2.3em;
+          font-family: var(--planet-font-family-monospaced);
+          width: 2.7em;
+          white-space: normal;
+        }
+      }
+
+      paper-fab.activated {
+        background-color:var(--planet-color-theme-primary);
+        color: var(--planet-color-theme-opposite);
+      }
+    </style>
+    <template is="dom-repeat" items="[[days]]" id="list">
+      <paper-fab label="[[item.label]]" on-tap="_dayTapHandler" class$="[[_getFilterClass(index, selectedDay)]]">
+      </paper-fab>
+    </template>
+
+  </template>
+
+  <script>
+    Polymer({
+      is:'planet-kiosk-day-filter',
+      behaviors: [ AppLocalizeBehavior ],
+      properties: {
+        days: {
+          type: Array,
+          value: []
+        },
+        selectedDay: {
+          type: Number,
+          value: 0,
+          notify: true
+        }
+      },
+      _getFilterClass: function(index, selectedIndex) {
+        var element = this.get(['days', index]);
+        var result = element.$class;
+        if (index === selectedIndex) {
+          result += ' activated';
+        }
+        return result;
+      },
+      _dayTapHandler: function(e) {
+        this.set('selectedDay', e.model.index);
+      }
+    });
+  </script>
+</dom-module>

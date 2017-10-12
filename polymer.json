@@ -1,0 +1,23 @@
+{
+  "entrypoint": "index.html",
+  "shell": "src/planet-kiosk-app/planet-kiosk-app.html",  
+  "sources": [
+    "src/**/*",
+    "libs/**/*",
+    "fonts/**/*",
+    "images/**/*",
+    "bower.json"
+  ],
+  "extraDependencies": [
+    "manifest.json",
+    "appconfig.json",
+    "kiosks.json",
+    "service-worker.js",
+    "data/**/*",
+    "bower_components/webcomponentsjs/*.js",
+    "bower_components/moment/**/*.js"
+  ],
+  "lint": {
+    "rules": ["polymer-1"]
+  }
+}

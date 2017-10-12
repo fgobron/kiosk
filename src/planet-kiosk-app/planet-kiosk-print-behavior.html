@@ -1,0 +1,233 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="./planet-kiosk-imageb64.html">
+
+<script>
+  var PARTIALCUTNL = 3;
+  var LINESIZE = 42;//[42, 19, 12, 8];
+
+  /**
+   * Printer helpers
+   *
+   * @polymerBehavior PrintBehavior
+   */
+  PrintBehavior = {
+    //
+    cr: '\r\n',
+    tab: '\t',
+    // Insertion
+    image: function(content) {
+      return "<@ImageBase64>" + content + "<@ImageBase64End>";
+    },
+    logo: function () {
+      return this.image(IMAGES.printLogo);
+    },
+    file: function(url) {
+      return "<@File>" + url + "<@FileEnd>";
+    },
+    partialCut: function() {
+      var sep = '';
+      for (var i = 0; i < PARTIALCUTNL; i++) {
+        sep += this.cr;
+      }
+      return (sep + "<@PartialCut>");
+    },
+    customerReceipt: function () {
+      return '<@PaymentCustomerReceipt>'; // TODO :  Maybe directly add partial cut
+    },
+    // Text decoration
+    charSize: function(content) { // TODO : Ask information about the way it works
+      return "<@CharSizeOn>" + "<@CharSizeOff>";
+    },
+    bold: function(content) {
+      return "<@BoldOn>" + content + "<@BoldOff>";
+    },
+    double: function(content) {
+      return "<@DoubleOn>" + content + "<@DoubleOff>";
+    },
+    underline: function(content) {
+      return  "<@UnderlineOn>" + content + "<@UnderlineOff>";
+    },
+    smaller: function(content) { // TODO : Ask information about the way it works
+      return "<@SmallerOn>" +  content + "<@SmallerOff>";
+    },
+    magnification: function(level, content) {
+      return "<@Magnification" + level + '>' + content + "<@MagnificationOff>"
+    },
+    // Barcode
+    barcode: function(type, value) {
+      return "<@Barcode" + type  +  ">" + value + "<@BarcodeEnd>";
+    },
+
+    center : function(content) {
+      var result = '';
+      if (content.length < LINESIZE) {
+        var nbSpace = Math.trunc((LINESIZE - content.length) / 2);
+        result += this._getSpace(nbSpace);
+        result += content;
+      }
+      else {
+        var words = content.split(' ');
+        var count = 0;
+
+        for (var i = 0; i < words.length; i++) {
+          count += words[i].length + (i ? 1 : 0);
+          if (count >= LINESIZE - 6) { // End of line
+            result = this.center(words.slice(0, i).join(' ')) + this.cr + this.center(words.slice(i).join(' '));
+            break;
+          }
+        }
+      }
+      return result;
+    },
+    alignRight: function(content) { // TODO : Add an offset, and dynamic lineSize
+      var result = '';
+      if (content.length < LINESIZE) {
+        var nbSpace = LINESIZE - content.length;
+        result += this._getSpace(nbSpace);
+        result += content;
+      }
+      else {
+        result = content;
+      }
+      return result;
+    },
+    array: function(data, layout) {
+      var result = '' + this.cr;
+
+      for (var i = 0; i < data.length; i++) { // Display rows
+        if (data[i].content[0].length > layout[0].size) { // Split row if the first (Main information os longer than the size of the cell
+          var splitLine = this._getLine(data[i].content[0], layout[0].size);
+
+          data[i].content[0] = splitLine[1];
+          data.splice(i, 0, this._emptyRow(splitLine[0], layout));
+        }
+        result += this._row(data[i], layout);
+      }
+      return result;
+    },
+    _getLine: function(text, size) {
+      var words = text.split(' ');
+      var buffer = '';
+      var leftOver = '';
+
+      for (var i = 0; i < words.length; i++) {
+        var currentWord = (i ? ' ' : '') + words[i];
+        if (buffer.length + currentWord.length > size) {
+          if (currentWord.length > size) {
+            var splitLength = size - buffer.length;
+
+            buffer += currentWord.slice(0, splitLength);
+            words[i] = currentWord.slice(splitLength);
+          }
+          leftOver = words.slice(i).join(' ');
+          break;
+        }
+        buffer += currentWord;
+      }
+      return [buffer, leftOver];
+    },
+    _row: function(row, layout) {
+      var result = '';
+
+      for (var i = 0; i < row.content.length; i++) {
+        result += i ? ' ' : ''; // TODO : externalize separator
+        result += this._column(row.content[i], layout[i]);
+      }
+
+      if (row.bold) {
+        result = this.bold(result);
+      }
+      if (row.underline) {
+        result = this.underline(result);
+      }
+
+      result += this.cr;
+      return result;
+    },
+    _emptyRow: function(content, layout) {
+        var result = [content];
+        for (var i = 1; i < layout.length; i++) {
+          result.push('');
+        }
+        return { content: result };
+    },
+    _column: function(content, layout) {
+      var result = '';
+
+      if (layout.align) {
+        var contentValue = content;
+        if (typeof contentValue !== 'String') {
+          contentValue = String(contentValue);
+        }
+
+        var nbSpace = Math.trunc((layout.size - contentValue.length) / (layout.align === 'center' ? 2 : 1)); // TODO : clean
+        result += this._getSpace(nbSpace);
+      }
+
+      result += content;
+      result += this._getSpace(layout.size - result.length); // Fill column
+
+      return result;
+    },
+    _getSpace: function(nbSpace) {
+      var result = '';
+
+      for (var i = 0; i < nbSpace; i++) {
+        result += ' ';
+      }
+
+      return result;
+    },
+
+    _test: function() {
+      var layout = [
+        { size:21 },
+        { size:6, align:'right' },
+        { size:6, align:'right' },
+        { size:6, align:'right' }
+      ];
+
+      var array = [
+        {content: ['je suis unmot trestreslongvraimenttreslong suivit par des mots plus courts', ' ', ' ',  ' ']},
+        {content: ['teazfaafa azdazdza dadazdfa dazdazd zdafa adufea dzefaef', ' ', ' ',  ' ']},
+        {content: ['teazfaafa azdazdza dadazdfa dazdazd zdafa adufea dzefaef', ' ', ' ',  ' ']},
+        {content: ['teazfaafa azdazdza dadazdfa dazdazd zdafa adufea dzefaef', ' ', ' ',  ' ']}
+      ];
+
+      return this.array(array, layout);
+      /*var alphabet = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent efficitur quis felis eu mollis. Fusce nec diam vitae libero elementum egestas eget condimentum purus. Curabitur convallis, lorem eu eleifend ullamcorper, nisl diam varius nunc, a tempor odio dui et quam. Cras ante ex, mattis vitae enim vel, rhoncus accumsan leo. Morbi aliquam finibus tempus. Proin pharetra tortor sed ex semper amet.";
+      var content = '';
+
+      content += 'default' + this.cr;
+      content += this.center(alphabet) + this.cr;*/
+
+      /*content += 'charSize' + this.cr;
+      content += this.charSize(alphabet) + this.cr;
+
+      content += 'bold' + this.cr;
+      content += this.bold(alphabet) + this.cr;
+
+      /*content += 'double' + this.cr;
+      content += this.double(alphabet) + this.cr;
+
+      content += 'underline' + this.cr;
+      content += this.underline(alphabet) + this.cr;
+
+      /*content += 'smaller' + this.cr;
+      content += this.smaller(alphabet) + this.cr;
+
+      content += 'magnification 2' + this.cr;
+      content += this.magnification(2, alphabet) + this.cr;
+
+      content += 'magnification 3' + this.cr;
+      content += this.magnification(3, alphabet) + this.cr;
+
+      content += 'magnification 4' + this.cr;
+      content += this.magnification(4, alphabet) + this.cr;
+      */
+
+      return content;
+    }
+  }
+
+</script>

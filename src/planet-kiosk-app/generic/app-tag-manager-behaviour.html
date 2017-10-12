@@ -1,0 +1,33 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+
+<script>
+/**
+ * Google Tag Manager behaviour
+ *
+ * @polymerBehavior TagManagerBehavior
+ */
+TagManagerBehavior = {
+  
+  trackEvent: function(category, action, label, event) {            
+    dataLayer.push({        
+      'eventCategory': category,
+      'eventAction': action,
+      'eventLabel': label,
+      'event': event
+    });    
+  },
+  trackEventFromDataAttrs: function(e) {
+    var target = e.currentTarget;
+    var category = target.getAttribute('data-category');
+    var action = target.getAttribute('data-action');
+    var label = target.getAttribute('data-label');    
+    this.trackEvent(category, action, label, 'noevent');
+  },
+  setDataLayerItem: function(key, value) {
+    dataLayer.push({        
+      [key]: value
+    });
+  }  
+};
+
+</script>

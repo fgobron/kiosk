@@ -1,0 +1,20 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+
+<script>
+  /**
+   * PMR Mode helpers
+   *
+   * @polymerBehavior PMRBehavior
+   */
+  PMRBehavior = {
+    properties: {
+      pmr: Boolean
+    },
+    _isPMRActive: function () {
+      return this.get('pmr');
+    },
+    _getPMRClass: function (pmr) {      
+      return pmr ? 'pmr': '';
+    }
+  };
+</script>

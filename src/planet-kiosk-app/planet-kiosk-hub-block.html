@@ -1,0 +1,175 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+
+<link rel="import" href="./generic/app-localize-behavior.html">
+<link rel="import" href="./generic/app-tag-manager-behaviour.html">
+<link rel="import" href="./pmr/planet-kiosk-pmr-behavior.html">
+
+<link rel="import" href="./common/planet-kiosk-icons.html">
+
+<dom-module id="planet-kiosk-hub-block">
+  <template>
+    <style include="iron-flex iron-flex-alignment">
+      
+      .card-container {
+        display: block;
+        float: left;
+        text-decoration: none;
+        margin: 0 0 5em 5em;        
+      }
+      
+      .card-container:active {        
+        transform: scale(0.98);
+      }
+  
+      paper-card {
+        display: block;             
+        width: 46.5em;
+        height: 52em;
+        border-radius: 1em;        
+      }
+      
+      .card-content iron-icon {
+        width:7.4em;
+        height:7.4em;
+        margin-bottom: 2em;
+        color: var(--planet-color-theme-primary);
+      }
+  
+      .card-content h3 {        
+        font-size: 4em;
+        font-family: var(--planet-font-family-heavy);
+        color: var(--planet-color-theme-title);
+        width: 8.1em;        
+        overflow: hidden;
+        margin: 0;        
+        text-align: center;
+        @apply --layout;
+        @apply --layout-center-justified;
+        @apply --layout-center;
+      }
+      
+      .card-content p {
+        font-size: 2em;        
+        font-family: var(--planet-font-family-book);
+        color: var(--planet-color-theme-desc);        
+        margin: 1em 1.5em;
+      }
+
+      /* PMR Mode override */
+      .pmr.card-container {
+        margin: 0 0 0 2.2em;
+      }
+
+      .pmr paper-card {
+        width: 24em;
+        height: 26em;
+      }
+
+      .pmr .card-content iron-icon {
+        width: 4em;
+        height: 4em;
+      }
+
+      .pmr h3 {
+        margin: 0 0 0.3em 0;
+        font-size: 2em;
+        width: 9em;
+      }
+
+      .pmr p {
+        margin:0;
+        font-size: 1.5em;
+        text-align: center;
+      }
+
+    </style>
+    
+    <a class$="card-container [[_getPMRClass(pmr)]]" href="[[_getPage(suffix)]]" on-tap="_track">
+      <paper-card class="vertical layout center-justified" elevation="3">
+        <div class="card-content vertical layout center">
+          <iron-icon icon="[[prefix]]:[[suffix]]"></iron-icon>
+          <h3>[[_getBlockTitle(localize, prefix, suffix)]]</h3>
+          <p>[[_getBlockDesc(localize, prefix, suffix)]]</p>
+        </div>              
+      </paper-card>
+    </a>
+    
+  </template>
+
+  <script>  
+  Polymer({
+    is: 'planet-kiosk-hub-block',
+    behaviors: [
+      AppLocalizeBehavior,
+      TagManagerBehavior,
+      PMRBehavior
+    ],
+    properties: {
+      prefix: {
+        type: String,
+        value: ''
+      },
+      suffix: {
+        type: String
+      },
+      tracking: {
+        type: String
+      }
+    },
+    _getPage: function (suffix) {
+      switch (suffix) {
+        case 'az':
+          return '#/az';
+          break;
+        case 'age':
+          return '#/age';
+          break;
+        case 'now':
+          return '#/now';
+          break;
+        case 'planning':
+          return '#/schedule';
+          break;
+        case 'info':
+          return '#/login';
+          break;
+        case 'qrcode':
+          return '#/qrlogin';
+          break;
+        default:
+          return '';
+      }      
+    },
+    _getBlockTitle: function (localize, prefix, suffix) {      
+      return this.localize('' + this._getReformedPrefix(prefix) + 'hub_title_' + suffix);
+    },
+    _getBlockDesc: function (localize, prefix, suffix) {      
+      return this.localize('' + this._getReformedPrefix(prefix) + 'hub_desc_' + suffix);
+    },
+    _getReformedPrefix: function (prefix) {
+      switch (prefix) {
+        case 'login':
+          return 'login_';
+          break;
+        default:
+          return ''
+      }
+    },
+    _getEventCategory: function () {      
+      switch (this.prefix) {
+        case 'login':
+          return 'Login';
+          break;
+        default:
+          return 'Activities search type'
+      }
+    },
+    _track: function () {
+      this.trackEvent(this._getEventCategory(), this.suffix, 'click', 'noevent');      
+    }
+  });
+
+  </script>
+</dom-module>

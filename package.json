@@ -1,0 +1,20 @@
+{
+  "name": "planet-kiosk",
+  "description": "Progressive Web App for CP Interactive Kiosk",
+  "repository": {
+    "type": "git",
+    "url": "http://git.pv-cp.net/planet/kiosk.git"
+  },
+  "devDependencies": {
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-vulcanize": "^6.1.0"
+  },
+  "optionalDependencies": {
+    "@pvcp/planet-mocks": "^0.1.5"
+  },
+  "scripts": {
+    "start": "gulp dev",
+    "build": "gulp build"
+  }
+}

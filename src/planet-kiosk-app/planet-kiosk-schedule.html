@@ -1,0 +1,311 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<!-- Components !-->
+<link rel="import" href="../../bower_components/app-layout/app-layout.html">
+<link rel="import" href="./planet-kiosk-day-filter.html">
+<link rel="import" href="./planet-kiosk-hour-filter.html">
+<link rel="import" href="./planet-kiosk-activity.html">
+<!-- Behaviors !-->
+<link rel="import" href="./generic/app-localize-behavior.html">
+<link rel="import" href="./common/planet-kiosk-scroll-behavior.html">
+
+<dom-module id="planet-kiosk-schedule">
+  <template>
+    <style include="planet-kiosk-page-styles">
+      :host {
+        --scroll-button-top: 30em;
+        --info-pres : {
+          font-size: 1.7em;
+          font-family: var(--planet-font-family-book);
+          padding-left: 0.4em;
+        }
+      }
+
+      app-header {
+        background-color: var(--planet-color-theme-mainbg);
+        margin-bottom: 2em;
+      }
+
+      planet-kiosk-day-filter {
+        border-bottom: 1px solid var(--planet-color-theme-disabled);
+        padding-bottom: 2em;
+        margin-bottom: 2em;
+      }
+
+      .content {
+        display: block;
+        margin: 0 5em 19em 5em;
+      }
+
+      .spacer {
+        height: 2em;
+      }
+
+      .no-activity {
+        font-size: 2.9em;
+        text-align: center;
+        font-family: var(--planet-font-family-book);
+        color: var(--planet-color-theme-desc);
+        margin: 20em 6em 0;
+      }
+    </style>
+    <div class="content">
+      <app-header-layout id="layout">
+        <app-header fixed condenses>
+          <div>
+            <h2> [[localize('planning_title')]] </h2>
+            <p class="sub-title"> [[localize('planning_desc')]] </p>
+          </div>
+
+          <div sticky>
+            <planet-kiosk-day-filter
+                days="[[days]]"
+                selected-day="{{selectedDay}}">
+            </planet-kiosk-day-filter>
+
+            <planet-kiosk-hour-filter
+                hours="[[hours]]"
+                selected-hour="{{selectedHour}}"
+                starting-index="{{_hourFilterIndex}}">
+            </planet-kiosk-hour-filter>
+            <div class="spacer"></div>
+          </div>
+        </app-header>
+        <template id="sessions" is="dom-repeat" items="{{_sessions}}" sort="_sortSession" filter="_filterSession" rendered-item-count="{{activityCount}}">
+          <planet-kiosk-activity activity="[[item]]" display="row"></planet-kiosk-activity>
+        </template>
+
+        <template is="dom-if" if="[[!activityCount]]">
+          <p class="no-activity">[[localize('planning_no_activity')]]</p>
+        </template>
+      </app-header-layout>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'planet-kiosk-schedule',
+      behaviors: [ AppLocalizeBehavior, ActivityBehavior, ScrollBehavior ],
+      properties: {
+        visible: {
+          type: Boolean,
+          observer: '_refreshLayout'
+        },
+        activities: {
+          type: Array,
+          observer: '_activitiesChanged'
+        },
+        days: {
+          type: Array,
+          value: []
+        },
+        selectedDay: {
+          type: Number,
+          value: 0,
+          observer: '_selectedDayChanged'
+        },
+        _nbDay: {
+          type: Number,
+          value: 8,
+          readOnly: true
+        },
+        hours: {
+          type: Array,
+          value: []
+        },
+        selectedHour: {
+          type: Number,
+          value: -1,
+          observer: '_selectedHourChanged'
+        },
+        _sessions: {
+          type: Array,
+          value: []
+        },
+        _startingHour: {
+          type: Number,
+          value: 8,
+          readOnly: true
+        },
+        _endingHour: {
+          type: Number,
+          value: 24,
+          readOnly: true
+        },
+        activityCount: {
+          type: Number,
+          value: 0
+        },
+        _hourFilterIndex: {
+          type: Number,
+          value: 0
+        }
+      },
+      // OBSERVERS
+      _refreshLayout: function () {
+        // Hack to avoid wrong positioning of the content in the layout
+        this.$.layout.resetLayout();
+      },
+      _activitiesChanged: function () {
+        this.set('days', this._buildDayList()); // Update day
+        this.set('hours', this._buildHourList()); // & and hour interval
+        this._getActivities(); // Update activities
+        this._updateHourFilterIndex(this.get('selectedDay'));
+        this.contentChanged();
+      },
+      _selectedHourChanged: function () {
+        var sessions = this.get('_sessions');
+        this.set('_sessions', []); // Hack to force session re-rendering
+        this.set('_sessions', sessions);
+        this.contentChanged();
+      },
+      _selectedDayChanged: function(index) {
+        this._getActivities();
+        this._updateHourFilterIndex(index);
+        this.contentChanged();
+      },
+      _filterSession: function(session) {
+        var hourIndex = this.get('selectedHour');
+        var selectedDay = this.get(['days', this.get('selectedDay')]);
+
+        if (hourIndex < 0) { // No filter
+          return true;
+        }
+
+        var hours = this.get('hours');
+
+        var sessionHours = session.dates[session.dayIndex].hours;
+        var sessionBegin = moment(session.date + ' ' + session.begin);
+        var sessionEnd = moment(session.date + ' ' + session.end);
+
+        if (sessionEnd.isBefore(sessionBegin)) { // Handle activities that last after midnight (ex : Bowling)
+          sessionEnd.add(1, 'day');
+        }
+        var from = moment(selectedDay.from).add(hours[hourIndex].value, 'hour');
+        // Check all session in the activity to avoid strange behavior.
+        for (var j = session.hourIndex; j < sessionHours.length; j++) {
+          var sessionFrom = moment(session.date + ' ' + sessionHours[j].begin);
+          if (from.unix() <= sessionFrom.unix()) {
+            return true;
+          }
+        }
+        return false;
+      },
+      _getActivities: function() {
+        // Get selected day
+        var dayFilter = this.get(['days', this.get('selectedDay')]);
+        var activities =  this.get('activities');
+        var result = [];
+
+        if (!dayFilter || !activities) {
+          return
+        }
+        // BROWSE ACTIVITIES
+        for (var  i = 0; i < activities.length; i++) {
+          // BROWSE DAYS
+          for(var j = 0; j < activities[i].dates.length; j++) {
+            if (moment(activities[i].dates[j].date).isBetween(dayFilter.from, dayFilter.to, null, '[)')) {
+              var sessions = this._groupSessions(activities[i].dates[j].hours);
+
+              for (var k = 0; k < sessions.length;k++) {
+                sessions[k].dayIndex = j;
+                sessions[k].date = activities[i].dates[j].date;
+                result.push(this._sessionAsActivity(sessions[k], activities[i]));
+              }
+              break;
+            }
+          }
+        }
+        this.set('_sessions', result);
+      },
+      _groupConsecutiveSessions: function(sessions) {
+        var begin = null;
+        var beginIndex = 0;
+        var end = null;
+        var result = [];
+
+        for (var i = 0; i < sessions.length; i++) {
+          if (sessions[i].availability <= 0) {
+            continue;
+          }
+          if (sessions[i].begin === end) {
+            end = sessions[i].end;
+          }
+          else {
+            if (begin) {
+              result.push({begin: begin, end: end, hourIndex:beginIndex});
+            }
+            beginIndex = i;
+            begin = sessions[i].begin;
+            end = sessions[i].end;
+          }
+        }
+        // Push the last element in
+        if (begin) {
+          result.push({begin: begin, end: end, hourIndex: beginIndex});
+        }
+
+        return result;
+      },
+      _groupSessions: function(sessions) {
+        if (this._getNbSessionsAvailable(sessions) >= 6) {
+          return [{begin:sessions[0].begin, end:sessions[sessions.length-1].end, hourIndex:0}];
+        }
+        else {
+          return this._groupConsecutiveSessions(sessions);
+        }
+      },
+      _getNbSessionsAvailable: function(sessions) {
+        var result = 0;
+        for (var i = 0; i < sessions.length; i++) {
+          if (sessions[i].availability > 0) {
+            result++;
+          }
+        }
+        return (result);
+      },
+      // Filters construction
+      _buildDayList: function() {
+        var result = [];
+        var today = moment().startOf('day');
+        var nbDay = this.get('_nbDay');
+
+        for (var i = result.length; i < nbDay; i++) {
+          var day = moment(today).add(i, 'day');
+          var label = day.format('ddd').substr(0,3) + ' ' + day.format('DD');
+
+          result.push({
+            label: label,
+            from: day,
+            to: moment(day).add(1, 'day')
+          });
+        }
+        return result;
+      },
+      _buildHourList: function (){
+        var result = [];
+
+        var start = this.get('_startingHour');
+        var end = this.get('_endingHour');
+        var hourLabel = this.localize('planning_hour_filter_unit');
+
+        for (var i = start; i < end; i++) {
+          result.push({label: i + hourLabel, value:i});
+        }
+        return result;
+      },
+      _updateHourFilterIndex: function(index) {
+        if (index === 0) {
+          var currentStartingIndex = this.get('_hourFilterIndex');
+          var currentHour = moment().hour() + 1;
+          if (currentHour < 23) { // TODO : Use properties
+            var startingIndex = (currentHour - 8) - ((currentHour - 8) % 4); // TODO : Find a way to avoid undefined properties
+            if (startingIndex >= 0 && startingIndex > currentStartingIndex) {
+              this.set('_hourFilterIndex', startingIndex);
+            }
+          }
+        }
+      }
+    });
+  </script>
+
+</dom-module>

@@ -1,0 +1,48 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+
+<dom-module id="app-tag-manager">
+  <script>
+    Polymer({
+
+      is: 'app-tag-manager',
+
+      properties: {        
+        gtmId: {
+          type: String
+        },
+        session: {
+          type: String
+        },
+        kioskId: {
+          type: String
+        },
+        mode: {
+          type: String
+        },
+        lang: {
+          type: String
+        }
+      },      
+      init: function() {
+        this._setDataLayer();
+        this._setGtm();        
+      },            
+      _setDataLayer: function () {
+        dataLayer = [{
+          'session': this.session, 
+          'id_kiosk': this.kioskId,
+          'type_session': this.mode,
+          'language': this.lang
+        }];        
+      },
+      _setGtm : function () {
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer',this.gtmId);        
+      }
+      
+    });
+  </script>
+</dom-module>
