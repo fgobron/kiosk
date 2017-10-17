@@ -32232,6 +32232,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       globals.services = document.getElementById('services');
       globals.gtmId = config.gtmId;
       subConfigRequest.headers = globals.headers;
+      subConfigRequest.set('url', config.kiosks);
       subConfigRequest.generateRequest();
     }
     
