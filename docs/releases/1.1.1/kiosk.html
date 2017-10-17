@@ -27828,11 +27828,6 @@ Mixin | Description | Default
       }
 
       /* PMR Mode override */
-      .pmr .content {
-        margin-left: 9em;
-        margin-right: 3em;
-      }
-
       .pmr h2 {
         padding: 0;
       }
@@ -27854,6 +27849,11 @@ Mixin | Description | Default
         margin: 0;
         padding: 0;
         font-size: 1.8em;
+      }
+
+      .pmr .content {
+        margin-left: 9em;
+        margin-right: 3em;
       }
 
       .pmr planet-kiosk-scroll-button {
@@ -28031,17 +28031,10 @@ Mixin | Description | Default
 <dom-module is="planet-kiosk-day-filter">
   <template>
     <style include="planet-kiosk-page-styles">
-      :host {
+      .filter-wrapper {
         width:100%;
         @apply(--layout-horizontal);
         @apply(--layout-around-justified);
-        --paper-fab-background: none;
-        --paper-fab-keyboard-focus-background: transparent;
-        --paper-fab: {
-          padding:0;
-          width: 9em;
-          height: 9em;
-        }
       }
 
       paper-fab {
@@ -28049,6 +28042,15 @@ Mixin | Description | Default
         margin: 0.8em;
         color: var(--planet-color-theme-btn);
         text-transform: uppercase;
+        --paper-fab-background: none;
+        --paper-fab-keyboard-focus-background: transparent;
+
+        --paper-fab: {
+          padding:0;
+          width: 9em;
+          height: 9em;
+        };
+
         --paper-fab-label: {
           font-size: 2.3em;
           font-family: var(--planet-font-family-monospaced);
@@ -28061,18 +28063,33 @@ Mixin | Description | Default
         background-color:var(--planet-color-theme-primary);
         color: var(--planet-color-theme-opposite);
       }
-    </style>
-    <template is="dom-repeat" items="[[days]]" id="list">
-      <paper-fab label="[[item.label]]" on-tap="_dayTapHandler" class$="[[_getFilterClass(index, selectedDay)]]">
-      </paper-fab>
-    </template>
 
+      .pmr paper-fab {
+        --paper-fab: {
+          padding:0;
+          width: 5em;
+          height: 5em;
+        };
+
+        --paper-fab-label: {
+          font-size: 1.5em;
+          font-family: var(--planet-font-family-monospaced);
+          white-space: normal;
+        };
+      }
+    </style>
+    <div class$="filter-wrapper [[_getPMRClass(pmr)]]">
+      <template is="dom-repeat" items="[[days]]" id="list">
+        <paper-fab label="[[item.label]]" on-tap="_dayTapHandler" class$="[[_getFilterClass(index, selectedDay)]]">
+        </paper-fab>
+      </template>
+    </div>
   </template>
 
   <script>
     Polymer({
       is:'planet-kiosk-day-filter',
-      behaviors: [ AppLocalizeBehavior ],
+      behaviors: [ AppLocalizeBehavior, PMRBehavior ],
       properties: {
         days: {
           type: Array,
@@ -28696,30 +28713,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module is="planet-kiosk-hour-filter">
   <template>
     <style include="planet-kiosk-page-styles">
-      :host {
-        width:100%;
+
+      .filter-wrapper {
         @apply(--layout-horizontal);
         @apply(--layout-around-justified);
-
-        --paper-checkbox-size: 4.5em;
-        --paper-checkbox-margin: 2.25em;
-
-        --paper-checkbox-unchecked-background-color: none;
-        --paper-checkbox-unchecked-color: var(--planet-color-theme-btn);
-
-        --paper-checkbox-checked-color: var(--planet-color-theme-primary);
-        --paper-checkbox-checked-ink-color: var(--planet-color-theme-primary);
-        --paper-checkbox-checkmark-color: var(--planet-color-theme-opposite);
-
-        --paper-fab-background: none;
-        --paper-fab-keyboard-focus-background: transparent;
-        --paper-fab: {
-          padding:0;
-          width: 9em;
-          height: 9em;
-        }
-
-
+        width:100%;
       }
       /*
       Fab
@@ -28728,6 +28726,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         box-shadow: none;
         margin: 0.8em 0;
         color: var(--planet-color-theme-btn);
+
+        --paper-fab-background: none;
+        --paper-fab-keyboard-focus-background: transparent;
+
+        --paper-fab: {
+          padding:0;
+          width: 9em;
+          height: 9em;
+        };
         --paper-fab-label: {
           font-size: 2.3em;
           font-family: var(--planet-font-family-monospaced);
@@ -28792,29 +28799,52 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .stripes iron-icon.flip {
         transform: scale(-1);
       }
+
+      /* PMR SPECIFIC STYLE */
+
+      .pmr paper-fab {
+        --paper-fab: {
+          padding:0;
+          width: 5em;
+          height: 5em;
+        };
+
+        --paper-fab-label: {
+          font-size: 1.5em;
+          font-family: var(--planet-font-family-monospaced);
+          white-space: normal;
+        };
+      }
+      
+      .pmr .stripes iron-icon {
+        width: 5em;
+        height: 5em;
+      }
+
     </style>
 
-    <paper-fab label="[[localize('planning_hour_filter_label')]]" disabled="true" class="label uppercase"></paper-fab>
-    <paper-button on-tap="_decreaseStartingIndex" class="stripes" disabled="{{_isPrevDisabled(startingIndex)}}">
-      <iron-icon class="default" icon="buttons:stripe-circle"></iron-icon>
-    </paper-button>
+    <div class$="[[_getPMRClass(pmr)]] filter-wrapper">
+      <paper-fab label="[[localize('planning_hour_filter_label')]]" disabled="true" class="label uppercase"></paper-fab>
+      <paper-button on-tap="_decreaseStartingIndex" class="stripes" disabled="{{_isPrevDisabled(startingIndex)}}">
+        <iron-icon class="default" icon="buttons:stripe-circle"></iron-icon>
+      </paper-button>
 
-    <template is="dom-repeat" items="[[hours]]">
-      <template is="dom-if" if="[[_isHourDisplayed(index, startingIndex, nbElem)]]">
-        <paper-fab label="[[item.label]]" on-tap="_hourTapHandler" class$="[[_getFabClass(index, selectedHour)]]" index="[[index]]"></paper-fab>
+      <template is="dom-repeat" items="[[hours]]">
+        <template is="dom-if" if="[[_isHourDisplayed(index, startingIndex, nbElem)]]">
+          <paper-fab label="[[item.label]]" on-tap="_hourTapHandler" class$="[[_getFabClass(index, selectedHour)]]" index="[[index]]"></paper-fab>
+        </template>
       </template>
-    </template>
 
-    <paper-button on-tap="_increaseStartingIndex" class="stripes" disabled="{{_isNextDisabled(startingIndex)}}">
-      <iron-icon class="default flip" icon="buttons:stripe-circle"></iron-icon>
-    </paper-button>
-
+      <paper-button on-tap="_increaseStartingIndex" class="stripes" disabled="{{_isNextDisabled(startingIndex)}}">
+        <iron-icon class="default flip" icon="buttons:stripe-circle"></iron-icon>
+      </paper-button>
+    </div>
   </template>
 
   <script>
     Polymer({
       is:'planet-kiosk-hour-filter',
-      behaviors: [AppLocalizeBehavior],
+      behaviors: [AppLocalizeBehavior, PMRBehavior],
       properties: {
         hours: {
           type: Array,
@@ -28864,7 +28894,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       _isPrevDisabled: function(index) {
-          return index === 0;
+        return index === 0;
       },
       _decreaseStartingIndex: function(e) {
         var localStartingIndex = this.get('startingIndex');
@@ -28906,6 +28936,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin-bottom: 2em;
       }
 
+      .sticky-header {
+        margin: 0 5em;
+      }
+
       planet-kiosk-day-filter {
         border-bottom: 1px solid var(--planet-color-theme-disabled);
         padding-bottom: 2em;
@@ -28941,8 +28975,66 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         bottom: 20em;
       }
 
+      /* PMR Specific style */
+
+      .pmr h2 {
+        padding: 0;
+      }
+
+      .pmr .sub-title {
+        margin: 0;
+        font-size: 2em;
+        padding: 0 0 1em 0;
+        border-bottom: 1px solid var(--planet-color-theme-disabled);
+      }
+
+      .pmr .sticky-header {
+        @apply(--layout-horizontal);
+        @apply(--layout-around-justified);
+        align-items: center;
+        margin: 0.5em 2em 0.5em 8em;
+      }
+
+      .pmr planet-kiosk-day-filter {
+        flex: 4;
+        border-bottom: none;
+        border-right: 1px solid var(--planet-color-theme-disabled);
+        padding-bottom: 0;
+        margin-bottom: 0;
+      }
+
+      .pmr planet-kiosk-hour-filter {
+        flex: 3;
+      }
+
+      .pmr .content {
+        margin-left: 9em;
+        margin-right: 3em;
+      }
+
+      .pmr .no-activity {
+        font-size: 2em;
+        text-align: center;
+        font-family: var(--planet-font-family-book);
+        color: var(--planet-color-theme-desc);
+        margin: 6em 3em 0 0;
+      }
+
+      .pmr planet-kiosk-scroll-button {
+        left: -1em;
+        right: auto;
+      }
+
+      .pmr planet-kiosk-scroll-button[up] {
+        top: 10em;
+      }
+
+      .pmr planet-kiosk-scroll-button[down] {
+        bottom: 10em;
+      }
+
     </style>
-    <div class="content">
+    <div class$="[[_getPMRClass(pmr)]]">
       <app-header-layout id="layout">
         <app-header fixed="" condenses="">
           <div>
@@ -28950,22 +29042,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <p class="sub-title"> [[localize('planning_desc')]] </p>
           </div>
 
-          <div sticky="">
-            <planet-kiosk-day-filter days="[[days]]" selected-day="{{selectedDay}}">
+          <div sticky="" class="sticky-header">
+            <planet-kiosk-day-filter pmr="[[pmr]]" days="[[days]]" selected-day="{{selectedDay}}">
             </planet-kiosk-day-filter>
 
-            <planet-kiosk-hour-filter hours="[[hours]]" selected-hour="{{selectedHour}}" starting-index="{{_hourFilterIndex}}">
+            <planet-kiosk-hour-filter pmr="[[pmr]]" hours="[[hours]]" selected-hour="{{selectedHour}}" starting-index="{{_hourFilterIndex}}" nb-elem="[[_getHourFilterNbElements(pmr)]]" step="[[_getHourFilterStep(pmr)]]">
             </planet-kiosk-hour-filter>
             <div class="spacer"></div>
           </div>
         </app-header>
-        <template id="sessions" is="dom-repeat" items="{{_sessions}}" sort="_sortSession" filter="_filterSession" rendered-item-count="{{activityCount}}">
-          <planet-kiosk-activity activity="[[item]]" display="row"></planet-kiosk-activity>
-        </template>
+        <div class="content">
+          <template id="sessions" is="dom-repeat" items="{{_sessions}}" sort="_sortSession" filter="_filterSession" rendered-item-count="{{activityCount}}">
+            <planet-kiosk-activity activity="[[item]]" display="row" pmr="[[pmr]]"></planet-kiosk-activity>
+          </template>
 
-        <template is="dom-if" if="[[!activityCount]]">
-          <p class="no-activity">[[localize('planning_no_activity')]]</p>
-        </template>
+          <template is="dom-if" if="[[!activityCount]]">
+            <p class="no-activity">[[localize('planning_no_activity')]]</p>
+          </template>
+        </div>
       </app-header-layout>
     </div>
   </template>
@@ -28973,7 +29067,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
     Polymer({
       is: 'planet-kiosk-schedule',
-      behaviors: [ AppLocalizeBehavior, ActivityBehavior, ScrollBehavior ],
+      behaviors: [ AppLocalizeBehavior, ActivityBehavior, ScrollBehavior, PMRBehavior ],
       properties: {
         visible: {
           type: Boolean,
@@ -29029,6 +29123,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           value: 0
         }
       },
+      observers: [
+        '_onPmrChanged(pmr)'
+      ],
       // OBSERVERS
       _refreshLayout: function () {
         // Hack to avoid wrong positioning of the content in the layout
@@ -29192,6 +29289,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               this.set('_hourFilterIndex', startingIndex);
             }
           }
+        }
+      },
+      _getHourFilterStep: function(pmr) {
+        if (pmr) {
+          return 3;
+        }
+        else {
+          return 6;
+        }
+      },
+      _getHourFilterNbElements: function (pmr) {
+        if (pmr) {
+          return 3;
+        }
+        else {
+          return 7;
+        }
+      },
+      _onPmrChanged: function(value) {
+        if (value) {
+          this.enableButtons();
+        }
+        else {
+          this.disableButtons();
         }
       }
     });
@@ -30332,9 +30453,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }.bind(this));
       } else {
         this._fail();
-      }
-      this.set('paymentInfo', []);          
-      this._setTransaction();
+      }      
     },
     cancel: function () {
       this._cancelTransaction();
@@ -30517,7 +30636,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
     _successEnd: function () {
       if (MBirdSdk.isConnected()) {
-        MBirdSdk.core.hide();
+        MBirdSdk.Core.Hide();
       } else {
         document.location.reload(true);
       }
@@ -32077,7 +32196,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <template id="app" is="dom-bind">
       <iron-ajax auto="" url="./appconfig.json" handle-as="json" last-response="{{appconfig}}" on-response="configResponse"></iron-ajax>
       <iron-meta id="appconfig" key="config" value$="{{appconfig}}"></iron-meta>
-      <iron-ajax id="subconfig" handle-as="json" url="./data/kiosks.json" on-response="subConfigResponse" on-error="subConfigError"></iron-ajax>      
+      <iron-ajax id="subconfig" handle-as="json" url="[[appconfig.api]]/getConfigKiosk" on-response="subConfigResponse" on-error="subConfigError"></iron-ajax>      
       <iron-ajax id="localWordings" url="./data/getWordings.json" handle-as="json" on-response="localWordingsResponse"></iron-ajax>
       <iron-ajax id="requestWordings" url="[[appconfig.api]]/getWordings?mode=kiosk" on-response="wordingsResponse" on-error="wordingsError"></iron-ajax>
       <planet-kiosk-services id="services"></planet-kiosk-services>
