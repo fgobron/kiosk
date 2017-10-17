@@ -1,34 +1,40 @@
 {
-    "com.acrelec.simulator": {
-        "kiosk": "KIOSKSIM0",
-        "lang": "fr",
-        "site_code": "TF",
-        "MBirdNeeded": true,
-        "payment": true,
-        "pmr": true
-    },
-    "com.pvcp.desktop": {
-        "kiosk": "KIOSKDESK0",
-        "lang": "fr",
-        "site_code": "TF",
-        "MBirdNeeded": false,
-        "payment": true,
-        "pmr": true
-    },
-    "fr.pierre.370d5b6285": {
-        "kiosk": "KIOSKLAB0",
-        "lang": "fr",
-        "site_code": "TF",
-        "MBirdNeeded": true,
-        "payment": true,
-        "pmr": true
-    },
-    "fr.pierre.311b5b7d0c": {
-        "kiosk": "KIOSKLAB1",
-        "lang": "fr",
-        "site_code": "TF",
-        "MBirdNeeded": true,
-        "payment": true,
-        "pmr": true
-    }
-}
+ "status": {
+   "retC": 0,
+   "retCDescription": "Réponse OK"
+ },
+ "results": {
+   "com.acrelec.simulator": {
+     "kiosk": "KIOSKSIM0",
+     "lang": "fr",
+     "site_code": "TF",
+     "MBirdNeeded": true,
+     "payment": true,
+     "pmr": true
+   },
+   "com.pvcp.desktop": {
+     "kiosk": "KIOSKDESK0",
+     "lang": "fr",
+     "site_code": "TF",
+     "MBirdNeeded": false,
+     "payment": true,
+     "pmr": true
+   },
+   "fr.pierre.370d5b6285": {
+     "kiosk": "KIOSKLAB0",
+     "lang": "fr",
+     "site_code": "TF",
+     "MBirdNeeded": true,
+     "payment": true,
+     "pmr": true
+   },
+   "fr.pierre.311b5b7d0c": {
+     "kiosk": "KIOSKLAB1",
+     "lang": "fr",
+     "site_code": "TF",
+     "MBirdNeeded": true,
+     "payment": true,
+     "pmr": true
+   }
+ }
+} 
