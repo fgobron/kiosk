@@ -32077,7 +32077,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <template id="app" is="dom-bind">
       <iron-ajax auto="" url="./appconfig.json" handle-as="json" last-response="{{appconfig}}" on-response="configResponse"></iron-ajax>
       <iron-meta id="appconfig" key="config" value$="{{appconfig}}"></iron-meta>
-      <iron-ajax id="subconfig" handle-as="json" url="[[appconfig.api]]/getConfigKiosk" on-response="subConfigResponse" on-error="subConfigError"></iron-ajax>      
+      <iron-ajax id="subconfig" handle-as="json" url="./data/kiosks.json" on-response="subConfigResponse" on-error="subConfigError"></iron-ajax>      
       <iron-ajax id="localWordings" url="./data/getWordings.json" handle-as="json" on-response="localWordingsResponse"></iron-ajax>
       <iron-ajax id="requestWordings" url="[[appconfig.api]]/getWordings?mode=kiosk" on-response="wordingsResponse" on-error="wordingsError"></iron-ajax>
       <planet-kiosk-services id="services"></planet-kiosk-services>
@@ -32133,47 +32133,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     // SubConfig by kiosk fetching
     app.subConfigResponse = function(e) {
       try {
-        if (e.detail.response.status.retC === 0 || true) {
+        if (e.detail.response.status.retC === 0) {
           var subConfig;      
-          var data = {
-            "com.acrelec.simulator": {
-              "kiosk": "KIOSKSIM0",
-              "lang": "fr",
-              "site_code": "TF",
-              "MBirdNeeded": true,
-              "payment": true,
-              "pmr": true
-            },
-            "com.pvcp.desktop": {
-              "kiosk": "KIOSKDESK0",
-              "lang": "fr",
-              "site_code": "TF",
-              "MBirdNeeded": false,
-              "payment": true,
-              "pmr": true
-            },
-            "fr.pierre.370d5b6285": {
-              "kiosk": "KIOSKLAB0",
-              "lang": "fr",
-              "site_code": "TF",
-              "MBirdNeeded": true,
-              "payment": true,
-              "pmr": true
-            },
-            "fr.pierre.311b5b7d0c": {
-              "kiosk": "KIOSKLAB1",
-              "lang": "fr",
-              "site_code": "TF",
-              "MBirdNeeded": true,
-              "payment": true,
-              "pmr": true
-            }
-         } 
+          var data = e.detail.response.results;
         
           // Fetch kioskId      
           globals.services.getNestIdentifier().then(function (nestIdentifier) {
               subConfig = data[nestIdentifier];
-              console.log(subConfig);
               if (typeof(subConfig) !== 'undefined') {
               // Setting up full            
               globals.language = subConfig.lang;
