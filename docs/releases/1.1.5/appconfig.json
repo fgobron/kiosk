@@ -1,4 +1,4 @@
 {
-    "api": "http://localhost:3300",
-    "gtmId": "GTM-MGKVSC4"    
+    "api": "https://planetcp-recette.pierreetvacances.com/api",
+    "gtmId": "GTM-MGKVSC4"
 }
