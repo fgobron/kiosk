@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+
+    <title>planet-kiosk-container</title>
+    <meta name="description" content="planet-kiosk description">
+    <style>
+      html {
+        font-size: 10px;
+        touch-action: pan-y;
+      }
+    
+      body {
+        margin: 0;
+        background-color: #e5e9e6;
+        -webkit-user-select: none;      
+      }
+      
+      iframe, iframe.pmr.map{        
+        border:0;
+        width: 1080px;
+        height: 1920px;
+      }
+      
+      iframe.pmr {
+        position: fixed;
+        bottom: 0;
+        height: 570px;        
+      }
+      
+      ::-webkit-scrollbar { 
+        display: none; 
+      }
+    </style>
+    <script>
+      // Service worker registration    
+      if('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./service-worker.js');
+        //Clean old registrations
+        navigator.serviceWorker.getRegistrations().then(function(registrations) {                    
+            if (registrations.length > 1) {        
+            for(var i=0; i<registrations.length - 1; i++) {
+              registrations[i].unregister();
+            }
+          }
+        });
+      }
+    </script>
+    <link rel="icon" href="./images/favicon.ico">
+    <iframe id="kiosk" src="./kiosk.html"></iframe>
+  </body>
+</html>
