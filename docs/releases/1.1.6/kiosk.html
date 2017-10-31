@@ -15739,7 +15739,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <img src="images/cb.png">
       </div>
 
-      <p class="version">Kiosk v1.1.6</p>
+      <p class="version">Kiosk v1.1.6-1</p>
     </div>
   </template>
 
@@ -27746,15 +27746,15 @@ Mixin | Description | Default
         var left = container.scrollLeft;
         
         if (left === 0 || !showButtons) {
-          this._buttonRight.set('hidden', true);
-        } else {
-          this._buttonRight.set('hidden', false)
-        }
-        
-        if (left + container.clientWidth >= container.scrollWidth || !showButtons) {
           this._buttonLeft.set('hidden', true);
         } else {
           this._buttonLeft.set('hidden', false)
+        }
+        
+        if (left + container.clientWidth >= container.scrollWidth || !showButtons) {
+          this._buttonRight.set('hidden', true);
+        } else {
+          this._buttonRight.set('hidden', false)
         }        
       }
       
@@ -30765,8 +30765,9 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
     
     .pmr .content {
       margin: 0;      
-      padding: 0 2em 4em 2em;
+      padding: 0 2em;
       width: 82em;
+      height: 41em;
       overflow-y: scroll;
       @apply(--layout-horizontal);
       touch-action: pan-x;
@@ -33322,7 +33323,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       
       pmr: {
         type: Boolean,
-        value: true,
+        value: false,
         observer: '_appPmrChange'
       }      
     },
@@ -33355,11 +33356,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // Map pmr=classic rendering
       if (name === 'map') {
         parent.document.getElementById('kiosk').classList.add('map');
-        console.log(document.querySelector('planet-kiosk-clock div'));
         document.querySelector('planet-kiosk-clock div').classList.add('map');
       } else {
         parent.document.getElementById('kiosk').classList.remove('map');
-        console.log(document.querySelector('planet-kiosk-clock div'));
         document.querySelector('planet-kiosk-clock div').classList.remove('map');
       }
       // Tag
