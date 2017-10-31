@@ -15739,7 +15739,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <img src="images/cb.png">
       </div>
 
-      <p class="version">Kiosk v1.1.6-1</p>
+      <p class="version">Kiosk v1.1.6-2</p>
     </div>
   </template>
 
@@ -30767,10 +30767,11 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
       margin: 0;      
       padding: 0 2em;
       width: 82em;
-      height: 41em;
+      height: 44em;
       overflow-y: scroll;
       @apply(--layout-horizontal);
-      touch-action: pan-x;
+      touch-action: pan-x;s
+      z-index: 1;
     }
     
     .pmr .content:not([visible]) {
@@ -30790,6 +30791,7 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
       top: 18em;
       font-size: 0.6em;
       width: 36em;
+      z-index: 2;
     }
     .pmr .summary .buttons {
       font-size: 0.8em;
@@ -33070,7 +33072,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             cart: {
                 type: Array,
                 value: function() {
-                    return [];
+                    return [{"code":"CHFAMILYAQUASPEED","day":0,"hour":0,"title":"Aqua Speed Famille","image":"https://secure.footprint.net/media-groupepvcp/admin/fp/photos/169/620x274/vakantiepark-les-hauts-de-bruyeres-chaumont-sur-tharonne-CH_76313_169.jpg","warning":"Activité réservée à partir de 8 ans","session":"Le 24/06/2017 à 21:00","date":"2017-06-24","begin":"21:00:00","duration":45,"age":"A partir de 8 ans","location":"Aqua Mundo","quantity":1,"unitPrice":"12.00","price":12,"error":false},{"code":"KIDSHAVEN","day":0,"hour":0,"title":"Mini Port","image":"https://secure.footprint.net/media-groupepvcp/admin/fp/photos/169/620x274/WEB_76368_169.jpg","warning":"","session":"Le 25/06/2017 à 10:00","date":"2017-06-25","begin":"10:00:00","duration":30,"age":"Pour tous les âges","location":"Funshop","quantity":1,"unitPrice":"17.00","price":17,"error":false},{"code":"MINIQUAD","day":0,"hour":0,"title":"Mini-Quad","image":"https://secure.footprint.net/media-groupepvcp/admin/fp/photos/169/620x274/WEB_63661_169.jpg","warning":"Activité réservée de 6 à 12 ans","session":"Le 20/06/2017 à 14:00","date":"2017-06-20","begin":"14:00:00","duration":15,"age":"De 6 à 12 ans","location":"Funshop","quantity":1,"unitPrice":"12.00","price":12,"error":false},{"code":"SUMMERPARADE","day":0,"hour":0,"title":"Kids Parade de l'été","image":"https://secure.footprint.net/media-groupepvcp/admin/fp/photos/169/620x274/WEB_40243_169.jpg","warning":"Activité réservée jusqu'à 10 ans","session":"Le 25/06/2017 à 17:30","date":"2017-06-25","begin":"17:30:00","duration":30,"age":"Jusqu'à 10 ans","location":"Experience Factory","quantity":1,"unitPrice":"0.00","price":0,"error":false},{"code":"CHTENNISOUTDOOR","day":0,"hour":0,"title":"Tennis (en extérieur)","image":"https://secure.footprint.net/media-groupepvcp/admin/fp/photos/169/620x274/WEB_50057_169.jpg","warning":"","session":"Le 20/06/2017 à 14:00","date":"2017-06-20","begin":"14:00:00","duration":30,"age":"Pour tous les âges","location":"Experience Factory","quantity":2,"unitPrice":"10.00","price":10,"error":false},{"code":"CHBABYSWIMMING","day":0,"hour":0,"title":"Bébés nageurs","image":"https://secure.footprint.net/media-groupepvcp/admin/fp/photos/169/620x274/WEB_71397_169.jpg","warning":"Activité réservée jusqu'à 4 ans","session":"Le 24/06/2017 à 09:00","date":"2017-06-24","begin":"09:00:00","duration":45,"age":"Jusqu'à 4 ans","location":"Aqua Mundo","quantity":1,"unitPrice":"12.00","price":12,"error":false},{"code":"CHWANNABEANINDIAN","day":0,"hour":0,"title":"Quand j'serai grand... j'serai Indien","image":"https://secure.footprint.net/media-groupepvcp/admin/fp/photos/169/620x274/WEB_44252_169.jpg","warning":"Activité réservée de 3 à 12 ans","session":"Le 22/06/2017 à 13:45","date":"2017-06-22","begin":"13:45:00","duration":120,"age":"De 3 à 12 ans","location":"Experience Factory","quantity":1,"unitPrice":"12.00","price":12,"error":false},{"code":"CHMYOWNPONY","day":0,"hour":0,"title":"Mon Poney","image":"https://secure.footprint.net/media-groupepvcp/admin/fp/photos/169/620x274/WEB_55930_169.jpg","warning":"Activité réservée de 5 à 10 ans","session":"Le 22/06/2017 à 09:30","date":"2017-06-22","begin":"09:30:00","duration":60,"age":"De 5 à 10 ans","location":"Poney Club","quantity":2,"unitPrice":"22.00","price":44,"error":false}];
                 },
                 notify: true
             },
