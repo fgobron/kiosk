@@ -15739,7 +15739,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <img src="images/cb.png">
       </div>
 
-      <p class="version">Kiosk v1.1.6-3</p>
+      <p class="version">Kiosk v1.1.6-4</p>
     </div>
   </template>
 
@@ -30769,14 +30769,13 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
       width: 82em;
       height: 44em;
       overflow-y: scroll;
-      -webkit-overflow-scrolling: touch;
       @apply(--layout-horizontal);      
       z-index: 1;
     }
     
-    .pmr .content::-webkit-scrollbar {
+    /* .pmr .content::-webkit-scrollbar {
       display: none;
-    }
+    } */
     
     .pmr .content:not([visible]) {
       display: none;
