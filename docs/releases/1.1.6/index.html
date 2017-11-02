@@ -53,11 +53,12 @@
       if (MBirdSdk.isConnected()) {
         MBirdSdk.Board.ShowNotification("CheckInactivity", "Handler", MBirdSdk.NotificationType.HtmlContent, "", false);
         MBirdSdk.App.OnInactivity(function () {
-          MBirdSdk.Board.ShowNotification("CheckInactivity", "Index", MBirdSdk.NotificationType.HtmlContent, "", false);
+          var kioskContainer = document.getElementById('kiosk');
+          kioskContainer.contentWindow.postMessage('inactivity', '*');
         });
       }
     </script>
     <link rel="icon" href="./images/favicon.ico">
-    <iframe id="kiosk" src="./kiosk.html?timestamp=201711022241"></iframe>
+    <iframe id="kiosk" src="./kiosk.html?timestamp=201711022315"></iframe>
   </body>
 </html>

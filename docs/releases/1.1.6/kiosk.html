@@ -15739,7 +15739,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <img src="images/cb.png">
       </div>
 
-      <p class="version">Kiosk v1.1.6-12</p>
+      <p class="version">Kiosk v1.1.6-13</p>
     </div>
   </template>
 
@@ -33381,11 +33381,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     },    
     _checkInactivity: function () {
-      MBirdSdk.App.OnInactivity(function () {
-        MBirdSdk.Board.ShowNotification("CheckInactivity", "App", MBirdSdk.NotificationType.HtmlContent, "", false);
-        this.$.inactivity.open();
-        this.trackEvent('Acrelec Notification', 'idle', 'inactivity', 'noevent');
-      }.bind(this));
+       window.addEventListener('message', function (e) {
+        if (e.data === 'inactivity') {
+          this.$.inactivity.open();
+          this.trackEvent('Acrelec Notification', 'idle', 'inactivity', 'noevent');  
+        }
+      }.bind(this), false);
     },
     _isPmrAvailable: function () {
       return globals.pmr;
