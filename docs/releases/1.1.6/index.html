@@ -50,8 +50,7 @@
       }
       
       // Inactivity handler
-      if (MBirdSdk.isConnected()) {
-        MBirdSdk.Board.ShowNotification("CheckInactivity", "Handler", MBirdSdk.NotificationType.HtmlContent, "", false);
+      if (MBirdSdk.isConnected()) {        
         MBirdSdk.App.OnInactivity(function () {
           var kioskContainer = document.getElementById('kiosk');
           kioskContainer.contentWindow.postMessage('inactivity', '*');
@@ -59,6 +58,6 @@
       }
     </script>
     <link rel="icon" href="./images/favicon.ico">
-    <iframe id="kiosk" src="./kiosk.html?timestamp=201711022315"></iframe>
+    <iframe id="kiosk" src="./kiosk.html?timestamp=201711022321"></iframe>
   </body>
 </html>
