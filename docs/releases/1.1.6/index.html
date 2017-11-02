@@ -6,6 +6,7 @@
 
     <title>planet-kiosk-container</title>
     <meta name="description" content="planet-kiosk description">
+    <script src="./libs/mbird-jssdk.js"></script>
     <style>
       html {
         font-size: 10px;
@@ -47,8 +48,16 @@
           }
         });
       }
+      
+      // Inactivity handler
+      if (MBirdSdk.isConnected()) {
+        MBirdSdk.Board.ShowNotification("CheckInactivity", "Handler", MBirdSdk.NotificationType.HtmlContent, "", false);
+        MBirdSdk.App.OnInactivity(function () {
+          MBirdSdk.Board.ShowNotification("CheckInactivity", "Index", MBirdSdk.NotificationType.HtmlContent, "", false);
+        });
+      }
     </script>
     <link rel="icon" href="./images/favicon.ico">
-    <iframe id="kiosk" src="./kiosk.html?timestamp=201711022236"></iframe>
+    <iframe id="kiosk" src="./kiosk.html?timestamp=201711022241"></iframe>
   </body>
 </html>
