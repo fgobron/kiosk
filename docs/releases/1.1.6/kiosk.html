@@ -15618,6 +15618,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       activities: Object
     },
     _changeLanguage: function (e) {
+      MBirdSdk.Board.ShowNotification("CheckInactivity debug", JSON.stringify(MBirdSdk.SdkVersion), MBirdSdk.NotificationType.HtmlContent, "", false);
       e.preventDefault();      
       var main = document.querySelector('planet-kiosk-app');
       globals.language = this.lang;
@@ -15739,7 +15740,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <img src="images/cb.png">
       </div>
 
-      <p class="version">Kiosk v1.1.6-5</p>
+      <p class="version">Kiosk v1.1.6-7</p>
     </div>
   </template>
 
@@ -33381,7 +33382,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     },    
     _checkInactivity: function () {
-      MBirdSdk.Board.ShowNotification("CheckInactivity debug", JSON.stringify(MBirdSdk.SdkVersion), MBirdSdk.NotificationType.HtmlContent, "", false);
       MBirdSdk.App.OnInactivity(function () {        
         this.$.inactivity.open();
         this.trackEvent('Acrelec Notification', 'idle', 'inactivity', 'noevent');
