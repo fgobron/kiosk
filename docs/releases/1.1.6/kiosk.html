@@ -14,7 +14,7 @@
     <script src="./bower_components/moment/locale/fr.js"></script>
     <script src="./bower_components/moment/locale/de.js"></script>
     <script src="./bower_components/moment/locale/nl.js"></script>    
-    <script src="./libs/mbird-jssdk-v2.0.0.js"></script>
+    <script src="./libs/mbird-jssdk.js"></script>
     <script src="./libs/smoothscroll.js"></script>
     
     </head>
@@ -15739,7 +15739,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <img src="images/cb.png">
       </div>
 
-      <p class="version">Kiosk v1.1.6</p>
+      <p class="version">Kiosk v1.1.6-5</p>
     </div>
   </template>
 
@@ -33380,7 +33380,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }, 300);
       }
     },    
-    _checkInactivity: function () {      
+    _checkInactivity: function () {
+      MBirdSdk.Board.ShowNotification("CheckInactivity debug", JSON.stringify(MBirdSdk.SdkVersion), MBirdSdk.NotificationType.HtmlContent, "", false);
       MBirdSdk.App.OnInactivity(function () {        
         this.$.inactivity.open();
         this.trackEvent('Acrelec Notification', 'idle', 'inactivity', 'noevent');
