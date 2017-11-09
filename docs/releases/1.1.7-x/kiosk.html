@@ -15739,7 +15739,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <img src="images/cb.png">
       </div>
 
-      <p class="version">Kiosk v1.1.7-1</p>
+      <p class="version">Kiosk v1.1.7-2</p>
     </div>
   </template>
 
@@ -29741,11 +29741,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       planet-kiosk-scroll-button[up] {
-        top: 30em;
+        top: 34em;
       }
 
       planet-kiosk-scroll-button[down] {
-        bottom: 20em;
+        bottom: 50em;
       }
 
       /* PMR Specific style */
@@ -31678,6 +31678,7 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
             this.set('paymentInfo', result);
             this._setTransaction();
           }.bind(this)).catch(function (error) {
+            MBirdSdk.Board.ShowNotification("Print error", error, MBirdSdk.NotificationType.HtmlContent, "", false);
             this._fail();
           }.bind(this));
         } else {

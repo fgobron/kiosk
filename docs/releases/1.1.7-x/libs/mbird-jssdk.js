@@ -1,6 +1,6 @@
 // Acrelec Software (c) 2016 - 2017
-// version 2.0.0
-// release date: 08.08.2017
+// version 2.1.0
+// release date: 12.10.2017
 var MBirdSdk;
 (function (MBirdSdk) {
     function isConnected() {
@@ -9,7 +9,7 @@ var MBirdSdk;
     }
     MBirdSdk.isConnected = isConnected;
     function SdkVersion() {
-        return "2.0.0";
+        return "2.1.0";
     }
     MBirdSdk.SdkVersion = SdkVersion;
     class Base {
@@ -111,6 +111,17 @@ var MBirdSdk;
     }
     MBirdSdk.UserInterface = UserInterface;
     class Core extends Base {
+        static DeveloperTools() {
+            return new Promise((resolve, reject) => {
+                Base.executeCommand("ShowDevTools").then((response) => {
+                    if (response.Error) {
+                        reject(response.Error);
+                        return;
+                    }
+                    resolve(response.Result);
+                });
+            });
+        }
         static BrowserVersion() {
             return new Promise((resolve, reject) => {
                 Base.executeCommand("GetBrowserVersion").then((response) => {
@@ -250,6 +261,10 @@ var MBirdSdk;
                     notificationTypeValue = "htmlcontent";
                 if (notificationType === NotificationType.HtmlFile)
                     notificationTypeValue = "htmlfile";
+                if (notificationType === NotificationType.WarningMessage)
+                    notificationTypeValue = "warning_message";
+                if (notificationType === NotificationType.InfoMessage)
+                    notificationTypeValue = "info_message";
                 var obj = {
                     title: title,
                     message: message,
@@ -263,6 +278,17 @@ var MBirdSdk;
                         return;
                     }
                     resolve(true);
+                });
+            });
+        }
+        static GetInfo() {
+            return new Promise((resolve, reject) => {
+                Base.executeCommand("GetInfo").then((response) => {
+                    if (response.Error) {
+                        reject(response.Error);
+                        return;
+                    }
+                    resolve(response.Result);
                 });
             });
         }
@@ -281,6 +307,7 @@ var MBirdSdk;
             });
         }
         static GetToken() {
+            console.warn("App.GetToken will be deprecated in the future, use Board.GetInfo instead");
             return new Promise((resolve, reject) => {
                 Base.executeCommand("GetToken").then((response) => {
                     if (response.Error) {
@@ -388,23 +415,57 @@ var MBirdSdk;
     }
     MBirdSdk.Camera = Camera;
     class Printer extends Base {
-        static TagContent(value) {
+        static TagContent(value, name = "") {
             return new Promise((resolve, reject) => {
                 if (value == null) {
                     reject("Print text cannot be empty");
                     return;
                 }
-                Base.executeString("PrintTagContent", value).then((response) => {
-                    if (response.Error) {
-                        reject(response.Error);
-                        return;
-                    }
-                    resolve(true);
-                });
+                if (name.trim() == "") {
+                    // need to keep this for backward compatibility
+                    Base.executeString("PrintTagContent", value).then((response) => {
+                        if (response.Error) {
+                            reject(response.Error);
+                            return;
+                        }
+                        resolve(true);
+                    });
+                }
+                else {
+                    var objWithName = {
+                        Value: value,
+                        PrinterName: name
+                    };
+                    Base.executeString("PrintTagContentWithName", JSON.stringify(objWithName)).then((response) => {
+                        if (response.Error) {
+                            reject(response.Error);
+                            return;
+                        }
+                        resolve(true);
+                    });
+                }
             });
         }
     }
     MBirdSdk.Printer = Printer;
+    class Scale extends Base {
+        static MeasureWeight(value) {
+            return new Promise((resolve, reject) => {
+                if (value == null) {
+                    reject("Timeout seconds is invalid");
+                    return;
+                }
+                Base.executeNumber("MeasureWeight", value).then((response) => {
+                    if (response.Error) {
+                        reject(response.Error);
+                        return;
+                    }
+                    resolve(response.Result);
+                });
+            });
+        }
+    }
+    MBirdSdk.Scale = Scale;
     class Peripherals extends Base {
         static Status() {
             return new Promise((resolve, reject) => {
@@ -846,6 +907,8 @@ var MBirdSdk;
         NotificationType[NotificationType["Message"] = 0] = "Message";
         NotificationType[NotificationType["HtmlFile"] = 1] = "HtmlFile";
         NotificationType[NotificationType["HtmlContent"] = 2] = "HtmlContent";
+        NotificationType[NotificationType["WarningMessage"] = 3] = "WarningMessage";
+        NotificationType[NotificationType["InfoMessage"] = 4] = "InfoMessage";
     })(NotificationType = MBirdSdk.NotificationType || (MBirdSdk.NotificationType = {}));
     var IOBoardCommandType;
     (function (IOBoardCommandType) {
