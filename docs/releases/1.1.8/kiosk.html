@@ -15739,7 +15739,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <img src="images/cb.png">
       </div>
 
-      <p class="version">Kiosk v1.1.8-5</p>
+      <p class="version">Kiosk v1.1.8-6</p>
     </div>
   </template>
 
@@ -31692,9 +31692,7 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
         }
       },
       pay: function () {
-        this.set('paymentInfo', ['toto']);
-        this._setTransaction();
-        /*var amount = this.get('amount');
+        var amount = this.get('amount');
         var transaction = this.get('transaction');
         if (MBirdSdk.isConnected()) {
           MBirdSdk.Payment.Pay(amount, transaction).then(function (result) {
@@ -31706,7 +31704,7 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
           }.bind(this));
         } else {
           this._fail();
-        }*/
+        }
       },
       cancel: function () {
         this._cancelTransaction();
@@ -31777,8 +31775,7 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
       },
       _print: function () {
         var printContent = this._getAllContent();
-        console.log(printContent)
-        /*if (MBirdSdk.isConnected()) {
+        if (MBirdSdk.isConnected()) {
            var printContent = this._getAllContent();
           MBirdSdk.Printer.TagContent(printContent).then(function (result) {
             this.set('printInfo', result);
@@ -31787,7 +31784,7 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
           }.bind(this));
         } else {
           this._printFail();
-        }*/
+        }
       },
       _getAllContent: function () {
         var content = '';
