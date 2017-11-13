@@ -23919,7 +23919,7 @@ Custom property | Description | Default
           type: String,
           value: 'add'
         },
-
+        
         quantity: Number,
 
         activity: Object,
@@ -23940,13 +23940,17 @@ Custom property | Description | Default
         '_itemChanged(activity, visible)'
       ],
       _itemChanged: function (item, visible) {
-        if (visible) {
+        if (visible ) {
+          this.previous = item.title;
           this._resetDisplay();
           this._resetMode();
           this._resetForm(item);
+          
         }
       },
       _resetDisplay: function () {
+        var miniBasket = document.getElementById('minibasket');        
+        miniBasket.close();
         this.$.confirm.hidden = !globals.payment;
         this.set('step', 'step1');
       },
@@ -24002,11 +24006,16 @@ Custom property | Description | Default
           }
         });
       },
+      _restoreMiniBasket: function () {
+        var miniBasket = document.getElementById('minibasket');
+        miniBasket.checkBasketState();
+      },
       _cancel: function () {
         // restore empty queryParams for futur navigation
         // remove edit mode after detail activity modification in basket        
         globals.router.set('queryParams', {});
         globals.router.set('route.path', '/' + globals.lastList);
+        this._restoreMiniBasket();
       },
       _checkWarning : function () {
         var activity = this.activity;
@@ -24056,6 +24065,7 @@ Custom property | Description | Default
             identification.set('action', 'detail');
             globals.router.set('route.path', '/identification');
           }
+          this._restoreMiniBasket();
         }
       },
       callConfirm : function () {
@@ -28025,6 +28035,10 @@ ScrollVerticalBehavior = [ScrollCommonBehavior, ScrollVerticalBehaviorImpl];
         bottom: 50em;
       }
       
+      .closed planet-kiosk-scroll-button[down] {
+        bottom: 25em;
+      }
+      
       /* PMR Mode override */
       .pmr app-header, .pmr .sticky-header {
         z-index: 1;
@@ -28372,6 +28386,10 @@ ScrollVerticalBehavior = [ScrollCommonBehavior, ScrollVerticalBehaviorImpl];
         bottom: 50em;
       }
       
+      .closed planet-kiosk-scroll-button[down] {
+        bottom: 25em;
+      }
+      
       /* PMR Mode override */
 
       .pmr .content {
@@ -28588,6 +28606,10 @@ ScrollVerticalBehavior = [ScrollCommonBehavior, ScrollVerticalBehaviorImpl];
 
       planet-kiosk-scroll-button[down] {
         bottom: 50em;
+      }
+      
+      .closed planet-kiosk-scroll-button[down] {
+        bottom: 25em;
       }
 
       /* PMR Mode override */
@@ -29747,6 +29769,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       planet-kiosk-scroll-button[down] {
         bottom: 50em;
+      }
+      
+      .closed planet-kiosk-scroll-button[down] {
+        bottom: 25em;
       }
 
       /* PMR Specific style */
@@ -32014,11 +32040,21 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
     padding: 1em 0;
     background-color: var(--planet-color-theme-mainbg);
     border-top: 1px solid var(--planet-color-theme-border);
+    transition-property: bottom;
+    transition-duration: 2s;    
     --info-pres : {
       font-size: 3em;
       font-family: var(--planet-font-family-book);
       color: var(--planet-color-theme-desc);
     }          
+  }
+  
+  :host:not([opened]) {
+    bottom: -12em;    
+  }
+  
+  :host:not([opened]) planet-kiosk-scroll-button {
+    display: none;
   }
   
   h2 {
@@ -32066,15 +32102,28 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
     font-size: 0.8em;
   }
   
+  .toggle {
+    position: absolute;
+    top: 1.4em;
+    right: 36em;
+    font-size: 0.8em;
+  }
+  
+  .buttons .tertiary {
+    margin-right: 1.4em;
+    text-transform: capitalize;
+  }
+  
   planet-kiosk-scroll-button {
+    position: absolute;
     display: block;
   }
   planet-kiosk-scroll-button[left] {
-    bottom: 16em;
+    top: 45%;
     left: 0;
   }
   planet-kiosk-scroll-button[right] {
-    bottom: 16em;
+    top: 45%;
     right: 0em;
   }
   </style>
@@ -32082,17 +32131,20 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
   <template>
     <div id="layout">
       <h2>[[localize('basket_mini_title')]] <span class="smaller">[[_getTotalLabel(total)]] [[_getNbItemsLabel(nbItems)]]</span></h2>
-      <div class="wrapper">
+      <div class="wrapper">        
         <div class="content" visible$="[[_hasItem(nbItems)]]">
           <template id="miniCartList" is="dom-repeat" items="{{cart}}" as="entry">
             <planet-kiosk-basket-item entry="[[entry]]" error$="[[entry.incorrect]]" index="[[index]]" pmr="[[pmr]]" mini=""></planet-kiosk-basket-item>
-          </template>
+          </template>          
         </div>
         <div class="empty" visible$="[[!_hasItem(nbItems)]]">
           <p class="info">[[localize('basket_empty_title')]]</p>          
         </div>
-        <div class="buttons" visible$="[[_hasItem(nbItems)]]">
-          <paper-button class="secondary" on-tap="_nav">[[localize('basket_mini_select')]]</paper-button>
+        <div class="toggle">
+          <paper-button class="tertiary" on-tap="_toggle">[[_getToggleLabel(opened, localize)]]</paper-button>
+        </div>
+        <div class="buttons" visible$="[[_hasItem(nbItems)]]">          
+          <paper-button class="secondary confirm" on-tap="_nav">[[localize('basket_mini_select')]]</paper-button>
         </div>
       </div> 
     </div>
@@ -32119,8 +32171,18 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
         },
         visible: {
           type: Boolean
+        },
+        restore: {
+          type: Boolean,
+          value: true
+        },
+        opened: {
+          type: Boolean,
+          value: true,
+          reflectToAttribute: true,
+          observer: "_openedChange"
         }
-      },
+      },      
       _hasItem: function(nbItems) {
         return nbItems > 0;
       },
@@ -32142,8 +32204,43 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
           return '';
         }
       },
+      _getToggleLabel: function (opened, localize) {
+        if(this.opened) {
+          return this.localize('basket_mini_hide');          
+        } else {
+          return this.localize('basket_mini_show');          
+        }
+      },
+      _toggle: function () {        
+        this.opened = !this.opened;
+      },
       _nav: function () {
         globals.router.set('route.path', '/basket');
+      },
+      open: function () {
+        this.set('opened', true);
+      },
+      close: function () {
+        this.set('opened', false);
+      },
+      _openedChange : function () {
+        if (globals.router) {
+          if(globals.router.route.path.indexOf('detail') < 0) {
+            this.restore = this.opened;
+            this._adjustScrollButtons();
+          }
+        }
+      },
+      _adjustScrollButtons: function () {
+        var listLayouts = document.querySelectorAll('app-header-layout');
+        listLayouts.forEach(function (layout) {
+          layout.classList.toggle('closed');
+        });
+      },
+      checkBasketState: function () {
+        if (this.restore) {
+          this.open();          
+        }
       }
     });
 
@@ -33515,7 +33612,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <planet-kiosk-inactivity id="inactivity" language="[[language]]" pmr="[[pmr]]" with-backdrop=""></planet-kiosk-inactivity>
     <planet-kiosk-cart id="cart" cart="{{cart}}" nb-items="{{nbItems}}" total="{{total}}"></planet-kiosk-cart>
     
-    <planet-kiosk-basket-mini hidden="[[_isMiniBasketHidden(_pageData.page, pmr)]]" visible="[[!_isTabBarHidden(_pageData.page)]]" language="[[language]]" cart="{{cart}}" nb-items="[[nbItems]]" total="[[total]]" pmr="[[pmr]]">      
+    <planet-kiosk-basket-mini id="minibasket" hidden="[[_isMiniBasketHidden(_pageData.page, pmr)]]" visible="[[!_isTabBarHidden(_pageData.page)]]" language="[[language]]" cart="{{cart}}" nb-items="[[nbItems]]" total="[[total]]" pmr="[[pmr]]">      
     </planet-kiosk-basket-mini>
     
     <planet-kiosk-tabbar hidden="[[_isTabBarHidden(_pageData.page)]]" collection="[[_getTabBarCollection(_pageData.page)]]" language="[[language]]" nb-cart-items="[[nbItems]]" highlighted-page="[[_pageData.page]]" pmr="{{pmr}}">
@@ -33547,7 +33644,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _miniBasketDisplayOn: {
         type: Array,
         value: function () {
-          return ['hub', 'now', 'planning', 'age', 'az'];
+          return ['hub', 'now', 'planning', 'age', 'az', 'detail'];
         }
       },
       
