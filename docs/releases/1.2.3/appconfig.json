@@ -1,6 +1,6 @@
 {
-        "api": "https://planet-cp.groupepvcp.com/api",
-        "gtmId": "GTM-TX4JGGJ",
-        "raven": "http://fd3f0b7c7eb04662994b635d26e27865@sentry.pvcp.intra:54160/20",
-        "serviceworker": true
+    "api": "https://planetcp-recette.pierreetvacances.com/api",
+    "gtmId": "GTM-MGKVSC4",
+    "raven": "http://4b2940dcfdf1483e873b363df05d5e97@sentry.pvcp.intra:54160/19",
+    "serviceworker": true
 }
