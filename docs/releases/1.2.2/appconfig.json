@@ -1,0 +1,6 @@
+{
+        "api": "https://planet-cp.groupepvcp.com/api",
+        "gtmId": "GTM-TX4JGGJ",
+        "raven": "http://fd3f0b7c7eb04662994b635d26e27865@sentry.pvcp.intra:54160/20",
+        "serviceworker": true
+}
