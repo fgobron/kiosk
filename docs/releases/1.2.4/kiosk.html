@@ -15743,7 +15743,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <img src="images/cb.png">
       </div>
       
-      <p class="version">Kiosk v1.2.4-3</p>
+      <p class="version">Kiosk v1.2.4-4</p>
     </div>
   </template>
 
@@ -21533,7 +21533,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._init();        
       },
       _init: function () {
-        this.set('_count', this.get('time'));        
+        this.set('_count', this.get('time'));
       },
       _nextCount: function () {
         this._count--;        
@@ -21569,7 +21569,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       reset: function () {
-        // TODO Chrono reset
+        this.set('_count', this.get('time'));        
       }
     });
   </script>
@@ -21713,15 +21713,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Array,
           value: []
         }
-      },      
+      },
       scan: function() {        
         if (MBirdSdk.isConnected()) {
           this.$.chrono.start();
           // Start scaning
           MBirdSdk.Scanner.Scan(this.get('_scanDuration')).then(function (result) {
-            this.set('bookingId', result);
+            this.set('bookingId', result);            
             this.$.chrono.stop();
-            this._successScan();
+            this._successScan();            
           }.bind(this)).catch(function (error) {
             this.fail();
           }.bind(this));
@@ -21743,6 +21743,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         ];
         this.$.chrono.stop();
+        this.$.chrono.reset();
         this.showPopIn(this.localize('login_qrcode_error_title'), this.localize('login_qrcode_error_line1'), this.localize('login_qrcode_error_line2'), buttons, false);
         this.trackEvent('Error', 'login error', this.localize('login_qrcode_error_title'), 'noevent');
       },
@@ -21758,6 +21759,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       _visibilityChanged: function (visibility) {
         if (visibility) {
+          this.$.chrono.reset();
           this.scan();
         }
       },
