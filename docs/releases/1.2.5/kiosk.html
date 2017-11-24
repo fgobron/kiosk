@@ -23723,6 +23723,8 @@ Custom property | Description | Default
         
         if (this.value <= min) {
           this.$.minus.setAttribute('disabled', true);
+          this.set('errorMessage', '');
+          this.set('errorHidden', true);
         } else if (min<this.value && this.value<max) {
           this.set('errorMessage', '');
           this.set('errorHidden', true);
