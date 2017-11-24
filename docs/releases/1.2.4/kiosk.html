@@ -15743,7 +15743,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <img src="images/cb.png">
       </div>
       
-      <p class="version">Kiosk v1.2.4-1</p>
+      <p class="version">Kiosk v1.2.4-2</p>
     </div>
   </template>
 
@@ -23266,11 +23266,13 @@ Custom property | Description | Default
       _validate: function () {
         var min = this.get('min');
         var max = this.get('max');
+        
+        this.$.minus.removeAttribute('disabled');
+        this.$.plus.removeAttribute('disabled');
+        
         if (this.value <= min) {
           this.$.minus.setAttribute('disabled', true);
         } else if (min<this.value && this.value<max) {
-          this.$.minus.removeAttribute('disabled');
-          this.$.plus.removeAttribute('disabled');
           this.set('errorMessage', '');
           this.set('errorHidden', true);
         } else if (this.value >= max) {
@@ -23280,8 +23282,8 @@ Custom property | Description | Default
         }
         this.fire('quantity-change', {quantity: this.value});
       },
-      checkActivation: function (quantity) {
-        var max = this.get('max');
+      checkActivation: function (quantity) {        
+        var max = this.get('max');        
         // Default values setting
         this.set('value', quantity);
         this.set('errorHidden', true);
@@ -28530,8 +28532,11 @@ ScrollVerticalBehavior = [ScrollCommonBehavior, ScrollVerticalBehaviorImpl];
         this._readyToFilter = true;
       },
       _sort: function(a, b) {
-        if (a.age.min === b.age.min) return 0;
-        return a.age.min < b.age.min ? -1 : 1;
+        var aMin = Number(a.age.min);
+        var bMin = Number(b.age.min);
+
+        if (aMin === bMin) return 0;
+        return aMin < bMin ? -1 : 1;
       },
       _filter: function(activity) {
         var filters = this.get('ages');
