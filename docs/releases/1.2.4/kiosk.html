@@ -23264,13 +23264,11 @@ Custom property | Description | Default
       _validate: function () {
         var min = this.get('min');
         var max = this.get('max');
-        
-        this.$.minus.removeAttribute('disabled');
-        this.$.plus.removeAttribute('disabled');
-        
         if (this.value <= min) {
           this.$.minus.setAttribute('disabled', true);
         } else if (min<this.value && this.value<max) {
+          this.$.minus.removeAttribute('disabled');
+          this.$.plus.removeAttribute('disabled');
           this.set('errorMessage', '');
           this.set('errorHidden', true);
         } else if (this.value >= max) {
@@ -23280,8 +23278,8 @@ Custom property | Description | Default
         }
         this.fire('quantity-change', {quantity: this.value});
       },
-      checkActivation: function (quantity) {        
-        var max = this.get('max');        
+      checkActivation: function (quantity) {
+        var max = this.get('max');
         // Default values setting
         this.set('value', quantity);
         this.set('errorHidden', true);
@@ -28530,11 +28528,8 @@ ScrollVerticalBehavior = [ScrollCommonBehavior, ScrollVerticalBehaviorImpl];
         this._readyToFilter = true;
       },
       _sort: function(a, b) {
-        var aMin = Number(a.age.min);
-        var bMin = Number(b.age.min);
-
-        if (aMin === bMin) return 0;
-        return aMin < bMin ? -1 : 1;
+        if (a.age.min === b.age.min) return 0;
+        return a.age.min < b.age.min ? -1 : 1;
       },
       _filter: function(activity) {
         var filters = this.get('ages');
@@ -32242,9 +32237,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       _visibiltyChanged : function (visible) {
         if (visible && this.state === 'initial') {
-          this.async(function() {
-            this.pay();
-          }, 1200);
+          this.pay();
         }
       },
       pay: function () {
@@ -32320,9 +32313,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _success: function () {
         this.set('state', 'success');
         this._trackTransaction();
-        this.async(function() {
-          this._print();
-        }, 300);
+        this.set('printState', this.printStates.INPROGRESS);
+        this._print();
         this.async(this._successEnd, 30000);        
       },      
       _isPrintInProgress: function (printState) {
@@ -32353,9 +32345,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },      
       _print: function () {
         if (MBirdSdk.isConnected()) {
-          var printContent;
-          this.set('printState', this.printStates.INPROGRESS);
-          printContent = this._getAllContent();
+          var printContent = this._getAllContent();
           MBirdSdk.Printer.TagContent(printContent).then(function (result) {
             this.set('printState', this.printStates.SUCCESS);
             this.set('printInfo', result);            
