@@ -21770,6 +21770,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         loginRequest.headers = globals.headers;
         loginRequest.params.booking = this.get('bookingId');
         loginRequest.params.siteCode = globals.siteCode;
+        loginRequest.params.kiosk = globals.kioskId;
         loginRequest.generateRequest();
       }
     });
