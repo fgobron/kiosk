@@ -15629,6 +15629,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var activitiesRequest = this.$.activitiesrequest;
       activitiesRequest.headers = globals.headers;
       activitiesRequest.params.siteCode = globals.siteCode;
+      globals.t2 = performance.now();
       var ironRequest = activitiesRequest.generateRequest();
       ironRequest.addEventListener('progress-changed', this._onProgressChanged.bind(this));
       this.setDataLayerItem('language', this.lang);
@@ -15655,8 +15656,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       globals.loader.progress = this._getPercentResponse(xhr.progress);
     },
     _onActivitiesResponse: function (e) {
+      globals.t3 = performance.now();
+      this.trackEvent('Kiosk', 'performance activities fetching', Math.round(globals.t3 - globals.t2), 'noevent');
       if (e.detail.response.status.retC === 0) {
-        var appMainElement = document.querySelector('planet-kiosk-app');
+        var appMainElement = document.querySelector('planet-kiosk-app');        
         // Filter un bookable activities
         appMainElement.set('activities', e.detail.response.results.filter(function (elem) {
           return elem.bookable;
