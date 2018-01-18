@@ -21982,6 +21982,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             this.$.chrono.stop();
             this._successScan();            
           }.bind(this)).catch(function (error) {
+            MBirdSdk.Board.ShowNotification("NFC Read debug error", JSON.stringify(error), MBirdSdk.NotificationType.HtmlContent, "", false);
             this.fail();
           }.bind(this));
         } else {
@@ -21997,29 +21998,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             this.$.chrono.stop();
             this._successScan();            
           }.bind(this)).catch(function (error) {
+            MBirdSdk.Board.ShowNotification("NFC Read debug error", JSON.stringify(error), MBirdSdk.NotificationType.HtmlContent, "", false);
             this.fail();
           }.bind(this));
         } else {
           this.fail();
         }        
       },
-      fail: function () {
-        var buttons = [
-          {
-            label: this.localize('login_error_abandon_button'),
-            class: 'button primary cancel',
-            callback: this.cancel.bind(this)
-          },
-          {
-            label: this.localize('login_error_tryagain_button'),
-            class: 'button primary confirm',
-            callback: this.retry.bind(this)
-          }
-        ];
+      fail: function () {        
         this.$.chrono.stop();
         this.$.chrono.reset();
-        this.showPopIn(this.localize('login_nfc_error_title'), this.localize('login_ncf_error_line1'), this.localize('login_nfc_error_line2'), buttons, false);
-        this.trackEvent('Error', 'login nfc error', this.localize('login_nfc_error_title'), 'noevent');
+        globals.router.set('route.path', '/identification');
       },
       retry: function() {
         this.scan();
@@ -22037,7 +22026,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       _successScan: function () {
-        console.log(this.get('bookingId'));        
+        this.$.chrono.stop();      
+        console.log(this.get('bookingId'));
+        MBirdSdk.Board.ShowNotification("NFC Read debug success", JSON.stringify(this.get('bookingId')), MBirdSdk.NotificationType.HtmlContent, "", false);
+        globals.router.set('route.path', '/identification');
       }
     });
   </script>
