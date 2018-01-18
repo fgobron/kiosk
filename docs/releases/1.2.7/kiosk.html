@@ -21982,10 +21982,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             this.$.chrono.stop();
             this._successScan();            
           }.bind(this)).catch(function (error) {
+            console.log('NFC Read debug error', error);
             MBirdSdk.Board.ShowNotification("NFC Read debug error", JSON.stringify(error), MBirdSdk.NotificationType.HtmlContent, "", false);
             this.fail();
           }.bind(this));
         } else {
+          console.log('NFC Read debug error', 'MBirdSdk not connected');
           this.fail();
         }        
       },
@@ -21998,20 +22000,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             this.$.chrono.stop();
             this._successScan();            
           }.bind(this)).catch(function (error) {
+            console.log('NFC Read debug error', error);
             MBirdSdk.Board.ShowNotification("NFC Read debug error", JSON.stringify(error), MBirdSdk.NotificationType.HtmlContent, "", false);
             this.fail();
           }.bind(this));
         } else {
+          console.log('NFC Read debug error', 'MBirdSdk not connected');
           this.fail();
         }        
       },
       fail: function () {        
         this.$.chrono.stop();
         this.$.chrono.reset();
-        globals.router.set('route.path', '/identification');
+        var buttons = [
+          {
+            label: this.localize('login_error_abandon_button'),
+            class: 'button primary cancel',
+            callback: this.cancel.bind(this)
+          },
+          {
+            label: this.localize('login_error_tryagain_button'),
+            class: 'button primary confirm',
+            callback: this.retry.bind(this)
+          }
+        ];
+        this.showPopIn('NCF Reader Error', 'cf debug notification', '', buttons, false);
       },
       retry: function() {
-        this.scan();
+        this.$.chrono.reset();
       },
       _getChronoSize: function (pmr) {
         if (pmr) {
@@ -22027,9 +22043,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       _successScan: function () {
         this.$.chrono.stop();      
-        console.log(this.get('bookingId'));
+        console.log('NFC Read debug success', this.get('bookingId'));
         MBirdSdk.Board.ShowNotification("NFC Read debug success", JSON.stringify(this.get('bookingId')), MBirdSdk.NotificationType.HtmlContent, "", false);
-        globals.router.set('route.path', '/identification');
+        var buttons = [
+          {
+            label: this.localize('login_error_abandon_button'),
+            class: 'button primary cancel',
+            callback: this.cancel.bind(this)
+          },
+          {
+            label: this.localize('login_error_tryagain_button'),
+            class: 'button primary confirm',
+            callback: this.retry.bind(this)
+          }
+        ];
+        this.showPopIn('NCF Reader Success', 'cf debug notification', '', buttons, false);
       }
     });
   </script>
