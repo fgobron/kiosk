@@ -21910,13 +21910,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
     <div class$="[[_getPMRClass(pmr)]]">
       <h2>[[localize('login_hub')]]</h2>
-      <div class="content">
-        <div class="layout vertical center">
-            <label>applicationId</label>
-            <input name="applicationId" is="iron-input" bind-value="{{_applicationId}}" value="{{_applicationId::input}}">
-            <label>authenticationKey</label>
-            <input name="authenticationKey" is="iron-input" bind-value="{{_authenticationKey}}" value="{{_authenticationKey::input}}">
-        </div>
+      <div class="content">        
         <div class="buttons layout horizontal center-justified ">
             <paper-button id="classic" class="primary detail confirm" on-tap="_classicScan">Classic ncf reader</paper-button>
             <paper-button id="info" class="primary detail confirm" on-tap="_infoScan">Info nfc reader</paper-button>
@@ -21958,11 +21952,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
         _applicationId: {
           type: String,
-          value: ''
+          value: 'EDBE94'
         },
         _authenticationKey: {
           type: String,
-          value: ''
+          value: '16C91ED520A617FF51572E54C7FE1C0'
         },
         _popinText: {
           type: String,
@@ -21991,7 +21985,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.fail();
         }        
       },
-      _infoScan: function() {        
+      _infoScan: function() {
+        console.log(this.get('_applicationId'), this.get('_authenticationKey'));
         if (MBirdSdk.isConnected()) {
           this.$.chrono.start();
           // Start scanning          
@@ -22021,12 +22016,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           {
             label: this.localize('login_error_tryagain_button'),
             class: 'button primary confirm',
-            callback: this.retry.bind(this)
+            callback: this.reset.bind(this)
           }
         ];
         this.showPopIn('NCF Reader Error', 'cf debug notification', '', buttons, false);
       },
-      retry: function() {
+      reset: function() {
+        // reset api config
+        if (globals.nfcApplicationId !== '') {
+          this._applicationId = globals.nfcApplicationId;
+        }
+        
+        if (globals.nfcAuthenticationKey !== '') {
+          this._authenticationKey = globals.nfcAuthenticationKey;
+        }
         this.$.chrono.reset();
       },
       _getChronoSize: function (pmr) {
@@ -22038,7 +22041,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       _visibilityChanged: function (visibility) {
         if (visibility) {
-          this.$.chrono.reset();          
+          this.reset(); 
         }
       },
       _successScan: function () {
@@ -22054,7 +22057,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           {
             label: this.localize('login_error_tryagain_button'),
             class: 'button primary confirm',
-            callback: this.retry.bind(this)
+            callback: this.reset.bind(this)
           }
         ];
         this.showPopIn('NCF Reader Success', 'cf debug notification', '', buttons, false);
@@ -33011,7 +33014,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _getCounterMark : function(counterMark) {
         var content = '';
         var title = counterMark.title;
-        var lane = counterMark.lane ? counterMark.lane : "";        
         var date = moment(counterMark.date).format('DD-MM-YYYY');
         var hour = counterMark.hour;
         var location = counterMark.location;
@@ -33025,11 +33027,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Logo
         content += this.magnification(2, this.bold(this.centerLogo(this.localize('printer_logo_label')))) + this.cr + this.cr;
         content += this.center(this.localize('printer_counter_mark_header')) + this.cr + this.cr;
-        content += this.magnification(2,  title);
-        if (lane !== "") {
-          content += this.cr + lane;
-        }
-        content += this.cr + this.cr + this.cr;
+        content += this.magnification(2,  title) + this.cr + this.cr + this.cr;
         content += this.bold(this.center(timeLine)) + this.cr;
         content += this.center(counterMarkQuantity) + this.cr;
 
@@ -34617,7 +34615,8 @@ Custom property | Description | Default
               globals.kioskId = subConfig.kiosk;
               globals.siteCode = subConfig.site_code;
               globals.payment = subConfig.payment;
-              globals.pmr = subConfig.pmr;
+              globals.nfcApplicationId = subConfig.nfcApplicationId;
+              globals.nfcAuthenticationKey = subConfig.nfcAuthenticationKey;
             } else {
               app.settingUpFail();
             }          
