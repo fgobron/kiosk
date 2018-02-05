@@ -15742,7 +15742,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">Kiosk v1.2.7</p>
+      <p class="version">Kiosk v1.2.7-2</p>
     </div>
   </template>
 
@@ -23975,7 +23975,7 @@ Custom property | Description | Default
           type: Number
         },
         // Indexes of selected hours
-        hour: {
+        selectedHours: {
           type: Array
         },
         startingHourIndex: {
@@ -23993,8 +23993,7 @@ Custom property | Description | Default
       },
       // Common
       observers: [
-        '_dayChanged(day)',
-        '_hourChanged(hour)'
+        '_dayChanged(day)'        
       ],      
       _highlightItem: function (index, className) {        
         this.async(function() {
@@ -24042,8 +24041,8 @@ Custom property | Description | Default
             var detail = document.querySelector('planet-kiosk-detail');
             if (detail && detail.get('visible')){
               this._highlightItem(day, 'days');
-              this._initHour(this.get('hours').length);
-              this._updateHour(this._getFirstAvailableHour());
+              this.initSelectedHours();
+              this.updateHour(this._getFirstAvailableHour());
             }
           }
         });
@@ -24068,22 +24067,33 @@ Custom property | Description | Default
       _getHourLabel: function (hour) {
         return moment(hour.begin, 'HH:mm:ss').format('HH:mm');
       },
-      _initHour: function (len) {
-        console.log('initHours');
+      initSelectedHours: function () {
+        console.log('initSelectedHours');
+        var len = this.get('hours').length;
         var aTmp = Array.apply(null, Array(len)).map(function() {return false;});
-        this.set('hour', aTmp);
-        console.log(this.get('hour'));
+        this.set('selectedHours', aTmp);
+        console.log(this.get('selectedHours'));
       },
-      _updateHour: function (index) {
+      updateHour: function (index) {
         console.log('updateHour');
-        console.log(index);
-        this.splice('hour', index, 1, !this.get('hour')[index]);        
-        console.log(this.get('hour'));
+        console.log(index);        
+        if (!this.multi) {
+          // Reset previous selection in single selection mode
+          this.initSelectedHours();
+          // Set value at index
+          this.splice('selectedHours', index, 1, true);
+        }
+        else {
+          // toggle value
+          this.splice('selectedHours', index, 1, !this.get('selectedHours')[index]);
+        }
+        
+        console.log(this.get('selectedHours'));
         // force event handler
         this._hourChanged(index);
       },
       _hourHandler: function (e) {
-        this._updateHour(e.model.index);
+        this.updateHour(e.model.index);
       },
       _hourChanged: function (hour) {
         console.log('hour changed:', hour);
@@ -24491,7 +24501,7 @@ Custom property | Description | Default
                 <hr noshade="" hidden$="[[pmr]]">
                 <div class="right">
                   <p class="title">[[localize('activity_session_title')]]</p>
-                  <planet-kiosk-sessions id="sessions" selected-quantity="[[quantity]]" dates="[[_getDates(activity,0,8)]]" nb-hour="[[_getNbHourDisplayed(pmr)]]" multi="[[_isMulti]]" pmr="[[pmr]]" on-tap="checkScrollButtons">
+                  <planet-kiosk-sessions id="sessions" selected-quantity="[[quantity]]" dates="[[_getDates(activity,0,8)]]" nb-hour="[[_getNbHourDisplayed(pmr)]]" pmr="[[pmr]]" on-tap="checkScrollButtons">
                   </planet-kiosk-sessions>
                 </div>
               </div>
@@ -24664,11 +24674,14 @@ Custom property | Description | Default
         this.maxAvailability = this._getMaxAvailability(item) + cartItem.quantity;
         this.$$('#quantity').max = this.maxAvailability;
         this.$$('#quantity').checkActivation(cartItem.quantity);
-        // Force day mutation
+        // Force single selection
+        this.$$('#sessions').set('multi', false);
+        // Force day mutation        
         this.$$('#sessions').set('day', null);
         this.$$('#sessions').set('day', cartItem.day);
         this.async(function() {
-          this.$$('#sessions').set('hour', cartItem.hour);
+          this.$$('#sessions').initSelectedHours();
+          this.$$('#sessions').updateHour(cartItem.hour);
           this.$$('#sessions').set('startingHourIndex', cartItem.hour);
         });
       },
@@ -24678,6 +24691,8 @@ Custom property | Description | Default
         this.$$('#quantity').max = this.maxAvailability;
         this.$$('#quantity').checkActivation(1);
         var queryParams = globals.router.queryParams;
+        // Force single selection
+        this.$$('#sessions').set('multi', this.get('_isMulti'));
         // Force day mutation
         this.$$('#sessions').set('day', null);
         this.$$('#sessions').set('day', queryParams['day'] ? queryParams['day'] : 0);
@@ -24729,7 +24744,7 @@ Custom property | Description | Default
         var activity = this.activity;
         var day = this.$$('#sessions').get('day');
         var quantity = this.$$('#quantity').get('value');
-        var hours = this.$$('#sessions').get('hour').reduce(function(a, e, i) {if (e)a.push(i); return a;}, []);
+        var hours = this.$$('#sessions').get('selectedHours').reduce(function(a, e, i) {if (e)a.push(i); return a;}, []);
         console.log(hours);
           
         if (quantity > 0 && quantity <= this.maxAvailability && this) {
@@ -24776,6 +24791,7 @@ Custom property | Description | Default
       },
       addPendingItems: function () {
         var pendings = this.get('pendingItems');
+        console.log('pendings:', pendings);
         switch(this.get('mode')) {
           case 'edit':
             console.log('Edit', this.get('pendingItems'));
