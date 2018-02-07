@@ -15742,7 +15742,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">Kiosk v1.2.7-3</p>
+      <p class="version">version 1.2.7-4</p>
     </div>
   </template>
 
@@ -23671,8 +23671,6 @@ Custom property | Description | Default
       <paper-fab id="plus" label="+"></paper-fab>
     </div>
     
-    <p class="error">Factor: [[factor]]</p>
-
     <p id="error" class="error" hidden$="{{errorHidden}}">[[errorMessage]]</p>
   </template>
 
@@ -23730,44 +23728,38 @@ Custom property | Description | Default
       },
       _validate: function () {
         var min = this.get('min');
-        var max = this.get('max');
-        var value = this.value * this.factor;
-                
+        var adjust = this.factor - 1;
+        adjust = (adjust < 0) ? 0 : adjust;
+        var max = this.get('max') - adjust;
+        var value = this.value;
+        
         this.$.minus.removeAttribute('disabled');
         this.$.plus.removeAttribute('disabled');
+        
+        if (value === 1) {
+          this.$.minus.setAttribute('disabled', true);
+        }
         
         if (value <= min) {
           this.$.minus.setAttribute('disabled', true);
           this.set('errorMessage', '');
           this.set('errorHidden', true);
-        } else if (min<value && value<max) {
+        }
+        if (min<value && value<max) {
           this.set('errorMessage', '');
           this.set('errorHidden', true);
-        } else if (value >= max) {
-          this.$.plus.setAttribute('disabled', true);
-          this.set('errorMessage', this.localize('activity_quantity_max'));
-          this.set('errorHidden', false);
-        }        
-      },
-      checkActivation: function (quantity) {        
-        var max = this.get('max');
-        var value = quantity * this.factor;
-        // Default values setting
-        this.set('value', quantity);
-        this.set('errorHidden', true);
-        this.$.minus.removeAttribute('disabled');
-        this.$.plus.removeAttribute('disabled');
-
-        if (value === 1) {
-          this.$.minus.setAttribute('disabled', true);
         }
-
         if (value === max) {
           this.$.plus.setAttribute('disabled', true);
           this.set('errorMessage', this.localize('activity_quantity_max'));
           this.set('errorHidden', false);
         }
-
+        if (value > max) {
+          this.$.plus.setAttribute('disabled', true);
+          this.set('errorMessage', this.localize('activity_quantity_over'));
+          this.set('errorHidden', false);
+        }
+        
         if (max <= 1) {
           this.$.minus.setAttribute('disabled', true);
           this.$.plus.setAttribute('disabled', true);
@@ -23783,7 +23775,14 @@ Custom property | Description | Default
             this.set('errorHidden', false);
           }
         }
-
+      },
+      checkActivation: function (quantity) {
+        var max = this.get('max');                
+        // Default values setting
+        this.set('value', quantity);
+        this.set('errorHidden', true);
+        this.$.minus.removeAttribute('disabled');
+        this.$.plus.removeAttribute('disabled');
       }
     });
   </script>
@@ -24058,7 +24057,9 @@ Custom property | Description | Default
             if (detail && detail.get('visible')){
               this._highlightItem(day, 'days');
               this.initSelectedHours();
-              this.updateHour(this._getFirstAvailableHour());
+              if (!this.multi) {
+                this.updateHour(this._getFirstAvailableHour());  
+              }              
             }
           }
         });
@@ -24081,7 +24082,6 @@ Custom property | Description | Default
         return hours;
       },
       _getNbSelectedHours: function () {
-        console.log('_getNbSelectedHours:', this.selectedHours);
         if (this.selectedHours) {
               return this.selectedHours.filter(function (entry) {                
                 return entry.selected === true;
@@ -24093,15 +24093,11 @@ Custom property | Description | Default
         return moment(hour.begin, 'HH:mm:ss').format('HH:mm');
       },
       initSelectedHours: function () {
-        console.log('initSelectedHours');
         var len = this.get('hours').length;
         var aTmp = Array.apply(null, Array(len)).map(function() {return {'selected':false};});
         this.set('selectedHours', aTmp);
-        console.log(this.get('selectedHours'));
       },
       updateHour: function (index) {
-        console.log('updateHour');
-        console.log(index);        
         if (!this.multi) {
           // Reset previous selection in single selection mode
           this.initSelectedHours();
@@ -24113,7 +24109,6 @@ Custom property | Description | Default
           this.splice('selectedHours', index, 1, {'selected':!this.get('selectedHours')[index].selected});
         }
         
-        console.log(this.get('selectedHours'));
         // force event handler
         this._hourChanged(index);
       },
@@ -24121,14 +24116,13 @@ Custom property | Description | Default
         this.updateHour(e.model.index);
       },
       _hourChanged: function (hour) {
-        console.log('hour changed:', hour);
         var detail = document.querySelector('planet-kiosk-detail');
         if (hour !== null) {
           if (detail && detail.get('visible')){
             this._highlightItem(hour, 'hours');
           }
         }
-      },
+      },      
       _isOutOfavailability: function (selectedQuantity, availability) {
         return selectedQuantity > Number(availability);
       },      
@@ -24622,7 +24616,10 @@ Custom property | Description | Default
           value: 'add'
         },
         
-        quantity: Number,
+        quantity: {
+          type:Number,
+          observer:'_onQuantityChange'
+        },
         
         nbSelectedHours: Number,
 
@@ -24766,8 +24763,6 @@ Custom property | Description | Default
         var quantity = this.$$('#quantity').get('value');
         var hours = this.$$('#sessions').get('selectedHours').reduce(function(a, e, i) {if (e.selected)a.push(i); return a;}, []);
         var nbHours = this.get('nbSelectedHours');
-        console.log('confirm', hours);
-        console.log('nbSelectedHours:', this.get('nbSelectedHours'));
           
         if (quantity > 0 && quantity <= this.maxAvailability && nbHours > 0) {
           
@@ -24813,14 +24808,11 @@ Custom property | Description | Default
       },
       addPendingItems: function () {
         var pendings = this.get('pendingItems');
-        console.log('pendings:', pendings);
         switch(this.get('mode')) {
           case 'edit':
-            console.log('Edit', this.get('pendingItems'));
             globals.cart.editItem(pendings[0], this.get('index'));
             break;
           default:
-            console.log('Add', this.get('pendingItems'));
             pendings.forEach(function (pending) {
               globals.cart.addItem(pending);
             });
@@ -24833,7 +24825,6 @@ Custom property | Description | Default
       },
       _getTotalPrice: function (activity, quantity, factor) {
         var price = this._getFirstPrice(activity);        
-        console.log('factor:', factor);
         return this._formatPrice(price * quantity * factor * 100, 2);
       },
       _isStepHidden: function (pmr, currentStep, value) {
@@ -24856,6 +24847,21 @@ Custom property | Description | Default
           return 6;
         }
         return -1;
+      },
+      _onQuantityChange: function (e) {
+        if (this._isMulti) {
+          // Force day mutation for sub-template refresh
+          var sessions = this.$$('#sessions');        
+          if (sessions)  {
+            var day = sessions.get('day');          
+            sessions.set('day', null);
+            if (day !== null && day !== undefined) {
+              this.async(function() {
+                sessions.set('day', day);
+              });    
+            }
+          }        
+        }        
       },
       checkScrollButtons: function () {
         this.contentChanged();
