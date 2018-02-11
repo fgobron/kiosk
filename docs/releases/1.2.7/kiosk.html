@@ -15742,7 +15742,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">version 1.2.7-4</p>
+      <p class="version">1.2.7-5</p>
     </div>
   </template>
 
@@ -16052,6 +16052,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         action: String
       },
       _cancel: function () {
+        // Clear pending items on cancel
+        var detail = document.querySelector('planet-kiosk-detail');
+        detail.clearPendingItems();
         window.history.back();
       }
     });
@@ -21154,8 +21157,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       this.$.popcontainer.appendChild(this._popIn);
     },
-    cancel: function () {
-      window.history.back();
+    cancel: function () {                  
+      globals.router.set('route.path', '/identification');
     },
     didReceiveResponse: function(request) {
       var response = request.detail.response;
@@ -23704,7 +23707,8 @@ Custom property | Description | Default
         },
         errorHidden: {
           type: Boolean,
-          value: true
+          value: true,
+          notify: true
         }
       },
       attached: function () {
@@ -23726,17 +23730,16 @@ Custom property | Description | Default
       _factorChange: function () {
         this._validate();
       },
-      _validate: function () {
+      _validate: function () {        
+        var max = this.get('max');
         var min = this.get('min');
-        var adjust = this.factor - 1;
-        adjust = (adjust < 0) ? 0 : adjust;
-        var max = this.get('max') - adjust;
-        var value = this.value;
+        var adjust = (this.factor < 1) ? 1 : this.factor;
+        var value = this.value * adjust;
         
         this.$.minus.removeAttribute('disabled');
         this.$.plus.removeAttribute('disabled');
         
-        if (value === 1) {
+        if (this.value === 1) {
           this.$.minus.setAttribute('disabled', true);
         }
         
@@ -23760,20 +23763,9 @@ Custom property | Description | Default
           this.set('errorHidden', false);
         }
         
-        if (max <= 1) {
-          this.$.minus.setAttribute('disabled', true);
-          this.$.plus.setAttribute('disabled', true);
-
-          if (max === 1) {
-            this.set('errorMessage', this.localize('activity_quantity_max'));
-            this.set('errorHidden', false);
-          }
-
-          if (max === 0) {
-            this.set('value', 0);
-            this.set('errorMessage', this.localize('activity_quantity_full'));
-            this.set('errorHidden', false);
-          }
+        if (max === 0) {            
+          this.set('errorMessage', this.localize('activity_quantity_full'));
+          this.set('errorHidden', false);
         }
       },
       checkActivation: function (quantity) {
@@ -23783,6 +23775,20 @@ Custom property | Description | Default
         this.set('errorHidden', true);
         this.$.minus.removeAttribute('disabled');
         this.$.plus.removeAttribute('disabled');
+        
+        if (max <= 1) {
+          this.$.minus.setAttribute('disabled', true);
+          this.$.plus.setAttribute('disabled', true);
+
+          if (max === 1) {
+            this.set('errorMessage', this.localize('activity_quantity_max'));
+            this.set('errorHidden', false);
+          } else if (max === 0) {
+            this.set('value', 0);
+            this.set('errorMessage', this.localize('activity_quantity_full'));
+            this.set('errorHidden', false);
+          }
+        }
       }
     });
   </script>
@@ -23930,7 +23936,7 @@ Custom property | Description | Default
       .pmr .hours {
         max-width:100%;
       }
-    </style>    
+    </style>
     <div class$="wrapper [[_getPMRClass(pmr)]]">
       <div class="days">
         <template id="dateslist" is="dom-repeat" items="[[dates]]">
@@ -23968,6 +23974,9 @@ Custom property | Description | Default
       properties: {
         selectedQuantity: {
           type: Number
+        },
+        notFull: {
+          type: Boolean
         },
         dates: {
           type: Array
@@ -24103,14 +24112,26 @@ Custom property | Description | Default
           this.initSelectedHours();
           // Set value at index
           this.splice('selectedHours', index, 1, {'selected':true});
+          // force event handler
+          this._hourChanged(index);
         }
-        else {
-          // toggle value
-          this.splice('selectedHours', index, 1, {'selected':!this.get('selectedHours')[index].selected});
+        else {          
+          var selected = this.get('selectedHours')[index].selected;
+          if (selected) {
+            // always allow unselection toggle value
+            this.splice('selectedHours', index, 1, {'selected':!selected});
+            // force event handler
+            this._hourChanged(index);
+          } else {
+            if (this.notFull || this.nbSelectedHours === 0) {
+              // toggle value only if limits are not reached
+              this.splice('selectedHours', index, 1, {'selected':!selected});
+              // force event handler
+              this._hourChanged(index);  
+            }
+          }
+          
         }
-        
-        // force event handler
-        this._hourChanged(index);
       },
       _hourHandler: function (e) {
         this.updateHour(e.model.index);
@@ -24501,7 +24522,7 @@ Custom property | Description | Default
                     <p hidden$="[[!_isFacility(activity)]]">[[localize('activity_quantity_warning')]]</p>
                   </div>
                   <div class="layout horizontal center quantity-container">
-                    <planet-kiosk-quantity id="quantity" value="{{quantity}}" factor="[[nbSelectedHours]]" pmr="[[pmr]]" language="[[language]]"></planet-kiosk-quantity>
+                    <planet-kiosk-quantity id="quantity" value="{{quantity}}" factor="[[nbSelectedHours]]" error-hidden="{{notFull}}" pmr="[[pmr]]" language="[[language]]"></planet-kiosk-quantity>
                     <template is="dom-if" if="[[_isFree(activity)]]">
                       <div class="total-price">[[localize('activity_free')]]</div>
                     </template>
@@ -24513,7 +24534,7 @@ Custom property | Description | Default
                 <hr noshade="" hidden$="[[pmr]]">
                 <div class="right">
                   <p class="title">[[localize('activity_session_title')]]</p>
-                  <planet-kiosk-sessions id="sessions" selected-quantity="[[quantity]]" nb-selected-hours="{{nbSelectedHours}}" dates="[[_getDates(activity,0,8)]]" nb-hour="[[_getNbHourDisplayed(pmr)]]" pmr="[[pmr]]" on-tap="checkScrollButtons">
+                  <planet-kiosk-sessions id="sessions" selected-quantity="[[quantity]]" not-full="[[notFull]]" nb-selected-hours="{{nbSelectedHours}}" dates="[[_getDates(activity,0,8)]]" nb-hour="[[_getNbHourDisplayed(pmr)]]" pmr="[[pmr]]" on-tap="checkScrollButtons">
                   </planet-kiosk-sessions>
                 </div>
               </div>
@@ -24646,6 +24667,10 @@ Custom property | Description | Default
         computed: '_checkType(activity)'
         },
         
+        notFull: {
+          type: Boolean
+        }
+        
       },
       observers: [
         '_itemChanged(activity, visible)'
@@ -24763,8 +24788,11 @@ Custom property | Description | Default
         var quantity = this.$$('#quantity').get('value');
         var hours = this.$$('#sessions').get('selectedHours').reduce(function(a, e, i) {if (e.selected)a.push(i); return a;}, []);
         var nbHours = this.get('nbSelectedHours');
-          
-        if (quantity > 0 && quantity <= this.maxAvailability && nbHours > 0) {
+        var max = this.maxAvailability;
+        var adjust = (nbHours < 1) ? 1 : nbHours;
+        var value = quantity * adjust;
+        
+        if (quantity > 0 && value <= max && nbHours > 0) {
           
           hours.forEach(function (hour) {
             var item = {
