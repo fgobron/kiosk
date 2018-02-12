@@ -15742,7 +15742,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">1.2.7-5</p>
+      <p class="version">version 1.2.7-6</p>
     </div>
   </template>
 
@@ -23088,26 +23088,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _openDescription: function () {
         this.$.dialog.open();
       },
-      _isOverflowing: function (el) {
+      _isOverflowing: function (el) {        
         return el.clientWidth < el.scrollWidth || el.clientHeight < el.scrollHeight;
       },
       _updateDisplay: function () {
-        var descs = Polymer.dom(this.root).querySelectorAll('.overflow');
-        var moreButtons = Polymer.dom(this.root).querySelectorAll('.overflow-button');
-
-        for (var i = 0; i < descs.length; i++) {
-          var desc = descs[i];
-          var moreButton = moreButtons[i];
-
-          if (desc && moreButton) {
-            desc.classList.remove('short');
-            moreButton.hidden = true;
-            if (this._isOverflowing(desc)) {
-              desc.classList.add('short');
-              moreButton.hidden = false;
+        this.async(function() {
+          var descs = Polymer.dom(this.root).querySelectorAll('.overflow');
+          var moreButtons = Polymer.dom(this.root).querySelectorAll('.overflow-button');
+  
+          for (var i = 0; i < descs.length; i++) {
+            var desc = descs[i];
+            var moreButton = moreButtons[i];
+  
+            if (desc && moreButton) {
+              desc.classList.remove('short');
+              moreButton.hidden = true;
+              if (desc.clientWidth > 0) {
+                if (this._isOverflowing(desc)) {
+                  desc.classList.add('short');
+                  moreButton.hidden = false;
+                } 
+              }
             }
           }
-        }
+        }, 100);        
       }
     });
   </script>

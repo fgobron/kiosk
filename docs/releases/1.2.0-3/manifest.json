@@ -1,7 +1,0 @@
-{
-  "name": "planet-kiosk",
-  "short_name": "planet-kiosk",
-  "description": "Center Parcs activities kiosk application",
-  "start_url": "/",
-  "display": "standalone"
-}
