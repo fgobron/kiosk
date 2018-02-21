@@ -24065,11 +24065,12 @@ Custom property | Description | Default
         this.async(function() {
           if (day !== null) {
             this.set('hours', this._getHours(day));
+            var hoursLen = this.get('hours').length;
             var detail = document.querySelector('planet-kiosk-detail');
             if (detail && detail.get('visible')){
               this._highlightItem(day, 'days');
               this.initSelectedHours();
-              if (!this.multi) {
+              if (!this.multi || hoursLen === 1) {
                 this.updateHour(this._getFirstAvailableHour());  
               }              
             }
