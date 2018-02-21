@@ -15776,7 +15776,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">NFC TEST</p>
+      <p class="version">NFC TEST 2</p>
     </div>
   </template>
 
@@ -22024,11 +22024,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       reset: function() {
         // reset api config
-        if (globals.nfcApplicationId !== '') {
+        if (typeof globals.nfcApplicationId !== 'undefined' && globals.nfcApplicationId !== '') {
           this._applicationId = globals.nfcApplicationId;
         }
         
-        if (globals.nfcAuthenticationKey !== '') {
+        if (typeof globals.nfcAuthenticationKey !== 'undefined' && globals.nfcAuthenticationKey !== '') {
           this._authenticationKey = globals.nfcAuthenticationKey;
         }
         this.$.chrono.reset();
@@ -25057,18 +25057,28 @@ Custom property | Description | Default
         globals.router.set('route.path', '/' + globals.lastList);
         this._restoreMiniBasket();
       },
+      _checkingOK: function () {
+        var quantity = this.$$('#quantity').get('value');
+        var nbHours = this.get('nbSelectedHours');
+        var adjust = (nbHours < 1) ? 1 : nbHours;
+        var max = this.maxAvailability;
+        var value = quantity * adjust;        
+        return quantity > 0 && value <= max && nbHours > 0;
+      },
       _checkWarning : function () {
         var activity = this.activity;
-
-        if (this._hasAgeWarning(this.localize, this.activity)) {
-          var message = this._getMessageWarning(this.localise, this.activity);
-          var age = this._getAgeWarning(this.localise, this.activity, 'activity_warning');
-          this.$$('#warning').set('message', message);
-          this.$$('#warning').set('age', age);
-          this.$$('#warning').open();
-        } else {
-          this._confirm();
-        }
+        
+        if (this._checkingOK()) {
+          if (this._hasAgeWarning(this.localize, this.activity)) {
+            var message = this._getMessageWarning(this.localise, this.activity);
+            var age = this._getAgeWarning(this.localise, this.activity, 'activity_warning');
+            this.$$('#warning').set('message', message);
+            this.$$('#warning').set('age', age);
+            this.$$('#warning').open();
+          } else {
+            this._confirm();
+          }
+        }        
       },
       _confirm: function () {
         var self=this;
@@ -25077,12 +25087,8 @@ Custom property | Description | Default
         var day = this.$$('#sessions').get('day');
         var quantity = this.$$('#quantity').get('value');
         var hours = this.$$('#sessions').get('selectedHours').reduce(function(a, e, i) {if (e.selected)a.push(i); return a;}, []);
-        var nbHours = this.get('nbSelectedHours');
-        var max = this.maxAvailability;
-        var adjust = (nbHours < 1) ? 1 : nbHours;
-        var value = quantity * adjust;
         
-        if (quantity > 0 && value <= max && nbHours > 0) {
+        if (this._checkingOK()) {
           
           hours.forEach(function (hour) {
             var item = {
