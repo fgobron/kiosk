@@ -15742,6 +15742,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
+      <p class="version">version 1.2.8-3</p>
     </div>
   </template>
 
@@ -23733,64 +23734,68 @@ Custom property | Description | Default
       _factorChange: function () {
         this._validate();
       },
-      _validate: function () {        
-        var max = this.get('max');
-        var min = this.get('min');
-        var adjust = (this.factor < 1) ? 1 : this.factor;
-        var value = this.value * adjust;
-        
-        this.$.minus.removeAttribute('disabled');
-        this.$.plus.removeAttribute('disabled');
-        
-        if (this.value === 1) {
-          this.$.minus.setAttribute('disabled', true);
-        }
-        
-        if (value <= min) {
-          this.$.minus.setAttribute('disabled', true);
-          this.set('errorMessage', '');
-          this.set('errorHidden', true);
-        }
-        if (min<value && value<max) {
-          this.set('errorMessage', '');
-          this.set('errorHidden', true);
-        }
-        if (value === max) {
-          this.$.plus.setAttribute('disabled', true);
-          this.set('errorMessage', this.localize('activity_quantity_max'));
-          this.set('errorHidden', false);
-        }
-        if (value > max) {
-          this.$.plus.setAttribute('disabled', true);
-          this.set('errorMessage', this.localize('activity_quantity_over'));
-          this.set('errorHidden', false);
-        }
-        
-        if (max === 0) {            
-          this.set('errorMessage', this.localize('activity_quantity_full'));
-          this.set('errorHidden', false);
+      _validate: function () {
+        if (!this.multi) {
+          var max = this.get('max');
+          var min = this.get('min');
+          var adjust = (this.factor < 1) ? 1 : this.factor;
+          var value = this.value * adjust;
+          
+          this.$.minus.removeAttribute('disabled');
+          this.$.plus.removeAttribute('disabled');
+          
+          if (this.value === 1) {
+            this.$.minus.setAttribute('disabled', true);
+          }
+          
+          if (value <= min) {
+            this.$.minus.setAttribute('disabled', true);
+            this.set('errorMessage', '');
+            this.set('errorHidden', true);
+          }
+          if (min<value && value<max) {
+            this.set('errorMessage', '');
+            this.set('errorHidden', true);
+          }
+          if (value === max) {
+            this.$.plus.setAttribute('disabled', true);
+            this.set('errorMessage', this.localize('activity_quantity_max'));
+            this.set('errorHidden', false);
+          }
+          if (value > max) {
+            this.$.plus.setAttribute('disabled', true);
+            this.set('errorMessage', this.localize('activity_quantity_over'));
+            this.set('errorHidden', false);
+          }
+          
+          if (max === 0) {            
+            this.set('errorMessage', this.localize('activity_quantity_full'));
+            this.set('errorHidden', false);
+          }          
         }
       },
       checkActivation: function (quantity) {
-        var max = this.get('max');                
-        // Default values setting
-        this.set('value', quantity);
-        this.set('errorHidden', true);
-        this.$.minus.removeAttribute('disabled');
-        this.$.plus.removeAttribute('disabled');
-        
-        if (max <= 1) {
-          this.$.minus.setAttribute('disabled', true);
-          this.$.plus.setAttribute('disabled', true);
-
-          if (max === 1) {
-            this.set('errorMessage', this.localize('activity_quantity_max'));
-            this.set('errorHidden', false);
-          } else if (max === 0) {
-            this.set('value', 0);
-            this.set('errorMessage', this.localize('activity_quantity_full'));
-            this.set('errorHidden', false);
-          }
+        if (!this.multi) {
+          var max = this.get('max');                
+          // Default values setting
+          this.set('value', quantity);
+          this.set('errorHidden', true);
+          this.$.minus.removeAttribute('disabled');
+          this.$.plus.removeAttribute('disabled');
+          
+          if (max <= 1) {
+            this.$.minus.setAttribute('disabled', true);
+            this.$.plus.setAttribute('disabled', true);
+  
+            if (max === 1) {
+              this.set('errorMessage', this.localize('activity_quantity_max'));
+              this.set('errorHidden', false);
+            } else if (max === 0) {
+              this.set('value', 0);
+              this.set('errorMessage', this.localize('activity_quantity_full'));
+              this.set('errorHidden', false);
+            }
+          }          
         }
       }
     });
@@ -24718,9 +24723,13 @@ Custom property | Description | Default
         this.$$('#confirm').innerHTML = this.localize('activity_modify_button');
         // Adjust Max with the quantity of the current edited cart item
         this.maxAvailability = this._getMaxAvailability(item) + cartItem.quantity;
-        this.$$('#quantity').max = this.maxAvailability;
+        // Dirty Hack to shunt max avaibility for facilities
+        if (this._isMulti) {
+          this.maxAvailability = 100;
+        }
+        this.$$('#quantity').max = this.maxAvailability;        
         this.$$('#quantity').checkActivation(cartItem.quantity);
-        // Force single selection
+        // Force single selection        
         this.$$('#sessions').set('multi', false);
         // Force day mutation        
         this.$$('#sessions').set('day', null);
@@ -24734,10 +24743,14 @@ Custom property | Description | Default
       _addModeReset: function (item) {
         this.$$('#confirm').innerHTML = this.localize('activity_add_button');
         this.maxAvailability = this._getMaxAvailability(item);
+        // Dirty Hack to shunt max avaibility for facilities
+        if (this._isMulti) {
+          this.maxAvailability = 100;
+        }
         this.$$('#quantity').max = this.maxAvailability;
         this.$$('#quantity').checkActivation(1);
         var queryParams = globals.router.queryParams;
-        // Force single selection
+        // Set multi selection mode for sessions components        
         this.$$('#sessions').set('multi', this.get('_isMulti'));
         // Force day mutation
         this.$$('#sessions').set('day', null);
@@ -34149,10 +34162,12 @@ Custom property | Description | Default
               // add new item
               this.push('cart', item);
           } else {
-              // modify quantity on existing session
-              var newQuantity = found.quantity + item.quantity;
+              // modify quantity and price on existing session
+              var newQuantity = found.quantity + item.quantity;              
               item.quantity = newQuantity;
-              this.splice('cart', index, 1, item);
+              var newPrice = found.price + item.price;              
+              item.price = newPrice;
+              this.splice('cart', index, 1, item);              
           }
         },
         notifyErrorChange: function(item, index) {          
