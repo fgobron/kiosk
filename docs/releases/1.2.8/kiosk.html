@@ -15742,7 +15742,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">version 1.2.8-3</p>
+      <p class="version">version 1.2.8-4</p>
     </div>
   </template>
 
@@ -24124,22 +24124,23 @@ Custom property | Description | Default
           // force event handler
           this._hourChanged(index);
         }
-        else {          
-          var selected = this.get('selectedHours')[index].selected;
-          if (selected) {
-            // always allow unselection toggle value
-            this.splice('selectedHours', index, 1, {'selected':!selected});
-            // force event handler
-            this._hourChanged(index);
-          } else {
-            if (this.notFull || this.nbSelectedHours === 0) {
-              // toggle value only if limits are not reached
+        else {
+          if (index !== null) {
+            var selected = this.get('selectedHours')[index].selected;
+            if (selected) {
+              // always allow unselection toggle value
               this.splice('selectedHours', index, 1, {'selected':!selected});
               // force event handler
-              this._hourChanged(index);  
-            }
+              this._hourChanged(index);
+            } else {
+              if (this.notFull || this.nbSelectedHours === 0) {
+                // toggle value only if limits are not reached
+                this.splice('selectedHours', index, 1, {'selected':!selected});
+                // force event handler
+                this._hourChanged(index);  
+              }
+            }            
           }
-          
         }
       },
       _hourHandler: function (e) {
@@ -31648,13 +31649,15 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
       },
       _onContentUnavailable : function (activities) {
         activities.forEach(function (activity) {
-          var index = activity.itemToken.split('_')[1];
-          var item = globals.cart.getItemByIndex(index);
-          if (typeof(item) !== 'undefined') {
-            item.incorrect = true;
-            item.errors = activity.errors;
-            globals.cart.editItem(item, index);
-            globals.cart.notifyErrorChange(item, index);
+          if (activity.itemToken !== null && typeof activity.itemToken !== 'undefined') {
+            var index = activity.itemToken.split('_')[1];
+            var item = globals.cart.getItemByIndex(index);
+            if (typeof(item) !== 'undefined') {
+              item.incorrect = true;
+              item.errors = activity.errors;
+              globals.cart.editItem(item, index);
+              globals.cart.notifyErrorChange(item, index);
+            }            
           }
         });
         this._scrollToFirstError();
