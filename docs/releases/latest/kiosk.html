@@ -21913,7 +21913,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <h2>[[localize('login_hub')]]</h2>
       <div class="content">        
         <div class="buttons layout horizontal center-justified ">
-            <paper-button id="classic" class="primary detail confirm" on-tap="_classicScan">Classic ncf reader</paper-button>
+            <paper-button id="classic" class="primary detail confirm" on-tap="_classicScan">Classic nfc reader</paper-button>
             <paper-button id="info" class="primary detail confirm" on-tap="_infoScan">Info nfc reader</paper-button>
         </div>
         <p class="chrono">          
@@ -22020,7 +22020,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             callback: this.reset.bind(this)
           }
         ];
-        this.showPopIn('NCF Reader Error', 'cf debug notification', '', buttons, false);
+        this.showPopIn('NFC Reader Error', 'cf debug notification', '', buttons, false);
       },
       reset: function() {
         // reset api config
@@ -22061,7 +22061,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             callback: this.reset.bind(this)
           }
         ];
-        this.showPopIn('NCF Reader Success', 'cf debug notification', '', buttons, false);
+        this.showPopIn('NFC Reader Success', 'cf debug notification', '', buttons, false);
       }
     });
   </script>
