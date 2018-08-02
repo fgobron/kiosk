@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">v1.3.1-2 - NFC</p>
+      <p class="version">v1.3.1-3 - NFC</p>
     </div>
   </template>
 
@@ -21952,9 +21952,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (MBirdSdk.isConnected()) {
           this.$.chrono.start();
           // Start scanning          
-          MBirdSdk.Nfc.ReadFileInfo(this.get('_scanDuration'), this.get('_applicationId'), this.get('_authenticationKey')).then(function (result) {            
-            if (result !== '') {              
-              this.set('bookingId', result);
+          MBirdSdk.Nfc.ReadFileInfo(this.get('_scanDuration'), this.get('_applicationId'), this.get('_authenticationKey')).then(function (result) {
+            console.log("NFC Read debug success", result);
+            MBirdSdk.Board.ShowNotification("NFC Read debug success", JSON.stringify(result), MBirdSdk.NotificationType.HtmlContent, "", false);
+            if (result !== '') {
+              this.set('bookingId', result);              
               this.$.chrono.stop();
               this._successScan();  
             } else {
