@@ -15672,6 +15672,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       activities: Object
     },
+    _logBundlesSettings : function () {      
+      if (MBirdSdk.isConnected()) {
+        // App
+        MBirdSdk.BundleSettings.App().then(function (result) {
+            console.log('App', result);
+        }).catch(function (error) {
+            console.log(error);
+        });
+        // Kiosk
+        MBirdSdk.BundleSettings.Kiosk().then(function (result) {
+            console.log('Kiosk', result);
+        }).catch(function (error) {
+            console.log(error);
+        });
+        // Store
+        MBirdSdk.BundleSettings.Store().then(function (result) {
+            console.log('Store', result);
+        }).catch(function (error) {
+            console.log(error);
+        });
+      }
+    },
     _changeLanguage: function (e) {
       e.preventDefault();      
       var main = document.querySelector('planet-kiosk-app');
@@ -15687,6 +15709,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var ironRequest = activitiesRequest.generateRequest();
       ironRequest.addEventListener('progress-changed', this._onProgressChanged.bind(this));
       this.setDataLayerItem('language', this.lang);
+      this._logBundlesSettings();
       this.trackEvent('Language selection', 'choose language', this.lang, 'noevent');      
     },
     _getDateFrom: function () {
@@ -15796,7 +15819,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">v1.3.1-4 - NFC</p>
+      <p class="version">v1.3.1-5 - NFC - Bundle settings</p>
     </div>
   </template>
 
@@ -16089,7 +16112,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <planet-kiosk-hub-block pmr="[[pmr]]" prefix="login" suffix="qrcode" language="[[language]]">
           E-TICKET
         </planet-kiosk-hub-block>
-        <planet-kiosk-hub-block pmr="[[pmr]]" prefix="login" suffix="nfc" language="[[language]]">
+        <planet-kiosk-hub-block hidden="[[!_isNFCAvailable()]]" pmr="[[pmr]]" prefix="login" suffix="nfc" language="[[language]]">
           BRACELET
         </planet-kiosk-hub-block>
         <br style="clear:both;">
@@ -16110,6 +16133,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
       properties: {
         action: String
+      },
+      _isNFCAvailable: function () {
+        return globals.nfc;
       },
       _cancel: function () {
         // Clear pending items on cancel
@@ -34877,6 +34903,7 @@ Custom property | Description | Default
               globals.siteCode = subConfig.site_code;
               globals.payment = subConfig.payment;
               globals.pmr = subConfig.pmr;
+              globals.nfc = subConfig.nfc || true;
             } else {
               app.settingUpFail();
             }          
