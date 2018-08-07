@@ -15671,29 +15671,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         type: String
       },
       activities: Object
-    },
-    _logBundlesSettings : function () {      
-      if (MBirdSdk.isConnected()) {
-        // App
-        MBirdSdk.BundleSettings.App().then(function (result) {
-            console.log('App', result);
-        }).catch(function (error) {
-            console.log(error);
-        });
-        // Kiosk
-        MBirdSdk.BundleSettings.Kiosk().then(function (result) {
-            console.log('Kiosk', result);
-        }).catch(function (error) {
-            console.log(error);
-        });
-        // Store
-        MBirdSdk.BundleSettings.Store().then(function (result) {
-            console.log('Store', result);
-        }).catch(function (error) {
-            console.log(error);
-        });
-      }
-    },
+    },    
     _changeLanguage: function (e) {
       e.preventDefault();      
       var main = document.querySelector('planet-kiosk-app');
@@ -15709,7 +15687,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var ironRequest = activitiesRequest.generateRequest();
       ironRequest.addEventListener('progress-changed', this._onProgressChanged.bind(this));
       this.setDataLayerItem('language', this.lang);
-      this._logBundlesSettings();
       this.trackEvent('Language selection', 'choose language', this.lang, 'noevent');      
     },
     _getDateFrom: function () {
@@ -15819,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">v1.3.1-5 - NFC - Bundle settings</p>
+      <p class="version">v1.3.1-6 - NFC BundleSettings</p>
     </div>
   </template>
 
@@ -16091,13 +16068,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
 
     .pmr .content{
-      margin: 2.5em 26em 0;
+      margin: 2.5em 14em 0;
     }
 
     .pmr .buttons {
       font-size: 0.6em;
     }
-
   </style>
 
   <template>
@@ -21973,13 +21949,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           value: []
         }
       },      
-      scan: function() {
-        console.log(this.get('_applicationId'), this.get('_authenticationKey'));
+      scan: function() {        
         if (MBirdSdk.isConnected()) {
           this.$.chrono.start();
+          console.log('AppId_AuthenticationKey', this._applicationId + '_' + this._authenticationKey)
+          MBirdSdk.Board.ShowNotification('AppId_AuthenticationKey', this._applicationId + '_' + this._authenticationKey, MBirdSdk.NotificationType.HtmlContent, "", false);
           // Start scanning          
           MBirdSdk.Nfc.ReadFileInfo(this.get('_scanDuration'), this.get('_applicationId'), this.get('_authenticationKey')).then(function (result) {
-            console.log("NFC Read debug success", result);
             MBirdSdk.Board.ShowNotification("NFC Read debug success", JSON.stringify(result), MBirdSdk.NotificationType.HtmlContent, "", false);
             if (result && typeof (result.ReadContent) !== 'undefined' && result.ReadContent != '') {
               this.set('bookingId', result.ReadContent);              
@@ -34658,6 +34634,9 @@ Custom property | Description | Default
           'qrlogin':{
             hiddenTabBar:true
           },
+          'nfclogin':{
+            hiddenTabBar:true
+          },
           'payment':{
             hiddenTabBar:true
           },
@@ -34904,6 +34883,16 @@ Custom property | Description | Default
               globals.payment = subConfig.payment;
               globals.pmr = subConfig.pmr;
               globals.nfc = subConfig.nfc || true;
+              // BundleSettings
+              if (MBirdSdk.isConnected()) {                
+                // Store
+                MBirdSdk.BundleSettings.Store().then(function (result) {
+                  globals.nfcApplicationId = result.StoreAlias;
+                  globals.nfcAuthenticationKey = result.StoreCode;
+                }).catch(function (error) {
+                    // Fail silent
+                });
+              }
             } else {
               app.settingUpFail();
             }          
