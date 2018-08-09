@@ -15795,8 +15795,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <div class="payment">
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
-      </div>
-      <p class="version">v1.3.1-7 - NFC Bundle settings</p>
+      </div>      
     </div>
   </template>
 
@@ -21951,12 +21950,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },      
       scan: function() {        
         if (MBirdSdk.isConnected()) {
-          this.$.chrono.start();
-          console.log('AppId_AuthenticationKey', this._applicationId + '_' + this._authenticationKey)
-          MBirdSdk.Board.ShowNotification('AppId_AuthenticationKey', this._applicationId + '_' + this._authenticationKey, MBirdSdk.NotificationType.HtmlContent, "", false);
+          this.$.chrono.start();          
           // Start scanning          
-          MBirdSdk.Nfc.ReadFileInfo(this.get('_scanDuration'), this.get('_applicationId'), this.get('_authenticationKey')).then(function (result) {
-            MBirdSdk.Board.ShowNotification("NFC Read debug success", JSON.stringify(result), MBirdSdk.NotificationType.HtmlContent, "", false);
+          MBirdSdk.Nfc.ReadFileInfo(this.get('_scanDuration'), this.get('_applicationId'), this.get('_authenticationKey')).then(function (result) {            
             if (result && typeof (result.ReadContent) !== 'undefined' && result.ReadContent != '') {
               this.set('bookingId', result.ReadContent);              
               this.$.chrono.stop();
@@ -34882,7 +34878,12 @@ Custom property | Description | Default
               globals.siteCode = subConfig.site_code;
               globals.payment = subConfig.payment;
               globals.pmr = subConfig.pmr;
-              globals.nfc = subConfig.nfc || true;
+              if (typeof (subConfig.nfc) !== 'undefined') {
+                globals.nfc = subConfig.nfc;  
+              } else {
+                globals.nfc = true;
+              }
+              
               // BundleSettings
               if (MBirdSdk.isConnected()) {                
                 // Store
