@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">v1.3.2 - Map AG</p>
+      <p class="version">v1.3.2 - TVA</p>
     </div>
   </template>
 
@@ -31578,8 +31578,8 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
     }
 
     .cgu-block {
-      margin: 4em 5em;
-      width: 64em;
+      margin: 4em;
+      width: 66em;
     }
     
     .cgu-text {
@@ -31735,8 +31735,8 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
     </div>
     
     <planet-kiosk-cgu id="cgupopin" language="[[language]]" pmr="[[pmr]]" with-backdrop="" no-cancel-on-outside-click=""></planet-kiosk-cgu>
-    <planet-kiosk-basket-authentification id="authentification" pmr="[[pmr]]" with-backdrop="" no-cancel-on-outside-click=""></planet-kiosk-basket-authentification>
-    <planet-kiosk-basket-error id="error" pmr="[[pmr]]" with-backdrop="" no-cancel-on-outside-click=""></planet-kiosk-basket-error>
+    <planet-kiosk-basket-authentification id="authentification" language="[[language]]" pmr="[[pmr]]" with-backdrop="" no-cancel-on-outside-click=""></planet-kiosk-basket-authentification>
+    <planet-kiosk-basket-error id="error" language="[[language]]" pmr="[[pmr]]" with-backdrop="" no-cancel-on-outside-click=""></planet-kiosk-basket-error>
 
     <iron-meta-query id="appconfig" key="config" value="{{appconfig}}"></iron-meta-query>
     <iron-ajax id="basketrequest" method="POST" content-type="application/json" url="[[appconfig.api]]/setBookingParisBasket" on-response="_onBasketResponse" on-error="_onBasketError"></iron-ajax>
@@ -32957,8 +32957,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <iron-ajax id="transactionrequest" method="POST" content-type="application/x-www-form-urlencoded" url="[[appconfig.api]]/setBookingParisTransaction" on-response="_onTransactionResponse" on-error="_onTransactionError"></iron-ajax>
     <iron-ajax id="cancelrequest" method="POST" content-type="application/x-www-form-urlencoded" url="[[appconfig.api]]/cancelBookingTransaction" on-response="_onCancelResponse" on-error="_onCancelError"></iron-ajax>
 
-    <planet-kiosk-payment-error id="paymenterror" with-backdrop="" no-cancel-on-outside-click=""></planet-kiosk-payment-error>
-    <planet-kiosk-printer-error id="printererror" with-backdrop="" no-cancel-on-outside-click=""></planet-kiosk-printer-error>
+    <planet-kiosk-payment-error id="paymenterror" language="[[language]]" with-backdrop="" no-cancel-on-outside-click=""></planet-kiosk-payment-error>
+    <planet-kiosk-printer-error id="printererror" language="[[language]]" with-backdrop="" no-cancel-on-outside-click=""></planet-kiosk-printer-error>
     </div>
   </template>
 
@@ -33028,10 +33028,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },      
       pay: function () {
         var amount = this.get('amount');
-        var transaction = this.get('transaction');
+        var transaction = this.get('transaction');                
         if (MBirdSdk.isConnected()) {
           MBirdSdk.Payment.Pay(amount, transaction).then(function (result) {
-            this.set('paymentInfo', result);
+            this.set('paymentInfo', result);            
             this._setTransaction();
           }.bind(this)).catch(function (error) {
             this._fail();
@@ -33136,7 +33136,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.set('printState', this.printStates.ERROR);
         this.trackEvent('Error', 'print error', this.localize('printer_error_title'), 'noevent');
       },      
-      _print: function () {
+      _print: function () {        
+        var printContent = this._getAllContent();        
         if (MBirdSdk.isConnected()) {
           var printContent = this._getAllContent();          
           MBirdSdk.Printer.TagContent(printContent).then(function (result) {
@@ -33175,7 +33176,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var customerLbl = this.localize('payment_ticket_cart_customer_label');
         var kioskLbl = this.localize('payment_ticket_cart_kiosk_label');
         var transactionLbl = this.localize('payment_ticket_cart_transaction_label');
-        var totalTVALbl = this.localize('payment_ticket_cart_total_tva_label');
+        var totalTVALbl = this.localize('payment_ticket_cart_total_tva_label', 'tva', globals.tva);
         var totalLbl = this.localize('payment_ticket_cart_total_label');
         var paidLbl = this.localize('payment_ticket_cart_paid_label');
         
@@ -33216,12 +33217,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }));
         
         content += this.array(cartArray, layout);
-
-        var tva = globals.cart.get('total') - (globals.cart.get('total') / 1.20);
-        tva = tva.toFixed(2) + currency;
-
+        
+        // TVA
+        if (globals.tva !== '') {
+          var tva = globals.cart.get('total') - (globals.cart.get('total') / (1 + globals.tva / 100));
+          tva = tva.toFixed(2) + currency;
+          content += this.cr + this.bold(this.alignRight(totalTVALbl  + ' ' + tva));
+        }
+        
+        // TOTAL
         var total = globals.cart.get('total').toFixed(2) + currency;
-        content += this.cr + this.bold(this.alignRight(totalTVALbl  + ' ' + tva));
         content += this.cr + this.bold(this.alignRight(totalLbl + ' ' + total));
         content += this.cr + this.bold(this.alignRight(paidLbl + ' ' + total));
         if (this._isEqualToPartial) {
@@ -33238,7 +33243,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           return this.get('transaction');
         } else {
           var counterMarks = this.get('counterMarks');
-          if (counterMarks.length > 0) {
+          if (counterMarks && counterMarks.length > 0) {
             return counterMarks[0].transaction;          
           } else {
             return '';
@@ -34860,6 +34865,17 @@ Custom property | Description | Default
       requestWordings.generateRequest();
     }
     
+    // SubConfig TVA matching
+    app.subConfigTVA = function (countryCode) {
+      var tva = {
+        'FR': '20',
+        'DE': '19',
+        'BE': '21',
+        'NL': ''
+      }
+      return tva[countryCode];
+    }
+    
     // SubConfig by kiosk fetching
     app.subConfigResponse = function(e) {
       try {
@@ -34877,6 +34893,8 @@ Custom property | Description | Default
               globals.MBirdNeeded = subConfig.MBirdNeeded;          
               globals.kioskId = subConfig.kiosk;
               globals.siteCode = subConfig.site_code;
+              globals.countryCode = subConfig.country_code;
+              globals.tva = app.subConfigTVA(globals.countryCode) || '';
               globals.payment = subConfig.payment;
               globals.pmr = subConfig.pmr;
               if (typeof (subConfig.nfc) !== 'undefined') {
