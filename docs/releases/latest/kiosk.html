@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">v1.3.3-6 - NFC Scan tests</p>
+      <p class="version">v1.3.3-7 - NFC Scan tests</p>
     </div>
   </template>
 
@@ -21948,12 +21948,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Array,
           value: []
         }
-      },      
+      },
+      checkNCFReaderPeripheral: function () {
+        var promise = new Promise(function(resolve, reject) {
+          if (MBirdSdk.isConnected()) {
+            MBirdSdk.Peripherals.StatusDetails().then(function (status) {
+              MBirdSdk.Board.ShowNotification("NFC Scan checkNCFReaderPeripheral", JSON.stringify(status), MBirdSdk.NotificationType.HtmlContent, "", false);
+              resolve(1);  
+            }).catch(function (error) {
+              resolve(-1);
+            });
+          } else {
+            resolve(-1);
+          }
+        });
+        return promise;
+      },
       scan: function() {        
         if (MBirdSdk.isConnected()) {
-          
-          MBirdSdk.Peripherals.StatusDetails().then(function (result) {
-            MBirdSdk.Board.ShowNotification("NFC Scan check status", JSON.stringify(result), MBirdSdk.NotificationType.HtmlContent, "", false);
+          this.checkNCFReaderPeripheral().then(function (ok) {
             this.$.chrono.start();
             // Start scanning          
             MBirdSdk.Nfc.ReadFileInfo(this.get('_scanDuration'), this.get('_applicationId'), this.get('_authenticationKey')).then(function (result) {            
