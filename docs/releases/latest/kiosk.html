@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">v1.3.3-11 - NFC Scan tests</p>
+      <p class="version">v1.3.3-12 - NFC Scan tests</p>
     </div>
   </template>
 
@@ -22012,15 +22012,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       _visibilityChanged: function (visibility) {
-        
-        if (MBirdSdk.isConnected()) {
+          var self = this;
           if (visibility) {
+            if (MBirdSdk.isConnected()) {
             MBirdSdk.Peripherals.StatusDetails().then(function (result) {
                 MBirdSdk.Board.ShowNotification("NFC Scan check status", JSON.stringify(result), MBirdSdk.NotificationType.HtmlContent, "", false);
-                this.$.message.innerHTML = JSON.stringify(result);
+                self.$.message.innerHTML = JSON.stringify(result);
             }).catch(function (error) {
-                MBirdSdk.Board.ShowNotification("NFC Scan check status", JSON.stringify(error), MBirdSdk.NotificationType.HtmlContent, "", false);
-                this.$.message.innerHTML = JSON.stringify(error);
+                MBirdSdk.Board.ShowNotification("NFC Scan check status - error", JSON.stringify(result), MBirdSdk.NotificationType.HtmlContent, "", false);
+                self.$.message.innerHTML = JSON.stringify(error);
             });
             this.reset();
             this.scan();
