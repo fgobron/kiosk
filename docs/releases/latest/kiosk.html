@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">v1.3.3-10 - NFC Scan tests</p>
+      <p class="version">v1.3.3-11 - NFC Scan tests</p>
     </div>
   </template>
 
@@ -21900,9 +21900,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p class="chrono">          
           <planet-kiosk-chrono id="chrono" size="[[_getChronoSize(pmr)]]" time="[[_scanDuration]]"></planet-kiosk-chrono>
         </p>    
-      </div>            
+      </div>
+      <did id="message">Message</did></div>
       <div id="popcontainer"></div>
-    </div>
+    
     <iron-ajax id="loginrequest" url="[[appconfig.api]]/getUserKiosk" on-response="didReceiveResponse" on-error="fail">
     </iron-ajax>
     <iron-meta-query id="appconfig" key="config" value="{{appconfig}}"></iron-meta-query>
@@ -22011,14 +22012,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       _visibilityChanged: function (visibility) {
-        if (visibility) {
-          MBirdSdk.Peripherals.StatusDetails().then(function (result) {
-              MBirdSdk.Board.ShowNotification("NFC Scan check status", JSON.stringify(result), MBirdSdk.NotificationType.HtmlContent, "", false);
-          }).catch(function (error) {
-              MBirdSdk.Board.ShowNotification("NFC Scan check status", JSON.stringify(result), MBirdSdk.NotificationType.HtmlContent, "", false);
-          });
-          this.reset();
-          this.scan();
+        
+        if (MBirdSdk.isConnected()) {
+          if (visibility) {
+            MBirdSdk.Peripherals.StatusDetails().then(function (result) {
+                MBirdSdk.Board.ShowNotification("NFC Scan check status", JSON.stringify(result), MBirdSdk.NotificationType.HtmlContent, "", false);
+                this.$.message.innerHTML = JSON.stringify(result);
+            }).catch(function (error) {
+                MBirdSdk.Board.ShowNotification("NFC Scan check status", JSON.stringify(error), MBirdSdk.NotificationType.HtmlContent, "", false);
+                this.$.message.innerHTML = JSON.stringify(error);
+            });
+            this.reset();
+            this.scan();
+          }
         }
       },
       _successScan: function () {
