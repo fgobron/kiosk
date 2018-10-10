@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">v1.3.3 - NFC Scan tests</p>
+      <p class="version">v1.3.3-2 - NFC Scan tests</p>
     </div>
   </template>
 
@@ -21955,17 +21955,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           // Start scanning          
           MBirdSdk.Nfc.ReadFileInfo(this.get('_scanDuration'), this.get('_applicationId'), this.get('_authenticationKey')).then(function (result) {            
             if (result && typeof (result.ReadContent) !== 'undefined' && result.ReadContent != '') {
-              this.set('bookingId', result.ReadContent);              
+              this.set('bookingId', result.ReadContent);
               this.$.chrono.stop();
-              this._successScan();  
+              this._successScan();
+              MBirdSdk.Board.ShowNotification("NFC Scan success", JSON.stringify(result), "", false);
             } else {
               this.fail(); 
             }
           }.bind(this)).catch(function (error) {
-            MBirdSdk.Board.ShowNotification("NFC Scan error", JSON.stringify(error), MBirdSdk.NotificationType.HtmlContent, "", false);
+            MBirdSdk.Board.ShowNotification("NFC Scan error 1", JSON.stringify(error), MBirdSdk.NotificationType.HtmlContent, "", false);
             this.fail();
           }.bind(this));
-        } else {          
+        } else {
+          MBirdSdk.Board.ShowNotification("NFC Scan error 2", "", "", false);
           this.fail();
         }
       },
