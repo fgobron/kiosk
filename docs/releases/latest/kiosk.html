@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">v1.3.3-12 - NFC Scan tests</p>
+      <p class="version">v1.3.3-13 - NFC Tests</p>
     </div>
   </template>
 
@@ -21900,10 +21900,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p class="chrono">          
           <planet-kiosk-chrono id="chrono" size="[[_getChronoSize(pmr)]]" time="[[_scanDuration]]"></planet-kiosk-chrono>
         </p>    
-      </div>
-      <did id="message">Message</did></div>
+      </div>            
       <div id="popcontainer"></div>
-    
+    </div>
     <iron-ajax id="loginrequest" url="[[appconfig.api]]/getUserKiosk" on-response="didReceiveResponse" on-error="fail">
     </iron-ajax>
     <iron-meta-query id="appconfig" key="config" value="{{appconfig}}"></iron-meta-query>
@@ -21952,23 +21951,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },      
       scan: function() {        
         if (MBirdSdk.isConnected()) {
-          this.$.chrono.start();
+          this.$.chrono.start();          
           // Start scanning          
           MBirdSdk.Nfc.ReadFileInfo(this.get('_scanDuration'), this.get('_applicationId'), this.get('_authenticationKey')).then(function (result) {            
             if (result && typeof (result.ReadContent) !== 'undefined' && result.ReadContent != '') {
-              this.set('bookingId', result.ReadContent);
+              this.set('bookingId', result.ReadContent);              
               this.$.chrono.stop();
-              this._successScan();
-              MBirdSdk.Board.ShowNotification("NFC Scan success", JSON.stringify(result), MBirdSdk.NotificationType.HtmlContent, "", false);
+              this._successScan();  
             } else {
               this.fail(); 
             }
-          }.bind(this)).catch(function (error) {
-            MBirdSdk.Board.ShowNotification("NFC Scan error", JSON.stringify(error), MBirdSdk.NotificationType.HtmlContent, "", false);
+          }.bind(this)).catch(function (error) {            
             this.fail();
           }.bind(this));
-        } else {
-          MBirdSdk.Board.ShowNotification("MBird fail", "", MBirdSdk.NotificationType.HtmlContent, "", false);
+        } else {          
           this.fail();
         }
       },
@@ -22012,19 +22008,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       _visibilityChanged: function (visibility) {
-          var self = this;
-          if (visibility) {
-            if (MBirdSdk.isConnected()) {
-            MBirdSdk.Peripherals.StatusDetails().then(function (result) {
-                MBirdSdk.Board.ShowNotification("NFC Scan check status", JSON.stringify(result), MBirdSdk.NotificationType.HtmlContent, "", false);
-                self.$.message.innerHTML = JSON.stringify(result);
-            }).catch(function (error) {
-                MBirdSdk.Board.ShowNotification("NFC Scan check status - error", JSON.stringify(result), MBirdSdk.NotificationType.HtmlContent, "", false);
-                self.$.message.innerHTML = JSON.stringify(error);
-            });
-            this.reset();
-            this.scan();
-          }
+        if (visibility) {
+          this.reset();
+          this.scan();
         }
       },
       _successScan: function () {
@@ -34910,7 +34896,7 @@ Custom property | Description | Default
               globals.countryCode = subConfig.country_code;
               globals.tva = app.subConfigTVA(globals.countryCode) || '';
               globals.payment = subConfig.payment;
-              globals.pmr = subConfig.pmr;
+              globals.pmr = subConfig.pmr || true;
               if (typeof (subConfig.nfc) !== 'undefined') {
                 globals.nfc = subConfig.nfc;  
               } else {
