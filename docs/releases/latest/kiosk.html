@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">v1.3.3-14 - NFC Tests</p>
+      <p class="version">v1.3.3-15 - NFC Tests</p>
     </div>
   </template>
 
@@ -21928,6 +21928,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           value: 'initial'
         },
         bookingId: String,
+        _time: {
+          type: Object          
+        },
         _scanDuration: {
           type: Number,
           value: 15
@@ -21949,19 +21952,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           value: []
         }
       },
+      _isOnTime: function (result) {
+        return moment().diff(this.get('time')) > 1000;
+      },
       _validResult: function (result) {
         isNotEmpty = result && typeof (result.ReadContent) !== 'undefined' && result.ReadContent != '';
-        return isNotEmpty;
+        isNotAnErr = result.indexOf('ERR') === -1;              
+        return isNotEmpty && isNotAnErr;
       },
-      scan: function() {        
+      scan: function() {
         if (MBirdSdk.isConnected()) {
-          this.$.chrono.start();          
+          this.$.chrono.start();
           // Start scanning          
           MBirdSdk.Nfc.ReadFileInfo(this.get('_scanDuration'), this.get('_applicationId'), this.get('_authenticationKey')).then(function (result) {            
             if (this._validResult(result)) {
-              this.set('bookingId', result.ReadContent);
-              this.$.chrono.stop();
-              this._successScan();  
+              if (this._isOnTime()) {
+                this.set('bookingId', result.ReadContent);
+                this.$.chrono.stop();
+                this._successScan();
+              } else {
+                this.retry();
+              }              
             } else {
               this.fail(); 
             }
@@ -22002,6 +22013,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (typeof globals.nfcAuthenticationKey !== 'undefined' && globals.nfcAuthenticationKey !== '') {
           this._authenticationKey = globals.nfcAuthenticationKey;
         }
+        this.set('time', moment());
         this.$.chrono.reset();
       },
       _getChronoSize: function (pmr) {
