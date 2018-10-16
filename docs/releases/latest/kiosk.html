@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">v1.3.3-18 - NFC Tests</p>
+      <p class="version">v1.3.3-19 - NFC Tests</p>
     </div>
   </template>
 
@@ -21953,15 +21953,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       _isOnTime: function (result) {
-        console.log(moment().diff(this.get('time')) > 1000);
+        console.log("isOnTime:", moment().diff(this.get('time')) > 1000);
         return moment().diff(this.get('time')) > 1000;
       },
       _validResult: function (result) {
-        console.log(result && typeof (result.ReadContent) !== 'undefined' && result.ReadContent != '');
-        console.log(result.indexOf('ERR') === -1);
+        console.log("Empty:", result && typeof (result.ReadContent) !== 'undefined' && result.ReadContent != '');
+        console.log("ERR:", result.indexOf('ERR') === -1);
         isNotEmpty = result && typeof (result.ReadContent) !== 'undefined' && result.ReadContent != '';
         isNotAnErr = result.indexOf('ERR') === -1;
-        console.log(isNotEmpty && isNotAnErr);
+        console.log("VALID:", isNotEmpty && isNotAnErr);
         return isNotEmpty && isNotAnErr;
       },
       scan: function() {
