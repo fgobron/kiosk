@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">v1.3.3-24 - NFC Tests</p>
+      <p class="version">v1.3.3-25 - NFC Tests</p>
     </div>
   </template>
 
@@ -21957,8 +21957,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return moment().diff(this.get('time')) > 1000;
       },
       _validResult: function (result) {
-        console.log("Empty:", result && typeof (result.ReadContent) !== 'undefined' && result.ReadContent != '');
-        console.log("ERR:", result.indexOf('ERR') === -1);
+        console.log("NotEmpty:", result && typeof (result.ReadContent) !== 'undefined' && result.ReadContent != '');
+        console.log("NotERR:", result.indexOf('ERR') === -1);
         isNotEmpty = result && typeof (result.ReadContent) !== 'undefined' && result.ReadContent != '';
         isNotAnErr = result.indexOf('ERR') === -1;
         console.log("VALID:", isNotEmpty && isNotAnErr);
@@ -21972,9 +21972,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.set('_authenticationKey', '000002BC3B6013F6C01BD00711DB3174E826');
           console.log("AppID", this.get('_applicationId'));
           console.log("AuthenticationKey", this.get('_authenticationKey'));
-          MBirdSdk.Nfc.ReadFileInfo(this.get('_scanDuration'), this.get('_applicationId'), this.get('_authenticationKey')).then(function (result) {
-            console.log("result:", result);
+          MBirdSdk.Nfc.ReadFileInfo(this.get('_scanDuration'), this.get('_applicationId'), this.get('_authenticationKey')).then(function (result) {            
             result.readContent = "123456";
+            console.log("result:", result);
             if (this._validResult(result)) {
               if (this._isOnTime()) {
                 this.set('bookingId', result.ReadContent);
