@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">v1.3.3-15 - NFC Tests</p>
+      <p class="version">v1.3.3-16 - NFC Tests</p>
     </div>
   </template>
 
@@ -21953,6 +21953,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       _isOnTime: function (result) {
+        console.log(moment().diff(this.get('time')) > 1000);
         return moment().diff(this.get('time')) > 1000;
       },
       _validResult: function (result) {
@@ -34912,7 +34913,7 @@ Custom property | Description | Default
               globals.countryCode = subConfig.country_code;
               globals.tva = app.subConfigTVA(globals.countryCode) || '';
               globals.payment = subConfig.payment;
-              globals.pmr = subConfig.pmr || true;
+              globals.pmr = true;
               if (typeof (subConfig.nfc) !== 'undefined') {
                 globals.nfc = subConfig.nfc;  
               } else {
