@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">v1.3.3-16 - NFC Tests</p>
+      <p class="version">v1.3.3-17 - NFC Tests</p>
     </div>
   </template>
 
@@ -34913,9 +34913,9 @@ Custom property | Description | Default
               globals.countryCode = subConfig.country_code;
               globals.tva = app.subConfigTVA(globals.countryCode) || '';
               globals.payment = subConfig.payment;
-              globals.pmr = true;
+              globals.pmr = subConfig.pmr || true;
               if (typeof (subConfig.nfc) !== 'undefined') {
-                globals.nfc = subConfig.nfc;  
+                globals.nfc = subConfig.nfc || true;  
               } else {
                 globals.nfc = true;
               }
