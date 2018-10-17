@@ -21966,13 +21966,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (MBirdSdk.isConnected()) {
           this.$.chrono.start();
           // Start scanning          
-          MBirdSdk.Nfc.ReadFileInfo(this.get('_scanDuration'), this.get('_applicationId'), this.get('_authenticationKey')).then(function (result) {
-            MBirdSdk.Board.ShowNotification("ReadFileInfo debug", JSON.stringify(result), MBirdSdk.NotificationType.HtmlContent, "", false);
+          MBirdSdk.Nfc.ReadFileInfo(this.get('_scanDuration'), this.get('_applicationId'), this.get('_authenticationKey')).then(function (result) {            
             if (this._validResult(result)) {
               if (this._isOnTime()) {
                 this.set('bookingId', result.ReadContent);
+                MBirdSdk.Board.ShowNotification("ReadFileInfo success debug", JSON.stringify(result), MBirdSdk.NotificationType.HtmlContent, "", false);
                 this.$.chrono.stop();
-                this._successScan();
+                this._successScan();                
               } else {
                 //this.retry();
                 this.fail();
