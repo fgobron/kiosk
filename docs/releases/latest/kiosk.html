@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">v1.3.3-26 - NFC Tests</p>
+      <p class="version">v1.3.3-27 - NFC Tests</p>
     </div>
   </template>
 
@@ -21953,19 +21953,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       _isOnTime: function (result) {
-        MBirdSdk.Board.ShowNotification("isOnTime", moment().diff(this.get('time')) > 1000, MBirdSdk.NotificationType.HtmlContent, "", false);
+        console.log("isOnTime:", moment().diff(this.get('time')) > 1000);
         return moment().diff(this.get('time')) > 1000;
       },
       _validResult: function (result) {
+        console.log("NotEmpty:", result && typeof (result.ReadContent) !== 'undefined' && result.ReadContent != '');
+        console.log("NotERR:", result.indexOf('ERR') === -1);
         isNotEmpty = result && typeof (result.ReadContent) !== 'undefined' && result.ReadContent != '';
         isNotAnErr = result.indexOf('ERR') === -1;
+        console.log("VALID:", isNotEmpty && isNotAnErr);
         return isNotEmpty && isNotAnErr;
       },
       scan: function() {
         if (MBirdSdk.isConnected()) {
           this.$.chrono.start();
-          // Start scanning          
+          // Start scanning
+          this.set('_applicationId', '94BEED');
+          this.set('_authenticationKey', '000002BC3B6013F6C01BD00711DB3174E826');
+          console.log("AppID", this.get('_applicationId'));
+          console.log("AuthenticationKey", this.get('_authenticationKey'));
           MBirdSdk.Nfc.ReadFileInfo(this.get('_scanDuration'), this.get('_applicationId'), this.get('_authenticationKey')).then(function (result) {            
+            result.readContent = "123456";
+            console.log("result:", result);
             if (this._validResult(result)) {
               if (this._isOnTime()) {
                 this.set('bookingId', result.ReadContent);
