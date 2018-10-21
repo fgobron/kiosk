@@ -9,7 +9,7 @@
 
     <link rel="manifest" href="./manifest.json">
 
-    <!--<script src="https://cdn.ravenjs.com/3.20.0/raven.min.js"></script>-->
+    <script src="https://cdn.ravenjs.com/3.20.0/raven.min.js"></script>
     <script src="./bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
     <script src="./bower_components/moment/min/moment.min.js"></script>
     <script src="./bower_components/moment/locale/fr.js"></script>
@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">v1.3.3-32 - NFC Tests</p>
+      <p class="version">v1.3.3</p>
     </div>
   </template>
 
@@ -16108,16 +16108,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         PMRBehavior
       ],
       properties: {
-        action: String
+        action: String,
+        visible: {
+          type: Boolean,
+          observer: '_visibilityChanged'
+        }
+      },
+      _visibilityChanged: function (visibility) {
+        if (visibility) {
+          globals.nfcScan = false;
+        }
       },
       _isNFCAvailable: function () {
         return globals.nfc;
       },
       _cancel: function () {
         // Clear pending items on cancel
-        var detail = document.querySelector('planet-kiosk-detail');
+        var detail = document.querySelector('planet-kiosk-detail');        
         detail.clearPendingItems();
-        window.history.back();
+        detail.restoreItemDisplay();
       }
     });
   </script>
@@ -21233,6 +21242,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             globals.bookingId = results.bookingId;
             globals.cottageNumbers = results.cottageNumbers;
             globals.customer = results.lastName;
+            globals.name = results.firstName + ' ' + results.lastName;
             globals.uid = results.uid;
             this._trackAuthentification();
             this.redirectAfterLogin();
@@ -21776,7 +21786,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           value: []
         }
       },
-      scan: function() {        
+      scan: function() {
         if (MBirdSdk.isConnected()) {
           this.$.chrono.start();
           // Start scaning
@@ -21789,7 +21799,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }.bind(this));
         } else {
           this.fail();
-        }        
+        }
       },
       fail: function () {
         var buttons = [
@@ -21952,6 +21962,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           value: []
         }
       },
+      // Backup of the timeup checking method
       _isOnTime: function (result) {
         return moment().diff(this.get('time')) > 1000;
       },
@@ -21966,16 +21977,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (MBirdSdk.isConnected()) {
           this.$.chrono.start();          
           // Start scanning          
-          MBirdSdk.Nfc.ReadFileInfo(this.get('_scanDuration'), this.get('_applicationId'), this.get('_authenticationKey')).then(function (result) {
-            MBirdSdk.Board.ShowNotification("ReadFileInfo success debug", JSON.stringify(result), MBirdSdk.NotificationType.HtmlContent, "", false);
-            if (this._validResult(result)) {
-              if (this._isOnTime()) {
-                this.set('bookingId', result.ReadContent);                
-                this.$.chrono.stop();
-                this._successScan();                
-              } else {
-                this.retry();                
-              }              
+          MBirdSdk.Nfc.ReadFileInfo(this.get('_scanDuration'), this.get('_applicationId'), this.get('_authenticationKey')).then(function (result) {            
+            if (this._validResult(result)) {              
+              this.set('bookingId', result.ReadContent);                
+              this.$.chrono.stop();
+              this._successScan();
             } else {
               this.fail();
             }
@@ -22033,6 +22039,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       _successScan: function () {
+        globals.nfcScan = true;
         this.showPopIn('', this.localize('login_authenticating'), '', [], true);
         // Setup xhr
         var loginRequest = this.$.loginrequest;
@@ -25119,6 +25126,16 @@ Custom property | Description | Default
       },
       callConfirm : function () {
         this._confirm();
+      },
+      restoreItemDisplay: function () {
+        var activity = this.get('activity');        
+        if (activity.dayIndex !== undefined) {
+          globals.router.set('queryParams', {
+            day: activity.dayIndex,
+            hour: activity.hourIndex
+          });
+        }        
+        globals.router.set('route.path', '/detail/' + activity.code);
       },
       clearPendingItems: function () {
         this.set('pendingItems', []);
@@ -31851,19 +31868,26 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
           if (globals.token !== null) {
             // Check authentification
             var login = document.querySelector('planet-kiosk-login-info');
-            if (typeof login.villa !== 'undefined' || typeof globals.cottageNumbers !== 'undefined') {
-              var number = null;
-              var message = this.localize('login_bis_popin_msg');
+            if (typeof login.villa !== 'undefined' || typeof globals.cottageNumbers !== 'undefined' || globals.nfcScan) {
+              var number, message;
+              
+              if (!globals.nfcScan) {
+                message = this.localize('login_bis_popin_msg');
 
-              if (typeof login.villa !== 'undefined') {
-                number = this.localize('login_bis_popin_number', 'number', login.villa);
-              }
-              else {
-                number = globals.cottageNumbers.value.join(', ');
-                if (globals.cottageNumbers.value.length > 1) {
-                  message = this.localize('login_bis_popin_msg_plural');
+                if (typeof login.villa !== 'undefined') {
+                  number = this.localize('login_bis_popin_number', 'number', login.villa);
                 }
+                else {
+                  number = this.localize('login_bis_popin_number', 'number', globals.cottageNumbers.value.join(', '));
+                  if (globals.cottageNumbers.value.length > 1) {
+                    message = this.localize('login_bis_popin_msg_plural');
+                  }
+                }                
+              } else {
+                message = this.localize('login_bis_popin_msg_name');
+                number = this.localize('login_bis_popin_number', 'number', globals.name);
               }
+              
               this.$.authentification.set('number', number);
               this.$.authentification.set('message', message);
               this.$.authentification.open();
@@ -34915,9 +34939,9 @@ Custom property | Description | Default
               globals.countryCode = subConfig.country_code;
               globals.tva = app.subConfigTVA(globals.countryCode) || '';
               globals.payment = subConfig.payment;
-              globals.pmr = subConfig.pmr || true;
+              globals.pmr = subConfig.pmr;
               if (typeof (subConfig.nfc) !== 'undefined') {
-                globals.nfc = subConfig.nfc || true;  
+                globals.nfc = subConfig.nfc;  
               } else {
                 globals.nfc = true;
               }
