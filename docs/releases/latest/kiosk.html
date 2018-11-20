@@ -15794,9 +15794,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <div class="payment">
         <p>[[localize('language_payment_desc')]]</p>
-        <img src="images/cb.png">        
+        <img src="images/cb.png">
       </div>
-      <p class="version">v1.3.3</p>
+      <p class="version">v1.3.4 VAT Rates</p>
     </div>
   </template>
 
@@ -23055,6 +23055,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var hour = session.hours[hour];
       return this._formatPrice(hour.price.value, 2);
     },
+    _getVatAmount: function (localize, item, day, hour) {
+      var session = item.dates[day];
+      var hour = session.hours[hour];
+      var vatRate = hour.vatRate;
+      var price = (hour.price.value / 100).toFixed(2);
+      var vatAmount = (price - (price / (1 + vatRate / 100))).toFixed(2);
+      return vatAmount;
+    },
+    _getVatRare: function (localize, item, day, hour) {
+      var session = item.dates[day];
+      var hour = session.hours[hour];
+      return hour.vatRate;
+    },
     _getDuration: function (localize, item, day, hour) {
       var session = item.dates[day];
       var hour = session.hours[hour];
@@ -25107,6 +25120,8 @@ Custom property | Description | Default
               "quantity": quantity,
               "unitPrice": self._getPrice(localize, activity, day, hour),
               "price": self._getPrice(localize, activity, day, hour) * quantity,
+              "vatRate": self._getVatRare(localize, activity, day, hour),
+              "vatAmount": quantity * self._getVatAmount(localize, activity, day, hour),
               "error": false
             };
             self.push('pendingItems', item);
@@ -33071,7 +33086,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },      
       pay: function () {
         var amount = this.get('amount');
-        var transaction = this.get('transaction');                
+        var transaction = this.get('transaction');        
         if (MBirdSdk.isConnected()) {
           MBirdSdk.Payment.Pay(amount, transaction).then(function (result) {
             this.set('paymentInfo', result);            
@@ -33081,7 +33096,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }.bind(this));
         } else {
           this._fail();
-        }        
+        }
       },
       cancel: function () {
         this._cancelTransaction();
@@ -33180,7 +33195,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.trackEvent('Error', 'print error', this.localize('printer_error_title'), 'noevent');
       },      
       _print: function () {        
-        var printContent = this._getAllContent();        
         if (MBirdSdk.isConnected()) {
           var printContent = this._getAllContent();          
           MBirdSdk.Printer.TagContent(printContent).then(function (result) {
@@ -33207,6 +33221,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _getCBContent: function () {
         return this.customerReceipt();
       },
+      _getVATLine: function (rate) {
+        var currency = this.localize('activity_currency');
+        var totalTVALbl = this.localize('payment_ticket_cart_total_tva_label', 'tva', rate);
+        var tva = globals.cart.get('total') - (globals.cart.get('total') / (1 + rate / 100));
+        tva = tva.toFixed(2) + currency;
+        return this.cr + this.bold(this.alignRight(totalTVALbl  + ' ' + tva));
+      },
+      _getVATContent: function () {        
+        var vatRates = globals.cart.extractVATRates();
+        var vatContent = '';
+        var self = this;
+        vatRates.forEach(function (rate) {
+          vatContent += self._getVATLine(parseInt(rate, 10));
+        });
+        return vatContent;
+      },
       _getCartContent: function () {
         var header = this.localize('payment_ticket_cart_title');
         var provisionalHeader = this.localize('payment_ticket_cart_title_provisional');
@@ -33218,8 +33248,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var bookingLbl = this.localize('payment_ticket_cart_booking_label');
         var customerLbl = this.localize('payment_ticket_cart_customer_label');
         var kioskLbl = this.localize('payment_ticket_cart_kiosk_label');
-        var transactionLbl = this.localize('payment_ticket_cart_transaction_label');
-        var totalTVALbl = this.localize('payment_ticket_cart_total_tva_label', 'tva', globals.tva);
+        var transactionLbl = this.localize('payment_ticket_cart_transaction_label');        
         var totalLbl = this.localize('payment_ticket_cart_total_label');
         var paidLbl = this.localize('payment_ticket_cart_paid_label');
         
@@ -33238,6 +33267,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         ];
 
         var content = this.partialCut() + this.logo() + this.center(header);
+        
         if (this._isEqualToPartial) {
           content += this.cr + this.center(provisionalHeader);
         } 
@@ -33261,12 +33291,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         
         content += this.array(cartArray, layout);
         
-        // TVA
-        if (globals.tva !== '') {
-          var tva = globals.cart.get('total') - (globals.cart.get('total') / (1 + globals.tva / 100));
-          tva = tva.toFixed(2) + currency;
-          content += this.cr + this.bold(this.alignRight(totalTVALbl  + ' ' + tva));
-        }
+        //// VAT
+        content += this._getVATContent();
         
         // TOTAL
         var total = globals.cart.get('total').toFixed(2) + currency;
@@ -34496,7 +34522,28 @@ Custom property | Description | Default
               }, 0);
           }
           return 0;
-        },        
+        },
+        extractVATRates: function () {
+          var result = [];
+          if (this.cart) {
+            result= this.cart.map(function(entry) {
+              return entry.vatRate;
+            }).filter(function (value, index, self) { 
+              return self.indexOf(value) === index;
+            });
+          }
+          return result;
+        },
+        computeAmountByVATRate: function(rate) {
+          if (this.cart) {
+              return this.cart.filter(function(entry) {
+                  return entry.vatRate === rate;
+              }).reduce(function(total, entry) {
+                  return total + entry.vatAmount;
+              }, 0);
+          }
+          return 0;
+        },
         groupBy: function(prop) {
           return this.get('cart').reduce(function(groups, item, index) {              
               var val = item[prop];
@@ -34544,7 +34591,7 @@ Custom property | Description | Default
       
     </style>
 
-    <div>
+    <div on-tap="_navigateToAdmin">
       <p class="date">[[formatDate()]]</p>
       <p class="time">[[formatTime(time)]]</p>      
     </div>
@@ -34553,12 +34600,28 @@ Custom property | Description | Default
     Polymer({
       is:'planet-kiosk-clock',
       properties: {
-        time: Object        
+        time: Object,
+        tappedOneTime : {
+          type: Boolean,
+          value: false,
+          notify: true
+        }
       },
       attached: function () {
         this.set('time', moment());
         this.set('date', moment());
         setInterval(this.updateTime.bind(this), 10000);
+      },
+      _navigateToAdmin: function () {
+        if (this.tappedOneTime) {
+          window.location = "service-worker.html";
+          this.tappedOneTime = false;
+        }
+        this.tappedOneTime = true;
+        // reset flag after 800ms
+        this.async(function() {
+          this.tappedOneTime = false;
+        }, 800);
       },
       formatTime: function (time) {
         return time.format('HH:mm');
@@ -34908,17 +34971,6 @@ Custom property | Description | Default
       requestWordings.generateRequest();
     }
     
-    // SubConfig TVA matching
-    app.subConfigTVA = function (countryCode) {
-      var tva = {
-        'FR': '20',
-        'DE': '19',
-        'BE': '',
-        'NL': ''
-      }
-      return tva[countryCode];
-    }
-    
     // SubConfig by kiosk fetching
     app.subConfigResponse = function(e) {
       try {
@@ -34936,8 +34988,6 @@ Custom property | Description | Default
               globals.MBirdNeeded = subConfig.MBirdNeeded;          
               globals.kioskId = subConfig.kiosk;
               globals.siteCode = subConfig.site_code;
-              globals.countryCode = subConfig.country_code;
-              globals.tva = app.subConfigTVA(globals.countryCode) || '';
               globals.payment = subConfig.payment;
               globals.pmr = subConfig.pmr;
               if (typeof (subConfig.nfc) !== 'undefined') {
