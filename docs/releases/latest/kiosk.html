@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">v1.3.4-4 VAT Rates</p>
+      <p class="version">v1.3.4-5 VAT Rates</p>
     </div>
   </template>
 
@@ -33086,7 +33086,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },      
       pay: function () {
         var amount = this.get('amount');
-        var transaction = this.get('transaction');        
+        var transaction = this.get('transaction');
+        
         if (MBirdSdk.isConnected()) {
           MBirdSdk.Payment.Pay(amount, transaction).then(function (result) {
             this.set('paymentInfo', result);            
@@ -33194,7 +33195,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.set('printState', this.printStates.ERROR);
         this.trackEvent('Error', 'print error', this.localize('printer_error_title'), 'noevent');
       },      
-      _print: function () {        
+      _print: function () {
         if (MBirdSdk.isConnected()) {
           var printContent = this._getAllContent();          
           MBirdSdk.Printer.TagContent(printContent).then(function (result) {
@@ -33233,7 +33234,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var vatContent = '';
         var self = this;
         vatRates.forEach(function (rate) {
-          vatContent += self._getVATLine(parseInt(rate, 10));
+          if (rate !== "0") {
+            vatContent += self._getVATLine(parseInt(rate, 10));  
+          }          
         });
         return vatContent;
       },
