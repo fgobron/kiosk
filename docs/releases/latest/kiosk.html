@@ -15794,9 +15794,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <div class="payment">
         <p>[[localize('language_payment_desc')]]</p>
-        <img src="images/cb.png">
+        <img src="images/cb.png">        
       </div>
-      <p class="version">v1.3.4 VAT Rates</p>
+      <p class="version">v1.3.4-2 VAT Rates</p>
     </div>
   </template>
 
@@ -34537,8 +34537,8 @@ Custom property | Description | Default
         computeAmountByVATRate: function(rate) {
           if (this.cart) {
               return this.cart.filter(function(entry) {
-                  return entry.vatRate === rate;
-              }).reduce(function(total, entry) {
+                  return parseInt(entry.vatRate, 10) === rate;
+              }).reduce(function(total, entry) {                  
                   return total + entry.vatAmount;
               }, 0);
           }
