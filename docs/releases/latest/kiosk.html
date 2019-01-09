@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">v1.3.4-5 VAT Rates</p>
+      <p class="version">v1.3.5</p>
     </div>
   </template>
 
@@ -33295,7 +33295,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         content += this.array(cartArray, layout);
         
         //// VAT
-        content += this._getVATContent();
+        if (globals.countryCode !== 'NL' && globals.countryCode !== 'BE') {
+          content += this._getVATContent();
+        }
         
         // TOTAL
         var total = globals.cart.get('total').toFixed(2) + currency;
@@ -34992,6 +34994,7 @@ Custom property | Description | Default
               globals.kioskId = subConfig.kiosk;
               globals.siteCode = subConfig.site_code;
               globals.payment = subConfig.payment;
+              globals.countryCode = subConfig.country_code;
               globals.pmr = subConfig.pmr;
               if (typeof (subConfig.nfc) !== 'undefined') {
                 globals.nfc = subConfig.nfc;  
