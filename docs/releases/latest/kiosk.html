@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">v1.3.6</p>
+      <p class="version">v1.3.6-2 - Sessions</p>
     </div>
   </template>
 
@@ -22905,12 +22905,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       return item.dates[0].hours[0];
     },
     _getFirstDuration: function (localize, item) {
+      var duration;
       if (typeof item.duration !== 'undefined') {
-        return this.localize('activity_session', 'duration', item.duration);
-      }
-
-      var duration = this._getFirstHour(item).duration;
-      return this.localize('activity_session', 'duration', duration);
+        duration = item.duration        
+      } else {
+        duration = this._getFirstHour(item).duration;
+      }      
+      if (duration >= 180) {
+        return ' ';
+      } else {
+        if (duration>=60 && duration < 180) {
+          var h = duration / 60 | 0;
+          var mm = duration % 60 | 0;
+          var sDuration = h + 'h' + (mm === 0 ? '' : mm);          
+          return this.localize('activity_session_label') + ' ' + sDuration;
+        } else {
+          return this.localize('activity_session', 'duration', duration);
+        }
+      } 
     },
     _getDurationInterval: function(localize, item) {
       var result = '';
@@ -22922,10 +22934,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var sEnd = end.format('HH') + 'h' + (end.minute() ? end.format('mm') : ''); 
 
         result = this.localize('activity_hours', 'begin', sBegin, 'end', sEnd);        
-        result += ' - ';
+        
       }
 
       return result
+    },
+    _formatDuration: function (localize, item) {
+      var result = '';
+      var firstDuration = this._getFirstDuration(localize, item);
+      var durationInteval = this._getDurationInterval(localize, item);
+      result = durationInteval;
+      if (firstDuration !== ' ') {
+        if (durationInteval !== '') {
+          result += ' - '  
+        }
+        result += firstDuration;
+      }
+      return result;
     },
     _getFirstLocation : function (item) {
       if (item.location) {
@@ -28497,7 +28522,7 @@ Mixin | Description | Default
         </iron-image>
         <div class="card-content">
           <h3>[[activity.title]]</h3>
-          <p class="duration">[[_getDurationInterval(localize, activity)]][[_getFirstDuration(localize, activity)]]</p>
+          <p class="duration">[[_formatDuration(localize, activity)]]</p>
           <p class="location">[[_getAge(localize, activity)]] [[_getFirstLocation(activity)]]</p>
         </div>
         <div class="price-container">
