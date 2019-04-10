@@ -15794,9 +15794,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <div class="payment">
         <p>[[localize('language_payment_desc')]]</p>
-        <img src="images/cb.png">        
+        <img src="images/cb.png">
       </div>
-      <p class="version">v1.3.6-2 - Sessions</p>
+      <p class="version">v1.3.7</p>
     </div>
   </template>
 
@@ -31979,7 +31979,7 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
       _onContentUnavailable : function (activities) {
         activities.forEach(function (activity) {
           if (activity.itemToken !== null && typeof activity.itemToken !== 'undefined') {
-            var index = activity.itemToken.split('_')[1];
+            var index = activity.itemToken.split("_").pop(-1);
             var item = globals.cart.getItemByIndex(index);
             if (typeof(item) !== 'undefined') {
               item.incorrect = true;
@@ -33113,15 +33113,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var amount = this.get('amount');
         var transaction = this.get('transaction');
         
-        if (MBirdSdk.isConnected()) {
-          MBirdSdk.Payment.Pay(amount, transaction).then(function (result) {
-            this.set('paymentInfo', result);            
-            this._setTransaction();
-          }.bind(this)).catch(function (error) {
+        if (amount !== 0) {          
+          if (MBirdSdk.isConnected()) {
+            MBirdSdk.Payment.Pay(amount, transaction).then(function (result) {
+              this.set('paymentInfo', result);            
+              this._setTransaction();
+            }.bind(this)).catch(function (error) {
+              this._fail();
+            }.bind(this));
+          } else {
             this._fail();
-          }.bind(this));
+          }
         } else {
-          this._fail();
+          // Bypass payment        
+          this.set('paymentInfo', []);            
+          this._setTransaction();          
         }
       },
       cancel: function () {
@@ -33222,7 +33228,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },      
       _print: function () {
         if (MBirdSdk.isConnected()) {
-          var printContent = this._getAllContent();          
+          var printContent = this._getAllContent();
           MBirdSdk.Printer.TagContent(printContent).then(function (result) {
             this.set('printState', this.printStates.SUCCESS);
             this.set('printInfo', result);            
