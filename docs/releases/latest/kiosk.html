@@ -15794,9 +15794,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <div class="payment">
         <p>[[localize('language_payment_desc')]]</p>
-        <img src="images/cb.png">
+        <img src="images/cb.png">        
       </div>
-      <p class="version">v1.3.7</p>
+      <p class="version">v1.3.7-2</p>
     </div>
   </template>
 
@@ -32974,14 +32974,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
     <div class$="[[_getPMRClass(pmr)]]">
     <template is="dom-if" if="[[_isEqualToInitial]]">
-
-      <h2>[[localize('payment_title')]]</h2>
-
-      <div class="content_pay">
-        <img src="images/paycard.png">
-        <p class="message">[[localize('payment_desc')]]</p>
-      </div>
-
+      
+      <template is="dom-if" if="[[!_isFree]]">
+  
+        <h2>[[localize('payment_title')]]</h2>
+  
+        <div class="content_pay">
+          <img src="images/paycard.png">
+          <p class="message">[[localize('payment_desc')]]</p>
+        </div>
+  
+      </template>
+      
+      <template is="dom-if" if="[[_isFree]]">
+  
+        <h2>[[localize('payment_free_title')]]</h2>
+  
+        <div class="content_pay">          
+          <p class="message">[[localize('payment_free_desc')]]</p>
+        </div>
+  
+      </template>
     </template>
 
     <template is="dom-if" if="[[_isEqualToSuccess]]">
@@ -32997,11 +33010,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <p class="info">[[_getPrintStateLabel(localize, printState)]]</p>
           <paper-progress indeterminate="" hidden="[[!_isPrintInProgress(printState)]]"></paper-progress>
         </div>
-
-        <div class="information">
-          <p class="title">[[localize('payment_ticket_title')]]</p>
-          <p>[[localize('payment_ticket_desc')]]</p>
-        </div>
+        
+        <template is="dom-if" if="[[isPrintSuccess]]">
+          <div class="information">
+            <p class="title">[[localize('payment_ticket_title')]]</p>
+            <p>[[localize('payment_ticket_desc')]]</p>
+          </div>
+        </template>
         
         <div class="buttons">
           <paper-button class="primary confirm" on-tap="_end">[[localize('payment_success_button_end')]]</paper-button>
@@ -33023,11 +33038,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <p class="info">[[_getPrintStateLabel(localize, printState)]]</p>
           <paper-progress indeterminate="" hidden="[[!_isPrintInProgress(printState)]]"></paper-progress>
         </div>
-
-        <div class="information">
-          <p class="title">[[localize('payment_ticket_partial_title')]]</p>
-          <p>[[localize('payment_ticket_partial_desc')]]</p>
-        </div>
+        
+        <template is="dom-if" if="[[isPrintSuccess]]">
+          <div class="information">
+            <p class="title">[[localize('payment_ticket_partial_title')]]</p>
+            <p>[[localize('payment_ticket_partial_desc')]]</p>
+          </div>
+        </template>
         
         <div class="buttons">
           <paper-button class="primary confirm" on-tap="_end">[[localize('payment_partial_button_end')]]</paper-button>
@@ -33096,6 +33113,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         _isEqualToSuccess: {
           type: String,
           computed:'_isEqualTo(state, "success")'
+        },
+        _isFree: {
+          type: Boolean,
+          computed: '_checkFree(amount)'
+        },
+        isPrintSuccess : {
+          type: Boolean,
+          computed: '_checkPrintState(printState, 2)'
         }
       },
       observers: [
@@ -33103,6 +33128,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
       _isEqualTo : function (state, value) {
         return state === value;
+      },
+      _checkFree : function (amount) {        
+        return amount === 0;
+      },
+      _checkPrintState: function (printState, value) {        
+        return printState === value;
       },
       _visibiltyChanged : function (visible) {
         if (visible && this.state === 'initial') {
