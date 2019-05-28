@@ -15652,7 +15652,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </a>
     
   <iron-meta-query id="appconfig" key="config" value="{{appconfig}}"></iron-meta-query>
-  <iron-ajax id="activitiesrequest" url="[[appconfig.api]]/getBookingParisActivities?lang=[[language]]&amp;timestamp=[[_getTimestamp()]]&amp;dateFrom=[[_getDateFrom()]]&amp;dateTo=[[_getDateTo()]]" on-response="_onActivitiesResponse" last-response="{{activities}}" on-error="_onActivitiesError"></iron-ajax> 
+  <iron-ajax id="activitiesrequest" url="[[appconfig.api]]/getBookingParisActivities?lang=[[language]]&amp;showMultiPx=1&amp;timestamp=[[_getTimestamp()]]&amp;dateFrom=[[_getDateFrom()]]&amp;dateTo=[[_getDateTo()]]" on-response="_onActivitiesResponse" last-response="{{activities}}" on-error="_onActivitiesError"></iron-ajax> 
   </template>
 
   <script>  
@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">v1.3.8</p>
+      <p class="version">v1.3.9-0 - Multiple prices - partial</p>
     </div>
   </template>
 
@@ -23080,6 +23080,54 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var hour = session.hours[hour];
       return this._formatPrice(hour.price.value, 2);
     },
+    _isMultiPx : function(item) {      
+      if (item && item.multiPx) {
+        return item.multiPx.length > 0;  
+      }
+      return 0;
+    },
+    _getFirstMultiPxPriceCode : function(item) {
+      var firstCode = '';
+      if (this._isMultiPx(item)) {
+        firstCode = item.multiPx[0].code;
+      }
+      return firstCode;
+    },
+    _getPriceLabel: function (localize, item) {
+      if (!this._isMultiPx(item)) {
+        return this._getFirstPrice(item) + ' ' + localize('activity_currency');
+      } else {
+        return this._getPricesInterval(localize, item);
+      }
+    },
+    _getPricesInterval: function (localize, item) {
+      var min, max;
+      var dates = item.dates;
+      dates.forEach(function (date) {
+        var hours = date.hours;
+        hours.forEach(function (hour) {
+          var price = hour.price.value;
+          if (min) {
+            if (price < min) {
+              min = price;
+            }
+          } else {
+            min = price;
+          }
+          if (max) {
+            if (price > max) {
+              max = price;
+            }
+          } else {
+            max = price;
+          }
+        });
+      });
+      // format
+      var minPrice = this._formatPrice(min, 2) + ' ' + localize('activity_currency');
+      var maxPrice = this._formatPrice(max, 2) + ' ' + localize('activity_currency');
+      return minPrice + ' - ' + maxPrice;
+    },
     _getVatAmount: function (localize, item, day, hour) {
       var session = item.dates[day];
       var hour = session.hours[hour];
@@ -23110,7 +23158,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         result[key] = session[key];
       }
 
-
       result.title = activity.title;
       result.category = activity.category;
       result.age = activity.age;
@@ -23119,6 +23166,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       result.description = activity.description;
       result.code = activity.code;
       result.dates = activity.dates;
+      result.multiPx = activity.multiPx;
 
       return result;
     },
@@ -24044,7 +24092,7 @@ Custom property | Description | Default
       _factorChange: function () {
         this._validate();
       },
-      _validate: function () {
+      _validate: function () {        
         if (!this.multi) {
           var max = this.get('max');
           var min = this.get('min');
@@ -24084,8 +24132,8 @@ Custom property | Description | Default
           }          
         }
       },
-      checkActivation: function (quantity) {
-        if (!this.multi) {
+      checkActivation: function (quantity) {        
+        if (!this.multi) {          
           var max = this.get('max');                
           // Default values setting
           this.set('value', quantity);
@@ -24093,19 +24141,22 @@ Custom property | Description | Default
           this.$.minus.removeAttribute('disabled');
           this.$.plus.removeAttribute('disabled');
           
-          if (max <= 1) {
+          if (max <= 1) {            
             this.$.minus.setAttribute('disabled', true);
             this.$.plus.setAttribute('disabled', true);
   
-            if (max === 1) {
+            if (max === 1) {              
               this.set('errorMessage', this.localize('activity_quantity_max'));
               this.set('errorHidden', false);
-            } else if (max === 0) {
+            } else if (max === 0) {              
               this.set('value', 0);
               this.set('errorMessage', this.localize('activity_quantity_full'));
               this.set('errorHidden', false);
             }
-          }          
+          } else {
+            // Force validate on first checkActivation
+            this._validate();
+          }
         }
       }
     });
@@ -24306,6 +24357,10 @@ Custom property | Description | Default
         multi: {
           type: Boolean
         },
+        // check if activity is multiple prices
+        isMultiPx: {
+          type: Boolean
+        },
         // Index of selected day
         day: {
           type: Number
@@ -24404,8 +24459,15 @@ Custom property | Description | Default
       // Hours part      
       _getHours: function (day) {
         var hours = [];
-        if (day !== null) {
-          hours = this.dates[day].hours;
+        if (day !== null) {          
+          if (!this._isMultiPx) {            
+            hours = this.dates[day].hours;
+          } else {            
+            var firstCode = this.dates[day].hours[0].code;
+            hours = this.dates[day].hours.filter(function (item) {              
+              return item.code === firstCode;
+            });
+          }
         }        
         return hours;
       },
@@ -24573,10 +24635,10 @@ Custom property | Description | Default
         font-family: var(--planet-font-family-book);
         color: var(--planet-color-black);
         margin-bottom: 0;
-
+        text-align: center;
       }
 
-      .form p {
+      .form .warning-wrapper p {
         font-size: 2em;
         font-family: var(--planet-font-family-book);
         color: var(--planet-color-theme-desc);
@@ -24621,13 +24683,21 @@ Custom property | Description | Default
       planet-kiosk-quantity {
         padding: 0;
       }
+      
+      p.quantity-title {
+        font-size: 3em;
+        font-family: var(--planet-font-family-heavy);        
+        color: var(--planet-color-black);
+        margin: 1em 0;
+        text-align: center;
+      }
 
       .total-price {
         position: absolute;
         top: 0.6em;
         right: 0;
         font-family: var(--planet-font-family-book);
-        color: var(--planet-color-black);;
+        color: var(--planet-color-black);
         border:none;
         font-size: 4.5em;
         vertical-align: middle;
@@ -24811,7 +24881,7 @@ Custom property | Description | Default
                 <p class="price">[[localize('activity_free')]]</p>
               </template>
               <template is="dom-if" if="[[!_isFree(activity)]]">
-                <p class="price">[[_getFirstPrice(activity)]] [[localize('activity_currency')]]</p>
+                <p class="price">[[_getPriceLabel(localize, activity)]]</p>
               </template>              
             </header>
             
@@ -24842,7 +24912,20 @@ Custom property | Description | Default
                     <p hidden$="[[!_isFacility(activity)]]">[[localize('activity_quantity_warning')]]</p>
                   </div>
                   <div class="layout horizontal center quantity-container">
-                    <planet-kiosk-quantity id="quantity" value="{{quantity}}" factor="[[nbSelectedHours]]" error-hidden="{{notFull}}" pmr="[[pmr]]" language="[[language]]"></planet-kiosk-quantity>
+                    
+                    <template is="dom-if" if="[[!_isMultiPxFlag]]">                      
+                      <planet-kiosk-quantity id="quantity" value="{{quantity}}" factor="[[nbSelectedHours]]" error-hidden="{{notFull}}" pmr="[[pmr]]" language="[[language]]"></planet-kiosk-quantity>
+                    </template>
+                    
+                    <template is="dom-if" if="[[_isMultiPxFlag]]">
+                      <div class="layout vertical center-justified">
+                        <template id="quantities" is="dom-repeat" items="[[activity.multiPx]]">
+                          <p class="quantity-title">[[item.title]]</p>
+                          <planet-kiosk-quantity id="quantity_[[index]]" value="0" factor="[[nbSelectedHours]]" error-hidden="{{notFull}}" pmr="[[pmr]]" language="[[language]]"></planet-kiosk-quantity>
+                        </template>
+                      </div>
+                    </template>
+                    
                     <template is="dom-if" if="[[_isFree(activity)]]">
                       <div class="total-price">[[localize('activity_free')]]</div>
                     </template>
@@ -24854,7 +24937,7 @@ Custom property | Description | Default
                 <hr noshade="" hidden$="[[pmr]]">
                 <div class="right">
                   <p class="title">[[localize('activity_session_title')]]</p>
-                  <planet-kiosk-sessions id="sessions" selected-quantity="[[quantity]]" not-full="[[notFull]]" nb-selected-hours="{{nbSelectedHours}}" dates="[[_getDates(activity,0,8)]]" nb-hour="[[_getNbHourDisplayed(pmr)]]" pmr="[[pmr]]" on-tap="checkScrollButtons">
+                  <planet-kiosk-sessions id="sessions" selected-quantity="[[quantity]]" not-full="[[notFull]]" is-multi-px="[[_isMultiPx(activity)]]" nb-selected-hours="{{nbSelectedHours}}" dates="[[_getDates(activity,0,8)]]" nb-hour="[[_getNbHourDisplayed(pmr)]]" pmr="[[pmr]]" on-tap="checkScrollButtons">
                   </planet-kiosk-sessions>
                 </div>
               </div>
@@ -24891,7 +24974,7 @@ Custom property | Description | Default
                   <p class="price">[[localize('activity_free')]]</p>
                 </template>
                 <template is="dom-if" if="[[!_isFree(activity)]]">
-                  <p class="price">[[_getFirstPrice(activity)]] [[localize('activity_currency')]]</p>
+                  <p class="price">[[_getPriceLabel(localize, activity)]]</p>
                 </template>
             </header>
             <div class="caption">
@@ -24921,7 +25004,7 @@ Custom property | Description | Default
                   <p class="price">[[localize('activity_free')]]</p>
                 </template>
                 <template is="dom-if" if="[[!_isFree(activity)]]">
-                  <p class="price">[[_getFirstPrice(activity)]] [[localize('activity_currency')]]</p>
+                  <p class="price">[[_getPriceLabel(localize, activity)]]</p>
                 </template>
             </header>
             <planet-kiosk-detail-desc pmr="[[pmr]]" activity="[[activity]]" visible="[[visible]]" language="[[language]]"></planet-kiosk-detail-desc>
@@ -24987,6 +25070,11 @@ Custom property | Description | Default
         computed: '_checkType(activity)'
         },
         
+        _isMultiPxFlag: {
+        type: Boolean,
+        computed: '_checkMultiPx(activity)'
+        },
+        
         notFull: {
           type: Boolean
         }
@@ -25013,6 +25101,9 @@ Custom property | Description | Default
       _checkType: function (activity) {        
         return activity.type == 'Facility';
       },
+      _checkMultiPx: function (activity) {
+        return this._isMultiPx(activity);        
+      },
       _resetDisplay: function () {
         var miniBasket = document.getElementById('minibasket');        
         miniBasket.close();
@@ -25037,9 +25128,11 @@ Custom property | Description | Default
         // Dirty Hack to shunt max avaibility for facilities
         if (this._isMulti) {
           this.maxAvailability = 100;
-        }
-        this.$$('#quantity').max = this.maxAvailability;        
-        this.$$('#quantity').checkActivation(cartItem.quantity);
+        }        
+        if (this.$$('#quantity')) {
+          this.$$('#quantity').max = this.maxAvailability;        
+          this.$$('#quantity').checkActivation(cartItem.quantity);  
+        }        
         // Force single selection        
         this.$$('#sessions').set('multi', false);
         // Force day mutation        
@@ -25058,8 +25151,10 @@ Custom property | Description | Default
         if (this._isMulti) {
           this.maxAvailability = 100;
         }
-        this.$$('#quantity').max = this.maxAvailability;
-        this.$$('#quantity').checkActivation(1);
+        if (this.$$('#quantity')) {
+          this.$$('#quantity').max = this.maxAvailability;
+          this.$$('#quantity').checkActivation(1);
+        }
         var queryParams = globals.router.queryParams;
         // Set multi selection mode for sessions components        
         this.$$('#sessions').set('multi', this.get('_isMulti'));
@@ -28526,11 +28621,11 @@ Mixin | Description | Default
           <p class="location">[[_getAge(localize, activity)]] [[_getFirstLocation(activity)]]</p>
         </div>
         <div class="price-container">
-          <template is="dom-if" if="[[_isFree(activity)]]">
+          <template is="dom-if" if="[[_isFree(activity)]]">            
             <p class="price">[[localize('activity_free')]]</p>
           </template>
-          <template is="dom-if" if="[[!_isFree(activity)]]">
-            <p class="price">[[_getFirstPrice(activity)]] [[localize('activity_currency')]]</p>
+          <template is="dom-if" if="[[!_isFree(activity)]]">               
+            <p class="price">[[_getPriceLabel(localize, activity)]]</p>
           </template>
         </div>
       </paper-card>
@@ -29591,37 +29686,35 @@ Mixin | Description | Default
         }
         this.set('intervals', intervals);
       },
-      _getSessions: function(activity, intervals) { // TODO : Externalize
+      _getSessions: function(activity, intervals) {        
         for (var i = 0; i < activity.dates.length; i++) {
           var day = activity.dates[i];
-
-          for (var j = 0; j < day.hours.length; j++) {
+          var hours = day.hours;
+          if (this._isMultiPx(activity)) {
+            // filter sessions on first multipx price oce
+            var firstCode = this._getFirstMultiPxPriceCode(activity);            
+            hours = day.hours.filter(function (item) {              
+              return item.code === firstCode;
+            });            
+          }
+          for (var j = 0; j < hours.length; j++) {
             // Check availability of the session
-            if (day.hours[j].availability == 0) { // TODO : Better check
+            if (hours[j].availability == 0) {
               continue;
             }
             for (var k = 0; k < intervals.length; k++) {
               // Interval contains the session
-              if (this._isInBetween(moment(day.date + ' ' + day.hours[j].begin), intervals[k])) {
-                var session = this._sessionAsActivity(day.hours[j], activity);
+              if (this._isInBetween(moment(day.date + ' ' + hours[j].begin), intervals[k])) {
+                var session = this._sessionAsActivity(hours[j], activity);
                 session.dayIndex = i;
-                session.hourIndex = j;
+                session.hourIndex = j;                
                 intervals[k].sessions.push(session);
-              }
-              // Sessions contains the interval
-              // TODO : Doesn't work with session of two hours ex : Quand je serais grand ...
-              /*else if (this._contains( // TODO : Only one if
-                  {
-                    from: moment(day.date + ' ' + day.hours[j].begin),
-                    to: moment(day.date + ' ' + day.hours[j].end)
-                  }, intervals[k])) {
-                intervals[k].sessions.push(this._sessionAsActivity(day.hours[j], activity));
-              }*/
+              }             
             }
           }
         }
       }, // TIME INTERVAL
-      _getDateIntervalArray: function(date, size) { // TODO : Externalize
+      _getDateIntervalArray: function(date, size) {
         var result = [];
 
         for (var i = 0; i < size; i++) {
@@ -29629,7 +29722,7 @@ Mixin | Description | Default
         }
         return result;
       },
-      _intervalsEmpty: function(intervals) { // TODO : Externalize
+      _intervalsEmpty: function(intervals) {
         for (var i = 0; i < intervals.length; i++) {
           if (intervals[i].sessions && intervals[i].sessions.length) {
             return false;
@@ -29637,7 +29730,7 @@ Mixin | Description | Default
         }
         return true;
       },
-      _isInBetween: function(date, interval) { // TODO : Externalize
+      _isInBetween: function(date, interval) {
         return date.unix() >= interval.from.unix() && date.unix() < interval.to.unix();
       },
       _contains: function(container, interval) {
@@ -30835,17 +30928,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           // BROWSE DAYS
           for(var j = 0; j < activities[i].dates.length; j++) {
             if (moment(activities[i].dates[j].date).isBetween(dayFilter.from, dayFilter.to, null, '[)')) {
-              var sessions = this._groupSessions(activities[i].dates[j].hours);
-
-              for (var k = 0; k < sessions.length;k++) {
-                sessions[k].dayIndex = j;
-                sessions[k].date = activities[i].dates[j].date;
-                result.push(this._sessionAsActivity(sessions[k], activities[i]));
+              var sessions = this._groupSessions(activities[i].dates[j].hours);              
+              if (!this._isMultiPx(activities[i])) {                  
+                  for (var k = 0; k < sessions.length;k++) {
+                  sessions[k].dayIndex = j;
+                  sessions[k].date = activities[i].dates[j].date;
+                  result.push(this._sessionAsActivity(sessions[k], activities[i]));
+                }                
+              } else {                
+                var step = activities[i].multiPx.length;
+                for (var k = 0; k < sessions.length;k+=step) {
+                  sessions[k].dayIndex = j;
+                  sessions[k].date = activities[i].dates[j].date;
+                  result.push(this._sessionAsActivity(sessions[k], activities[i]));
+                }
               }
               break;
             }
           }
-        }
+        }        
         this.set('_sessions', result);
       },
       _groupConsecutiveSessions: function(sessions) {
