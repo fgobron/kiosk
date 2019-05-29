@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">v1.3.9-1 - Muliple prices - partial 2</p>
+      <p class="version">v1.3.9-2 - Muliple prices - partial 2</p>
     </div>
   </template>
 
@@ -24747,6 +24747,26 @@ Custom property | Description | Default
         top: 41.5em;
       }
       
+      .shift10 {        
+        top: 45.8em;
+      }
+      
+      .shift11 {        
+        top: 50.1em;
+      }
+      
+      .shift12 {        
+        top: 54.4em;
+      }
+      
+      .shift13 {        
+        top: 58.7em;
+      }
+      
+      .shift14 {        
+        top: 63em;
+      }
+      
       planet-kiosk-scroll-button {
         right: 48em;
       }
@@ -24978,7 +24998,7 @@ Custom property | Description | Default
                       
                       <template is="dom-if" if="[[_isMultiPxFlag]]">
                         <template id="subtotals" is="dom-repeat" items="[[activity.multiPx]]">                          
-                          <div class$="total-price shift[[index]]">[[_getSubTotalPrice(activity, index, nbSelectedHours)]]  [[localize('activity_currency')]]</div>
+                          <div class$="total-price shift[[index]]">[[_getSubTotalPrice(activity, index, nbSelectedHours, quantities.*)]]  [[localize('activity_currency')]]</div>
                         </template>
                       
                     </template>
@@ -25093,7 +25113,7 @@ Custom property | Description | Default
         
         quantities: {
           type: Array,
-          value: [{value:0},{value:0},{value:0},{value:0},{value:0},{value:0},{value:0},{value:0},{value:0},{value:0}]          
+          value: [{value:0},{value:0},{value:0},{value:0},{value:0},{value:0},{value:0},{value:0},{value:0},{value:0},{value:0},{value:0},{value:0},{value:0},{value:0}]
         },      
         
         quantity: {
@@ -25139,7 +25159,7 @@ Custom property | Description | Default
       observers: [
         '_itemChanged(activity, visible)',
         '_onQuantitiesChange(quantities.*)'
-      ],
+      ],      
       _quantitiesItem: function(change, index, path) {        
         return this.get(path, change.base[index]);
       },      
@@ -25157,8 +25177,9 @@ Custom property | Description | Default
             this.async(function() {
               this._resetDisplay();
               this._resetMode();
-              this._resetForm(item);
-            }.bind(this), 50);            
+              this._resetForm(item);              
+            }.bind(this), 50);
+            
           }
         }
       },
@@ -25188,10 +25209,15 @@ Custom property | Description | Default
         }
       },
       _resetMultiPxControls: function () {
-        if (!this._isMultiPxFlag) {
+        if (this._isMultiPxFlag) {
           var self = this;
           var activity = this.get('activity');
-          var multiPx = activity.multiPx;          
+          var multiPx = activity.multiPx;
+          // Reset quantities array
+          this.get('quantities').forEach(function (item) {
+            item.value = 0;
+          });
+          // Reset controls
           multiPx.forEach(function (px, index) {            
             var control = self.$$('#quantity_' + index);
             control.max = 100;
@@ -25208,11 +25234,11 @@ Custom property | Description | Default
         if (this._isMulti) {
           this.maxAvailability = 100;
         }        
-        if (!this._isMultiPxFlag) {
+        if (!this._isMultiPxFlag) {          
           // Set unique controle quantity
           this.$$('#quantity').max = this.maxAvailability;        
           this.$$('#quantity').checkActivation(cartItem.quantity);  
-        } else {
+        } else {          
           // Reset all quantities of multiple prices
           this._resetMultiPxControls();
         } 
@@ -25278,12 +25304,16 @@ Custom property | Description | Default
         this._restoreMiniBasket();
       },
       _checkingOK: function () {
-        var quantity = this.$$('#quantity').get('value');        
-        var nbHours = this.get('nbSelectedHours');
-        var adjust = (nbHours < 1) ? 1 : nbHours;
-        var max = this.maxAvailability;
-        var value = quantity * adjust;        
-        return quantity > 0 && value <= max && nbHours > 0;
+        if (!this._isMultiPxFlag) {
+          var quantity = this.$$('#quantity').get('value');        
+          var nbHours = this.get('nbSelectedHours');
+          var adjust = (nbHours < 1) ? 1 : nbHours;
+          var max = this.maxAvailability;
+          var value = quantity * adjust;        
+          return quantity > 0 && value <= max && nbHours > 0;
+        } else {
+          return 0
+        }
       },
       _checkWarning : function () {
         var activity = this.activity;
@@ -25385,16 +25415,19 @@ Custom property | Description | Default
       },
       _getSubTotalPrice: function (activity, index, factor) {
         if (this._isMultiPxFlag) {
-          var code = this._getMultiPxPriceCodeByIndex(activity, index);
-          var firstHours = activity.dates[0].hours;
-          var firstHoursFiltered = firstHours.filter(function (item) {              
-            return item.code === code;
-          });        
-          var firstHour = firstHoursFiltered[0];        
-          var price = firstHour.price.value;
-          var quantity = this.$$('#quantity_' + index).value;        
+          if (index < activity.multiPx.length) {
+            var code = this._getMultiPxPriceCodeByIndex(activity, index);
+            var firstHours = activity.dates[0].hours;
+            var firstHoursFiltered = firstHours.filter(function (item) {              
+              return item.code === code;
+            });        
+            var firstHour = firstHoursFiltered[0];        
+            var price = firstHour.price.value;
+            var quantity = this.$$('#quantity_' + index).value;        
   
-          return this._formatPrice(price * quantity * factor, 2);
+            return this._formatPrice(price * quantity * factor, 2);  
+          }
+          this._formatPrice(0, 2);  
         }
         
       },
@@ -25420,7 +25453,9 @@ Custom property | Description | Default
         return -1;
       },
       _onQuantityChange: function (e) {
+        console.log(e)
         if (this._isMulti) {
+          console.log('multi');
           // Force day mutation for sub-template refresh
           var sessions = this.$$('#sessions');        
           if (sessions)  {
@@ -25435,12 +25470,12 @@ Custom property | Description | Default
         }        
       },
       _onQuantitiesChange: function (e) {        
-        this._onQuantityChange(e);
+        this._onQuantityChange(e);        
       },
       _quantitiesTap: function (e) {        
         var index = e.model.index;
         var newValue = this._getControlValueByIndex(index);
-        this.set('quantities.' + index + '.value', newValue);
+        this.set('quantities.' + index + '.value', newValue);        
       },
       checkScrollButtons: function () {
         this.contentChanged();
