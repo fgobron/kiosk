@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">v1.3.9-0 - Multiple prices - partial</p>
+      <p class="version">v1.3.9-1 - Muliple prices - partial 2</p>
     </div>
   </template>
 
@@ -23093,6 +23093,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
       return firstCode;
     },
+    _getMultiPxPriceCodeByIndex : function(item, index) {
+      var mPxCode = '';
+      if (this._isMultiPx(item)) {
+        mPxCode = item.multiPx[index].code;
+      }
+      return mPxCode;
+    },
     _getPriceLabel: function (localize, item) {
       if (!this._isMultiPx(item)) {
         return this._getFirstPrice(item) + ' ' + localize('activity_currency');
@@ -24053,11 +24060,10 @@ Custom property | Description | Default
           notify: true          
         },
         min: {
-          type: Number,
-          value: 1
+          type: Number          
         },
         max: {
-          type: Number
+          type: Number          
         },
         factor : {
           type: Number,
@@ -24101,11 +24107,7 @@ Custom property | Description | Default
           
           this.$.minus.removeAttribute('disabled');
           this.$.plus.removeAttribute('disabled');
-          
-          if (this.value === 1) {
-            this.$.minus.setAttribute('disabled', true);
-          }
-          
+                             
           if (value <= min) {
             this.$.minus.setAttribute('disabled', true);
             this.set('errorMessage', '');
@@ -24705,6 +24707,46 @@ Custom property | Description | Default
         padding: 0 0.25em 0 0;
       }
       
+      .shift0 {        
+        top: 2.8em;
+      }
+      
+      .shift1 {        
+        top: 7.1em;
+      }
+      
+      .shift2 {        
+        top: 11.4em;
+      }
+      
+      .shift3 {        
+        top: 15.7em;
+      }
+      
+      .shift4 {        
+        top: 20em;
+      }
+      
+      .shift5 {        
+        top: 24.3em;
+      }
+      
+      .shift6 {        
+        top: 28.6em;
+      }
+      
+      .shift7 {        
+        top: 32.9em;
+      }
+      
+      .shift8 {        
+        top: 37.2em;
+      }
+      
+      .shift9 {        
+        top: 41.5em;
+      }
+      
       planet-kiosk-scroll-button {
         right: 48em;
       }
@@ -24914,14 +24956,14 @@ Custom property | Description | Default
                   <div class="layout horizontal center quantity-container">
                     
                     <template is="dom-if" if="[[!_isMultiPxFlag]]">                      
-                      <planet-kiosk-quantity id="quantity" value="{{quantity}}" factor="[[nbSelectedHours]]" error-hidden="{{notFull}}" pmr="[[pmr]]" language="[[language]]"></planet-kiosk-quantity>
+                      <planet-kiosk-quantity id="quantity" min="1" value="{{quantity}}" factor="[[nbSelectedHours]]" error-hidden="{{notFull}}" pmr="[[pmr]]" language="[[language]]"></planet-kiosk-quantity>
                     </template>
                     
                     <template is="dom-if" if="[[_isMultiPxFlag]]">
                       <div class="layout vertical center-justified">
                         <template id="quantities" is="dom-repeat" items="[[activity.multiPx]]">
                           <p class="quantity-title">[[item.title]]</p>
-                          <planet-kiosk-quantity id="quantity_[[index]]" value="0" factor="[[nbSelectedHours]]" error-hidden="{{notFull}}" pmr="[[pmr]]" language="[[language]]"></planet-kiosk-quantity>
+                          <planet-kiosk-quantity id="quantity_[[index]]" min="0" max="100" value="{{_quantitiesItem(quantities.*, index, 'value')}}" factor="[[nbSelectedHours]]" error-hidden="{{notFull}}" pmr="[[pmr]]" language="[[language]]" on-tap="_quantitiesTap"></planet-kiosk-quantity>
                         </template>
                       </div>
                     </template>
@@ -24930,7 +24972,16 @@ Custom property | Description | Default
                       <div class="total-price">[[localize('activity_free')]]</div>
                     </template>
                     <template is="dom-if" if="[[!_isFree(activity)]]">
-                      <div class="total-price">[[_getTotalPrice(activity, quantity, nbSelectedHours)]]  [[localize('activity_currency')]]</div>
+                      <template is="dom-if" if="[[!_isMultiPxFlag]]">
+                        <div class="total-price">[[_getTotalPrice(activity, quantity, nbSelectedHours)]]  [[localize('activity_currency')]]</div>
+                      </template>
+                      
+                      <template is="dom-if" if="[[_isMultiPxFlag]]">
+                        <template id="subtotals" is="dom-repeat" items="[[activity.multiPx]]">                          
+                          <div class$="total-price shift[[index]]">[[_getSubTotalPrice(activity, index, nbSelectedHours)]]  [[localize('activity_currency')]]</div>
+                        </template>
+                      
+                    </template>
                     </template>
                   </div>
                 </div>
@@ -25040,6 +25091,11 @@ Custom property | Description | Default
           value: 'add'
         },
         
+        quantities: {
+          type: Array,
+          value: [{value:0},{value:0},{value:0},{value:0},{value:0},{value:0},{value:0},{value:0},{value:0},{value:0}]          
+        },      
+        
         quantity: {
           type:Number,
           observer:'_onQuantityChange'
@@ -25081,10 +25137,21 @@ Custom property | Description | Default
         
       },
       observers: [
-        '_itemChanged(activity, visible)'
+        '_itemChanged(activity, visible)',
+        '_onQuantitiesChange(quantities.*)'
       ],
-      _itemChanged: function (item, visible) {
-        if (visible) {
+      _quantitiesItem: function(change, index, path) {        
+        return this.get(path, change.base[index]);
+      },      
+      _getControlValueByIndex: function (index) {
+        if (this._isMultiPxFlag) {
+          var control = this.$$('#quantity_' + index);          
+          return control.value;
+        }
+        return 0;
+      },
+      _itemChanged: function (item, visible) {        
+        if (visible) {          
           this.previous = item.title;          
           if (this._isBookable) {
             this.async(function() {
@@ -25120,6 +25187,18 @@ Custom property | Description | Default
           this.set('mode', 'add');
         }
       },
+      _resetMultiPxControls: function () {
+        if (!this._isMultiPxFlag) {
+          var self = this;
+          var activity = this.get('activity');
+          var multiPx = activity.multiPx;          
+          multiPx.forEach(function (px, index) {            
+            var control = self.$$('#quantity_' + index);
+            control.max = 100;
+            control.checkActivation(0);
+          });
+        }
+      },
       _editModeReset: function (item) {
         var cartItem = globals.cart.getItemByIndex(this.get('index'));
         this.$$('#confirm').innerHTML = this.localize('activity_modify_button');
@@ -25129,10 +25208,14 @@ Custom property | Description | Default
         if (this._isMulti) {
           this.maxAvailability = 100;
         }        
-        if (this.$$('#quantity')) {
+        if (!this._isMultiPxFlag) {
+          // Set unique controle quantity
           this.$$('#quantity').max = this.maxAvailability;        
           this.$$('#quantity').checkActivation(cartItem.quantity);  
-        }        
+        } else {
+          // Reset all quantities of multiple prices
+          this._resetMultiPxControls();
+        } 
         // Force single selection        
         this.$$('#sessions').set('multi', false);
         // Force day mutation        
@@ -25151,9 +25234,13 @@ Custom property | Description | Default
         if (this._isMulti) {
           this.maxAvailability = 100;
         }
-        if (this.$$('#quantity')) {
+        if (!this._isMultiPxFlag) {
+          // Reset Quantity
           this.$$('#quantity').max = this.maxAvailability;
           this.$$('#quantity').checkActivation(1);
+        } else {
+          // Reset all quantities of multiple prices
+          this._resetMultiPxControls();
         }
         var queryParams = globals.router.queryParams;
         // Set multi selection mode for sessions components        
@@ -25191,7 +25278,7 @@ Custom property | Description | Default
         this._restoreMiniBasket();
       },
       _checkingOK: function () {
-        var quantity = this.$$('#quantity').get('value');
+        var quantity = this.$$('#quantity').get('value');        
         var nbHours = this.get('nbSelectedHours');
         var adjust = (nbHours < 1) ? 1 : nbHours;
         var max = this.maxAvailability;
@@ -25213,7 +25300,7 @@ Custom property | Description | Default
           }
         }        
       },
-      _confirm: function () {
+      _confirm: function () {        
         var self=this;
         var localize = this.localize;
         var activity = this.activity;
@@ -25292,9 +25379,24 @@ Custom property | Description | Default
         globals.router.set('route.path', '/basket');
         this.clearPendingItems();        
       },
-      _getTotalPrice: function (activity, quantity, factor) {
+      _getTotalPrice: function (activity, quantity, factor) {        
         var price = this._getFirstPrice(activity);        
         return this._formatPrice(price * quantity * factor * 100, 2);
+      },
+      _getSubTotalPrice: function (activity, index, factor) {
+        if (this._isMultiPxFlag) {
+          var code = this._getMultiPxPriceCodeByIndex(activity, index);
+          var firstHours = activity.dates[0].hours;
+          var firstHoursFiltered = firstHours.filter(function (item) {              
+            return item.code === code;
+          });        
+          var firstHour = firstHoursFiltered[0];        
+          var price = firstHour.price.value;
+          var quantity = this.$$('#quantity_' + index).value;        
+  
+          return this._formatPrice(price * quantity * factor, 2);
+        }
+        
       },
       _isStepHidden: function (pmr, currentStep, value) {
         return pmr && currentStep !== value;
@@ -25331,6 +25433,14 @@ Custom property | Description | Default
             }
           }        
         }        
+      },
+      _onQuantitiesChange: function (e) {        
+        this._onQuantityChange(e);
+      },
+      _quantitiesTap: function (e) {        
+        var index = e.model.index;
+        var newValue = this._getControlValueByIndex(index);
+        this.set('quantities.' + index + '.value', newValue);
       },
       checkScrollButtons: function () {
         this.contentChanged();
