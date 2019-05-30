@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">v1.3.9-2 - Muliple prices - partial 2</p>
+      <p class="version">v1.3.9-3 - Multiple prices - Partial 3</p>
     </div>
   </template>
 
@@ -24423,6 +24423,7 @@ Custom property | Description | Default
       _getFirstAvailableHour: function () {
         var hours = this.hours;
         var len = hours.length;
+        console.log('_getFirstAvailableHour', this.get('selectedQuantity'));
         for (var i=0; i<len; i++) {
           if (this.get('selectedQuantity') <= hours[i].availability) {
             return i;
@@ -24432,6 +24433,9 @@ Custom property | Description | Default
       },
       // Days part
       _dayChanged: function (day) {
+        console.log('_dayChanged');
+        console.log('selectedQuantity', this.get('selectedQuantity'));
+        this.get
         this.set('hours', null);
         this.set('startingHourIndex', 0);
         this.async(function() {
@@ -24485,11 +24489,15 @@ Custom property | Description | Default
         return moment(hour.begin, 'HH:mm:ss').format('HH:mm');
       },
       initSelectedHours: function () {
+        console.log('initSelectedHours');
+        console.log('selectedQuantity', this.get('selectedQuantity'));
         var len = this.get('hours').length;
         var aTmp = Array.apply(null, Array(len)).map(function() {return {'selected':false};});
         this.set('selectedHours', aTmp);
       },
       updateHour: function (index) {
+        console.log('updateHour');
+        console.log('selectedQuantity', this.get('selectedQuantity'));
         if (!this.multi) {
           // Reset previous selection in single selection mode
           this.initSelectedHours();
@@ -25008,7 +25016,7 @@ Custom property | Description | Default
                 <hr noshade="" hidden$="[[pmr]]">
                 <div class="right">
                   <p class="title">[[localize('activity_session_title')]]</p>
-                  <planet-kiosk-sessions id="sessions" selected-quantity="[[quantity]]" not-full="[[notFull]]" is-multi-px="[[_isMultiPx(activity)]]" nb-selected-hours="{{nbSelectedHours}}" dates="[[_getDates(activity,0,8)]]" nb-hour="[[_getNbHourDisplayed(pmr)]]" pmr="[[pmr]]" on-tap="checkScrollButtons">
+                  <planet-kiosk-sessions id="sessions" selected-quantity="[[selectedQuantity]]" not-full="[[notFull]]" is-multi-px="[[_isMultiPx(activity)]]" nb-selected-hours="{{nbSelectedHours}}" dates="[[_getDates(activity,0,8)]]" nb-hour="[[_getNbHourDisplayed(pmr)]]" pmr="[[pmr]]" on-tap="checkScrollButtons">
                   </planet-kiosk-sessions>
                 </div>
               </div>
@@ -25121,6 +25129,11 @@ Custom property | Description | Default
           observer:'_onQuantityChange'
         },
         
+        selectedQuantity: {
+          type: Number,
+          computed: '_getSelectedQuantity(quantity, quantities.*)'
+        },
+        
         nbSelectedHours: Number,
 
         activity: Object,
@@ -25162,7 +25175,26 @@ Custom property | Description | Default
       ],      
       _quantitiesItem: function(change, index, path) {        
         return this.get(path, change.base[index]);
-      },      
+      },
+      _getSelectedQuantity: function (quantity, quantities) {
+        console.log('_getSelectedQuantity');
+        console.log('quantity:', quantity);
+        console.log('quantities:', quantities);
+        if (!this._isMultiPxFlag) {          
+          return this.get('quantity');
+        } else {
+          // Force to have array of quantities of first init page
+          // of multiples prices activity
+          var tmpArrayOfQunatities = [];
+          if (typeof quantities !== 'undefined') {
+            tmpArrayOfQunatities = quantities.base;
+          } else {
+            tmpArrayOfQunatities = this.get('quantities');
+          }
+          // Return max of quantities
+          return Math.max.apply(Math, tmpArrayOfQunatities.map(function(o) { return o.value; }));
+        }
+      },
       _getControlValueByIndex: function (index) {
         if (this._isMultiPxFlag) {
           var control = this.$$('#quantity_' + index);          
@@ -25244,6 +25276,8 @@ Custom property | Description | Default
         } 
         // Force single selection        
         this.$$('#sessions').set('multi', false);
+        // Force selected-quantity
+        this.$$('#sessions').set('selectedQuantity', this._getSelectedQuantity(this.get('quantity')));
         // Force day mutation        
         this.$$('#sessions').set('day', null);
         this.$$('#sessions').set('day', cartItem.day);
@@ -25271,9 +25305,12 @@ Custom property | Description | Default
         var queryParams = globals.router.queryParams;
         // Set multi selection mode for sessions components        
         this.$$('#sessions').set('multi', this.get('_isMulti'));
+        // Force selected-quantity
+        this.$$('#sessions').set('selectedQuantity', this._getSelectedQuantity(this.get('quantity')));
         // Force day mutation
         this.$$('#sessions').set('day', null);
         this.$$('#sessions').set('day', queryParams['day'] ? queryParams['day'] : 0);
+        
         if (queryParams['hour']) {
           this.async(function() {
             this.$$('#sessions').set('hour', queryParams['hour']);
@@ -25452,10 +25489,8 @@ Custom property | Description | Default
         }
         return -1;
       },
-      _onQuantityChange: function (e) {
-        console.log(e)
+      _onQuantityChange: function (e) {        
         if (this._isMulti) {
-          console.log('multi');
           // Force day mutation for sub-template refresh
           var sessions = this.$$('#sessions');        
           if (sessions)  {
