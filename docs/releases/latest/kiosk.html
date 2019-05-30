@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">v1.3.9-3 - Multiple prices - Partial 3</p>
+      <p class="version">v1.3.9-4 - Multiple prices - Partial 4</p>
     </div>
   </template>
 
@@ -23018,6 +23018,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
       return this.localize('activity_agefromto', 'minAge', min, 'maxAge', max);
     },
+    _getAgeMultiPx: function (localize, item, index) {
+      var min = item.multiPx[index].age.min;
+      var max = item.multiPx[index].age.max;
+      if (min === null && max === null) {
+        return this.localize('activity_ageall');
+      }
+      if (min !== null && max === null) {
+        return this.localize('activity_agefrom' ,'age', min);
+      }
+      if (min === null && max !== null) {
+        return this.localize('activity_ageto' ,'age', max);
+      }
+      return this.localize('activity_agefromto', 'minAge', min, 'maxAge', max);
+    },
     _getMessageWarning: function (localize, item) {
       var min = item.age.min;
       if (min < 18) {
@@ -23030,6 +23044,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _getAgeWarning: function (localize, item, scope) {
       var min = item.age.min;
       var max = item.age.max;
+      if (min === null && max === null) {
+        return '';
+      }
+      if (min !== null && max === null) {
+        return this.localize(scope + '_from', 'minAge', min);
+      }
+      if (min === null && max !== null) {
+        return this.localize(scope + '_to', 'maxAge', max);
+      }
+      return this.localize(scope + '_from_to', 'minAge', min, 'maxAge', max);
+    },
+    _getAgeWarningMultiPx: function (localize, item, scope, index) {
+      var min = item.multiPx[index].age.min;
+      var max = item.multiPx[index].age.max;
       if (min === null && max === null) {
         return '';
       }
@@ -23086,6 +23114,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
       return 0;
     },
+    _getPriceMultiPx: function (localize, activity, day, hour, index) {      
+      var session = activity.dates[day];      
+      var hours = session.hours;
+      var code = this._getMultiPxPriceCodeByIndex(activity, index);
+      var hoursFiltered = hours.filter(function (item) {              
+        return item.code === code;
+      });
+      var hour = hoursFiltered[hour];
+      return this._formatPrice(hour.price.value, 2);
+    },
     _getFirstMultiPxPriceCode : function(item) {
       var firstCode = '';
       if (this._isMultiPx(item)) {
@@ -23097,6 +23135,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var mPxCode = '';
       if (this._isMultiPx(item)) {
         mPxCode = item.multiPx[index].code;
+      }
+      return mPxCode;
+    },
+    _getMultiPxTitleByIndex : function(item, index) {
+      var mPxCode = '';
+      if (this._isMultiPx(item)) {
+        mPxCode = item.multiPx[index].title;
       }
       return mPxCode;
     },
@@ -24422,8 +24467,7 @@ Custom property | Description | Default
       },      
       _getFirstAvailableHour: function () {
         var hours = this.hours;
-        var len = hours.length;
-        console.log('_getFirstAvailableHour', this.get('selectedQuantity'));
+        var len = hours.length;        
         for (var i=0; i<len; i++) {
           if (this.get('selectedQuantity') <= hours[i].availability) {
             return i;
@@ -24432,10 +24476,7 @@ Custom property | Description | Default
         return null;
       },
       // Days part
-      _dayChanged: function (day) {
-        console.log('_dayChanged');
-        console.log('selectedQuantity', this.get('selectedQuantity'));
-        this.get
+      _dayChanged: function (day) {                
         this.set('hours', null);
         this.set('startingHourIndex', 0);
         this.async(function() {
@@ -24488,16 +24529,12 @@ Custom property | Description | Default
       _getHourLabel: function (hour) {
         return moment(hour.begin, 'HH:mm:ss').format('HH:mm');
       },
-      initSelectedHours: function () {
-        console.log('initSelectedHours');
-        console.log('selectedQuantity', this.get('selectedQuantity'));
+      initSelectedHours: function () {        
         var len = this.get('hours').length;
         var aTmp = Array.apply(null, Array(len)).map(function() {return {'selected':false};});
         this.set('selectedHours', aTmp);
       },
-      updateHour: function (index) {
-        console.log('updateHour');
-        console.log('selectedQuantity', this.get('selectedQuantity'));
+      updateHour: function (index) {        
         if (!this.multi) {
           // Reset previous selection in single selection mode
           this.initSelectedHours();
@@ -24990,7 +25027,7 @@ Custom property | Description | Default
                     <template is="dom-if" if="[[_isMultiPxFlag]]">
                       <div class="layout vertical center-justified">
                         <template id="quantities" is="dom-repeat" items="[[activity.multiPx]]">
-                          <p class="quantity-title">[[item.title]]</p>
+                          <p id="quantity_title_[[index]]" class="quantity-title">[[item.title]]</p>
                           <planet-kiosk-quantity id="quantity_[[index]]" min="0" max="100" value="{{_quantitiesItem(quantities.*, index, 'value')}}" factor="[[nbSelectedHours]]" error-hidden="{{notFull}}" pmr="[[pmr]]" language="[[language]]" on-tap="_quantitiesTap"></planet-kiosk-quantity>
                         </template>
                       </div>
@@ -25006,7 +25043,7 @@ Custom property | Description | Default
                       
                       <template is="dom-if" if="[[_isMultiPxFlag]]">
                         <template id="subtotals" is="dom-repeat" items="[[activity.multiPx]]">                          
-                          <div class$="total-price shift[[index]]">[[_getSubTotalPrice(activity, index, nbSelectedHours, quantities.*)]]  [[localize('activity_currency')]]</div>
+                          <div id="total_price_[[index]]" class$="total-price shift[[index]]">[[_getSubTotalPrice(activity, index, nbSelectedHours, quantities.*)]]  [[localize('activity_currency')]]</div>
                         </template>
                       
                     </template>
@@ -25176,10 +25213,10 @@ Custom property | Description | Default
       _quantitiesItem: function(change, index, path) {        
         return this.get(path, change.base[index]);
       },
-      _getSelectedQuantity: function (quantity, quantities) {
-        console.log('_getSelectedQuantity');
-        console.log('quantity:', quantity);
-        console.log('quantities:', quantities);
+      _getMaxOfQuantities: function (quantities) {
+        return Math.max.apply(Math, quantities.map(function(o) { return o.value; }));
+      },
+      _getSelectedQuantity: function (quantity, quantities) {        
         if (!this._isMultiPxFlag) {          
           return this.get('quantity');
         } else {
@@ -25192,7 +25229,7 @@ Custom property | Description | Default
             tmpArrayOfQunatities = this.get('quantities');
           }
           // Return max of quantities
-          return Math.max.apply(Math, tmpArrayOfQunatities.map(function(o) { return o.value; }));
+          return this._getMaxOfQuantities(tmpArrayOfQunatities);
         }
       },
       _getControlValueByIndex: function (index) {
@@ -25240,7 +25277,7 @@ Custom property | Description | Default
           this.set('mode', 'add');
         }
       },
-      _resetMultiPxControls: function () {
+      _resetMultiPxControls: function (hide, multiPxIndex, quantity) {
         if (this._isMultiPxFlag) {
           var self = this;
           var activity = this.get('activity');
@@ -25250,15 +25287,34 @@ Custom property | Description | Default
             item.value = 0;
           });
           // Reset controls
-          multiPx.forEach(function (px, index) {            
+          multiPx.forEach(function (px, index) {
             var control = self.$$('#quantity_' + index);
+            var title = self.$$('#quantity_title_' + index);
+            var total = self.$$('#total_price_' + index);
+            // reset
+            control.hidden = false;
+            title.hidden = false;
+            total.hidden = false;
             control.max = 100;
-            control.checkActivation(0);
+            if (!hide) {              
+              control.checkActivation(0);
+            } else {
+              if (index === multiPxIndex) {
+                control.checkActivation(quantity);
+                self.quantities[multiPxIndex].value = quantity;
+                total.className = "total-price shift0 style-scope planet-kiosk-detail";
+              } else {
+                control.hidden = true;
+                title.hidden = true;
+                total.hidden = true;
+              }
+            }
           });
         }
       },
       _editModeReset: function (item) {
         var cartItem = globals.cart.getItemByIndex(this.get('index'));
+        
         this.$$('#confirm').innerHTML = this.localize('activity_modify_button');
         // Adjust Max with the quantity of the current edited cart item
         this.maxAvailability = this._getMaxAvailability(item) + cartItem.quantity;
@@ -25272,7 +25328,7 @@ Custom property | Description | Default
           this.$$('#quantity').checkActivation(cartItem.quantity);  
         } else {          
           // Reset all quantities of multiple prices
-          this._resetMultiPxControls();
+          this._resetMultiPxControls(true, cartItem.multiPxIndex, cartItem.quantity);
         } 
         // Force single selection        
         this.$$('#sessions').set('multi', false);
@@ -25341,15 +25397,16 @@ Custom property | Description | Default
         this._restoreMiniBasket();
       },
       _checkingOK: function () {
+        var nbHours = this.get('nbSelectedHours');
         if (!this._isMultiPxFlag) {
-          var quantity = this.$$('#quantity').get('value');        
-          var nbHours = this.get('nbSelectedHours');
+          var quantity = this.$$('#quantity').get('value');                  
           var adjust = (nbHours < 1) ? 1 : nbHours;
           var max = this.maxAvailability;
           var value = quantity * adjust;        
           return quantity > 0 && value <= max && nbHours > 0;
         } else {
-          return 0
+          var quantityMax = this._getMaxOfQuantities(this.get('quantities'));          
+          return quantityMax > 0 && nbHours > 0;
         }
       },
       _checkWarning : function () {
@@ -25372,34 +25429,70 @@ Custom property | Description | Default
         var localize = this.localize;
         var activity = this.activity;
         var day = this.$$('#sessions').get('day');
-        var quantity = this.$$('#quantity').get('value');
         var hours = this.$$('#sessions').get('selectedHours').reduce(function(a, e, i) {if (e.selected)a.push(i); return a;}, []);
         
         if (this._checkingOK()) {
-          
-          hours.forEach(function (hour) {
-            var item = {
-              "code": self.activity.code,
-              "day": day,
-              "hour": hour,
-              "title": self.activity.title,
-              "image": self.activity.image.normal,
-              "warning": self._getAgeWarning(localize, activity, 'activity_restriction'),
-              "session": self._getSessions(localize, activity, day, hour),
-              "date": self._getDate(localize, activity, day),
-              "begin": self._getBegin(localize, activity, day, hour),
-              "duration": self._getDuration(localize, activity, day, hour),
-              "age": self._getAge(self.localize, activity),
-              "location": self._getLocation(localize, activity, day, hour),
-              "quantity": quantity,
-              "unitPrice": self._getPrice(localize, activity, day, hour),
-              "price": self._getPrice(localize, activity, day, hour) * quantity,
-              "vatRate": self._getVatRare(localize, activity, day, hour),
-              "vatAmount": quantity * self._getVatAmount(localize, activity, day, hour),
-              "error": false
-            };
-            self.push('pendingItems', item);
-          });
+          if (!this._isMultiPxFlag) {            
+            var quantity = this.$$('#quantity').get('value');            
+            hours.forEach(function (hour) {
+              var item = {
+                "code": self.activity.code,
+                "subCode": self.activity.code,
+                "multiPxIndex": 0,
+                "day": day,
+                "hour": hour,
+                "title": self.activity.title,
+                "image": self.activity.image.normal,
+                "warning": self._getAgeWarning(localize, activity, 'activity_restriction'),
+                "session": self._getSessions(localize, activity, day, hour),
+                "date": self._getDate(localize, activity, day),
+                "begin": self._getBegin(localize, activity, day, hour),
+                "duration": self._getDuration(localize, activity, day, hour),
+                "age": self._getAge(self.localize, activity),
+                "location": self._getLocation(localize, activity, day, hour),
+                "quantity": quantity,
+                "unitPrice": self._getPrice(localize, activity, day, hour),
+                "price": self._getPrice(localize, activity, day, hour) * quantity,
+                "vatRate": self._getVatRare(localize, activity, day, hour),
+                "vatAmount": quantity * self._getVatAmount(localize, activity, day, hour),
+                "error": false
+              };
+              self.push('pendingItems', item);
+            });            
+          } else {            
+            var quantities = this.get('quantities');            
+            quantities.forEach(function (quantityItem, index) {
+              var quantity = quantityItem.value;
+              if (quantity > 0) {
+                var subCode = self._getMultiPxPriceCodeByIndex(activity, index);
+                hours.forEach(function (hour) {
+                  var item = {
+                    "code": self.activity.code,
+                    "subCode": subCode,
+                    "multiPxIndex": index,
+                    "day": day,
+                    "hour": hour,
+                    "title": self._getMultiPxTitleByIndex(activity, index),
+                    "image": self.activity.image.normal,
+                    "warning": self._getAgeWarningMultiPx(localize, activity, 'activity_restriction', index),
+                    "session": self._getSessions(localize, activity, day, hour),
+                    "date": self._getDate(localize, activity, day),
+                    "begin": self._getBegin(localize, activity, day, hour),
+                    "duration": self._getDuration(localize, activity, day, hour),
+                    "age": self._getAgeMultiPx(self.localize, activity, index),
+                    "location": self._getLocation(localize, activity, day, hour),
+                    "quantity": quantity,
+                    "unitPrice": self._getPriceMultiPx(localize, activity, day, hour, index),
+                    "price": self._getPriceMultiPx(localize, activity, day, hour, index) * quantity,
+                    "vatRate": self._getVatRare(localize, activity, day, hour),
+                    "vatAmount": quantity * self._getVatAmount(localize, activity, day, hour),
+                    "error": false
+                  };
+                  self.push('pendingItems', item);
+                });
+              }
+            });
+          }
           
           if (globals.token !== null) {
             this.addPendingItems();
@@ -25457,7 +25550,7 @@ Custom property | Description | Default
             var firstHours = activity.dates[0].hours;
             var firstHoursFiltered = firstHours.filter(function (item) {              
               return item.code === code;
-            });        
+            });
             var firstHour = firstHoursFiltered[0];        
             var price = firstHour.price.value;
             var quantity = this.$$('#quantity_' + index).value;        
@@ -25466,7 +25559,6 @@ Custom property | Description | Default
           }
           this._formatPrice(0, 2);  
         }
-        
       },
       _isStepHidden: function (pmr, currentStep, value) {
         return pmr && currentStep !== value;
@@ -32316,7 +32408,7 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
             "code": key,
             "sessions": groups[key].map(function(item) {
               return {
-                "code": item.code,
+                "code": item.subCode,                
                 "date": item.date,
                 "begin": item.begin,
                 "duration": item.duration,
@@ -34825,17 +34917,17 @@ Custom property | Description | Default
         },        
         _getItem: function(code, session) {
           return this.get('cart').find(function(entry) {
-              return entry.code === code && entry.session === session;
+              return entry.subCode === code && entry.session === session;
           });
         },
         _getItemIndex: function(code, session) {
           return this.get('cart').findIndex(function(entry) {
-              return entry.code === code && entry.session === session;
+              return entry.subCode === code && entry.session === session;
           });
         },
-        addItem: function(item) {
-          var found = this._getItem(item.code, item.session);
-          var index = this._getItemIndex(item.code, item.session);
+        addItem: function(item) {          
+          var found = this._getItem(item.subCode, item.session);
+          var index = this._getItemIndex(item.subCode, item.session);
           if (typeof(found) === 'undefined') {
               // add new item
               this.push('cart', item);
