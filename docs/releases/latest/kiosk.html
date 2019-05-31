@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">1.3.9-5 - Multiples prices - Partial 5</p>
+      <p class="version">1.3.9-6 - Multiples prices - Partial 6 - PMR</p>
     </div>
   </template>
 
@@ -24710,7 +24710,7 @@ Custom property | Description | Default
       }
       
       .closed .buttons {
-        bottom: 20em;        
+        bottom: 18em;        
       }
 
       .normal .left {
@@ -24761,55 +24761,55 @@ Custom property | Description | Default
       }
       
       .shift2 {        
-        top: 11.4em;
+        top: 11.5em;
       }
       
       .shift3 {        
-        top: 15.7em;
+        top: 15.8em;
       }
       
       .shift4 {        
-        top: 20em;
+        top: 20.2em;
       }
       
       .shift5 {        
-        top: 24.3em;
+        top: 24.6em;
       }
       
       .shift6 {        
-        top: 28.6em;
+        top: 29em;
       }
       
       .shift7 {        
-        top: 32.9em;
+        top: 33.4em;
       }
       
       .shift8 {        
-        top: 37.2em;
+        top: 37.8em;
       }
       
       .shift9 {        
-        top: 41.5em;
+        top: 42em;
       }
       
       .shift10 {        
-        top: 45.8em;
+        top: 46.4em;
       }
       
       .shift11 {        
-        top: 50.1em;
+        top: 50.8em;
       }
       
       .shift12 {        
-        top: 54.4em;
+        top: 55.2em;
       }
       
       .shift13 {        
-        top: 58.7em;
+        top: 59.6em;
       }
       
       .shift14 {        
-        top: 63em;
+        top: 64em;
       }
       
       planet-kiosk-scroll-button {
@@ -24917,6 +24917,7 @@ Custom property | Description | Default
         font-size: 0.6em;
         margin-top: 2em;
         margin-bottom: 0;
+        padding-bottom: 14em;
       }
 
       .pmr .form {
@@ -24952,6 +24953,66 @@ Custom property | Description | Default
 
       .pmr planet-kiosk-quantity {
         padding: 0;
+      }
+      
+      .pmr .shift0 {        
+        top: 1.6em;
+      }
+      
+      .pmr .shift1 {        
+        top: 4.8em;
+      }
+      
+      .pmr .shift2 {        
+        top: 8em;
+      }
+      
+      .pmr .shift3 {        
+        top: 11.2em;
+      }
+      
+      .pmr .shift4 {        
+        top: 14.4em;
+      }
+      
+      .pmr .shift5 {        
+        top: 17.6em;
+      }
+      
+      .pmr .shift6 {        
+        top: 20.8em;
+      }
+      
+      .pmr .shift7 {        
+        top: 24em;
+      }
+      
+      .pmr .shift8 {        
+        top: 27.2em;
+      }
+      
+      .pmr .shift9 {        
+        top: 30.4em;
+      }
+      
+      .pmr .shift10 {        
+        top: 33.6em;
+      }
+      
+      .pmr .shift11 {        
+        top: 36.8em;
+      }
+      
+      .pmr .shift12 {        
+        top: 40em;
+      }
+      
+      .pmr .shift13 {        
+        top: 43.2em;
+      }
+      
+      .pmr .shift14 {        
+        top: 46.4em;
       }
 
       .pmr .warning-wrapper {
@@ -25447,7 +25508,7 @@ Custom property | Description | Default
                 "session": self._getSessions(localize, activity, day, hour),
                 "date": self._getDate(localize, activity, day),
                 "begin": self._getBegin(localize, activity, day, hour),
-                "duration": self._getDuration(localize, activity, day, hour),
+                "duration": self._formatDuration(localize, activity),
                 "age": self._getAge(self.localize, activity),
                 "location": self._getLocation(localize, activity, day, hour),
                 "quantity": quantity,
@@ -25467,7 +25528,7 @@ Custom property | Description | Default
                 var subCode = self._getMultiPxPriceCodeByIndex(activity, index);
                 hours.forEach(function (hour) {
                   var item = {
-                    "code": subCode,
+                    "code": self.activity.code,
                     "subCode": subCode,
                     "multiPxIndex": index,
                     "day": day,
@@ -25478,7 +25539,7 @@ Custom property | Description | Default
                     "session": self._getSessions(localize, activity, day, hour),
                     "date": self._getDate(localize, activity, day),
                     "begin": self._getBegin(localize, activity, day, hour),
-                    "duration": self._getDuration(localize, activity, day, hour),
+                    "duration": self._formatDuration(localize, activity),
                     "age": self._getAgeMultiPx(self.localize, activity, index),
                     "location": self._getLocation(localize, activity, day, hour),
                     "quantity": quantity,
@@ -28773,10 +28834,7 @@ Mixin | Description | Default
         height: 12em;
       }
 
-      .pmr.column .duration {
-        position: absolute;
-        bottom: -1.4em;
-        right: 0.6em;
+      .pmr.column .duration {        
         font-size: 1.2em;
       }
 
@@ -31616,11 +31674,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <p class="warning" hidden$="[[!_hasWarning(entry.warning)]]"><iron-icon icon="misc:warning"></iron-icon>[[entry.warning]]</p>
           <p class="session">[[entry.session]]</p>
           <div class="wrapper">
-            <p class="duration">[[localize('activity_session', 'duration', entry.duration)]]</p>
+            <p class="duration" hidden="[[_isDurationEmpty(entry.duration)]]">[[entry.duration]]</p>
             <p class="location">[[entry.age]][[_getLocation(entry)]]</p>
           </div>        
           <div class="wrapper">          
-            <!--<paper-button class$="secondary[[_getConfirmClassOnError(entry.incorrect)]]" on-tap="_edit">[[localize('activity_modify_button')]]</paper-button>-->
+            <paper-button class$="secondary[[_getConfirmClassOnError(entry.incorrect)]]" on-tap="_edit">[[localize('activity_modify_button')]]</paper-button>
             <div class="error vertical layout center-justified" hidden$="[[!entry.incorrect]]">                        
               <template is="dom-repeat" items="{{entry.errors}}" as="error">                      
                 <p class="error-desc">[[error.title]]</p>
@@ -31747,6 +31805,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
     _isFree: function (price) {      
       return price === 0;
+    },
+    _isDurationEmpty: function (duration) {
+      return duration === '';
     }
   });
   </script>
