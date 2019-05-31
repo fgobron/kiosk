@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">v1.3.9-4 - Multiple prices - Partial 4</p>
+      <p class="version">1.3.9-5 - Multiples prices - Partial 5</p>
     </div>
   </template>
 
@@ -25467,7 +25467,7 @@ Custom property | Description | Default
                 var subCode = self._getMultiPxPriceCodeByIndex(activity, index);
                 hours.forEach(function (hour) {
                   var item = {
-                    "code": self.activity.code,
+                    "code": subCode,
                     "subCode": subCode,
                     "multiPxIndex": index,
                     "day": day,
@@ -31620,7 +31620,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <p class="location">[[entry.age]][[_getLocation(entry)]]</p>
           </div>        
           <div class="wrapper">          
-            <paper-button class$="secondary[[_getConfirmClassOnError(entry.incorrect)]]" on-tap="_edit">[[localize('activity_modify_button')]]</paper-button>
+            <!--<paper-button class$="secondary[[_getConfirmClassOnError(entry.incorrect)]]" on-tap="_edit">[[localize('activity_modify_button')]]</paper-button>-->
             <div class="error vertical layout center-justified" hidden$="[[!entry.incorrect]]">                        
               <template is="dom-repeat" items="{{entry.errors}}" as="error">                      
                 <p class="error-desc">[[error.title]]</p>
