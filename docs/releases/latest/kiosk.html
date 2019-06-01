@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">1.3.9-6 - Multiples prices - Partial 6 - PMR</p>
+      <p class="version style-scope planet-kiosk-lang">1.3.9-7 - Multiples prices - Partial 7 - Fix duration pb</p>
     </div>
   </template>
 
@@ -25508,7 +25508,8 @@ Custom property | Description | Default
                 "session": self._getSessions(localize, activity, day, hour),
                 "date": self._getDate(localize, activity, day),
                 "begin": self._getBegin(localize, activity, day, hour),
-                "duration": self._formatDuration(localize, activity),
+                "duration": self._getDuration(localize, activity, day, hour),
+                "durationLabel": self._formatDuration(localize, activity),
                 "age": self._getAge(self.localize, activity),
                 "location": self._getLocation(localize, activity, day, hour),
                 "quantity": quantity,
@@ -25539,7 +25540,8 @@ Custom property | Description | Default
                     "session": self._getSessions(localize, activity, day, hour),
                     "date": self._getDate(localize, activity, day),
                     "begin": self._getBegin(localize, activity, day, hour),
-                    "duration": self._formatDuration(localize, activity),
+                    "duration": self._getDuration(localize, activity, day, hour),
+                    "durationLabel": self._formatDuration(localize, activity),
                     "age": self._getAgeMultiPx(self.localize, activity, index),
                     "location": self._getLocation(localize, activity, day, hour),
                     "quantity": quantity,
@@ -31674,7 +31676,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <p class="warning" hidden$="[[!_hasWarning(entry.warning)]]"><iron-icon icon="misc:warning"></iron-icon>[[entry.warning]]</p>
           <p class="session">[[entry.session]]</p>
           <div class="wrapper">
-            <p class="duration" hidden="[[_isDurationEmpty(entry.duration)]]">[[entry.duration]]</p>
+            <p class="duration" hidden="[[_isDurationEmpty(entry.durationLabel)]]">[[entry.durationLabel]]</p>
             <p class="location">[[entry.age]][[_getLocation(entry)]]</p>
           </div>        
           <div class="wrapper">          
@@ -31806,8 +31808,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _isFree: function (price) {      
       return price === 0;
     },
-    _isDurationEmpty: function (duration) {
-      return duration === '';
+    _isDurationEmpty: function (durationLabel) {
+      return durationLabel === '';
     }
   });
   </script>
