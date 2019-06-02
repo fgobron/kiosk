@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version style-scope planet-kiosk-lang">1.3.9-7 - Multiples prices - Partial 7 - Fix duration pb</p>
+      <p class="version style-scope planet-kiosk-lang">1.3.9-8 - Multiples prices - Partial 8 - Fix refresh pb</p>
     </div>
   </template>
 
@@ -25219,7 +25219,7 @@ Custom property | Description | Default
         
         quantities: {
           type: Array,
-          value: [{value:0},{value:0},{value:0},{value:0},{value:0},{value:0},{value:0},{value:0},{value:0},{value:0},{value:0},{value:0},{value:0},{value:0},{value:0}]
+          value: []
         },      
         
         quantity: {
@@ -25338,15 +25338,15 @@ Custom property | Description | Default
           this.set('mode', 'add');
         }
       },
+      _resetQuantitiesArray: function () {
+        // Reset quantities array
+        this.splice("quantities", 0, this.quantities.length);
+      },
       _resetMultiPxControls: function (hide, multiPxIndex, quantity) {
         if (this._isMultiPxFlag) {
           var self = this;
           var activity = this.get('activity');
-          var multiPx = activity.multiPx;
-          // Reset quantities array
-          this.get('quantities').forEach(function (item) {
-            item.value = 0;
-          });
+          var multiPx = activity.multiPx;          
           // Reset controls
           multiPx.forEach(function (px, index) {
             var control = self.$$('#quantity_' + index);
@@ -25356,15 +25356,18 @@ Custom property | Description | Default
             control.hidden = false;
             title.hidden = false;
             total.hidden = false;
+            total.className = "total-price shift" + index + " style-scope planet-kiosk-detail";
             control.max = 100;
             if (!hide) {              
               control.checkActivation(0);
+              self.splice('quantities', index, 1, {value:0});
             } else {
               if (index === multiPxIndex) {
                 control.checkActivation(quantity);
-                self.quantities[multiPxIndex].value = quantity;
+                self.splice('quantities', multiPxIndex, 1, {value:quantity});                
                 total.className = "total-price shift0 style-scope planet-kiosk-detail";
               } else {
+                self.splice('quantities', index, 1, {value:0});
                 control.hidden = true;
                 title.hidden = true;
                 total.hidden = true;
@@ -25375,7 +25378,7 @@ Custom property | Description | Default
       },
       _editModeReset: function (item) {
         var cartItem = globals.cart.getItemByIndex(this.get('index'));
-        
+        this._resetQuantitiesArray();
         this.$$('#confirm').innerHTML = this.localize('activity_modify_button');
         // Adjust Max with the quantity of the current edited cart item
         this.maxAvailability = this._getMaxAvailability(item) + cartItem.quantity;
@@ -25405,6 +25408,7 @@ Custom property | Description | Default
         });
       },
       _addModeReset: function (item) {
+        this._resetQuantitiesArray();
         this.$$('#confirm').innerHTML = this.localize('activity_add_button');
         this.maxAvailability = this._getMaxAvailability(item);
         // Dirty Hack to shunt max avaibility for facilities
@@ -25606,7 +25610,7 @@ Custom property | Description | Default
         var price = this._getFirstPrice(activity);        
         return this._formatPrice(price * quantity * factor * 100, 2);
       },
-      _getSubTotalPrice: function (activity, index, factor) {
+      _getSubTotalPrice: function (activity, index, factor, quantities) {        
         if (this._isMultiPxFlag) {
           if (index < activity.multiPx.length) {
             var code = this._getMultiPxPriceCodeByIndex(activity, index);
