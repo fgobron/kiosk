@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">1.3.9-9 - Multiples prices - Partial 9 - PMR Corrections</p>
+      <p class="version">1.3.9-10 - Multiples prices - Partial 10</p>
     </div>
   </template>
 
@@ -24932,8 +24932,18 @@ Custom property | Description | Default
         padding: 0;
       }
       
+      .pmr .quantity-wrapper {
+        position: relative;
+        width: 37em;        
+      }
+      
       .pmr p.quantity-title {
         font-size: 2.2em !important;
+        position: relative;
+        top: 0;
+        width: 17em;
+        height: 2em;
+        overflow:hidden;        
       }
 
       .pmr .left, .pmr .right {
@@ -24960,63 +24970,63 @@ Custom property | Description | Default
       }
       
       .pmr .shift0 {        
-        top: 2.2em;
+        top: 2.6em;
       }
       
       .pmr .shift1 {        
-        top: 6em;
+        top: 6.8em;
       }
       
       .pmr .shift2 {        
-        top: 9.8em;
+        top: 11em;
       }
       
       .pmr .shift3 {        
-        top: 13.6em;
+        top: 15.3em;
       }
       
       .pmr .shift4 {        
-        top: 17.5em;
+        top: 19.4em;
       }
       
       .pmr .shift5 {        
-        top: 21.4em;
+        top: 23.7em;
       }
       
       .pmr .shift6 {        
-        top: 25.2em;
+        top: 27.8em;
       }
       
       .pmr .shift7 {        
-        top: 29em;
+        top: 32.1em;
       }
       
       .pmr .shift8 {        
-        top: 32.8em;
+        top: 36.3em;
       }
       
       .pmr .shift9 {        
-        top: 36.8em;
-      }
-      
-      .pmr .shift10 {        
         top: 40.5em;
       }
       
+      .pmr .shift10 {        
+        top: 44.7em;
+      }
+      
       .pmr .shift11 {        
-        top: 44.2em;
+        top: 49em;
       }
       
       .pmr .shift12 {        
-        top: 48.2em;
+        top: 53.2em;
       }
       
       .pmr .shift13 {        
-        top: 52em;
+        top: 57.3em;
       }
       
       .pmr .shift14 {        
-        top: 55.8em;
+        top: 61.6em;
       }
 
       .pmr .warning-wrapper {
@@ -25092,8 +25102,10 @@ Custom property | Description | Default
                     <template is="dom-if" if="[[_isMultiPxFlag]]">
                       <div class="layout vertical center-justified">
                         <template id="quantities" is="dom-repeat" items="[[activity.multiPx]]">
-                          <p id="quantity_title_[[index]]" class="quantity-title">[[item.title]]</p>
-                          <planet-kiosk-quantity id="quantity_[[index]]" min="0" max="100" value="{{_quantitiesItem(quantities.*, index, 'value')}}" factor="[[nbSelectedHours]]" error-hidden="{{notFull}}" pmr="[[pmr]]" language="[[language]]" on-tap="_quantitiesTap"></planet-kiosk-quantity>
+                          <div class="quantity-wrapper">
+                            <p id="quantity_title_[[index]]" class="quantity-title">[[item.title]]</p>
+                            <planet-kiosk-quantity id="quantity_[[index]]" min="0" max="100" value="{{_quantitiesItem(quantities.*, index, 'value')}}" factor="[[nbSelectedHours]]" error-hidden="{{notFull}}" pmr="[[pmr]]" language="[[language]]" on-tap="_quantitiesTap"></planet-kiosk-quantity>
+                          </div>
                         </template>
                       </div>
                     </template>
