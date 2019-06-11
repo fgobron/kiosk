@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">        
       </div>
-      <p class="version">v1.3.9-1 - Multiples prices - patch 1</p>
+      <p class="version">v1.3.9(-2) - Multiple Prices - Patch 2 tag</p>
     </div>
   </template>
 
@@ -32399,9 +32399,9 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
       _getProducts: function () {
         var products = [];
         this.cart.forEach(function (item) {          
-          var stamp = item.date.replace(/-/g, '') + item.begin.replace(/:/g, '');
+          var stamp = item.date.replace(/-/g, '') + item.begin.replace(/:/g, '');          
           var current = {
-            'sku': item.code + '_' + stamp,
+            'sku': item.subCode + '_' + stamp,
             'name': item.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ""),
             'category': globals.siteCode + ' - ' + item.date + ' | ' + item.begin,
             'quantity': item.quantity,
