@@ -12,13 +12,13 @@
         font-size: 10px;
         touch-action: pan-y;
       }
-    
+
       body {
         margin: 0;
         background-color: #e5e9e6;
-        -webkit-user-select: none;      
+        -webkit-user-select: none;
       }
-      
+
       #progressContainer {
         position: relative;
         top: 970px;
@@ -26,7 +26,7 @@
         background: #e0e0e0;
         width: 400px;
       }
-      
+
       .progress-line, .progress-line:before {
         height: 3px;
         width: 100%;
@@ -53,34 +53,34 @@
         50% { margin-left: 25%; margin-right: 0%; }
         100% { margin-left: 100%; margin-right: 0; }
       }
-      
-      iframe, iframe.pmr.map{        
+
+      iframe, iframe.pmr.map{
         border:0;
         width: 1080px;
         height: 1920px;
       }
-      
+
       iframe.pmr {
         position: fixed;
         bottom: 0;
-        height: 570px;        
+        height: 570px;
       }
-      
-      ::-webkit-scrollbar { 
-        display: none; 
+
+      ::-webkit-scrollbar {
+        display: none;
       }
     </style>
     <script>
       // Inactivity handler
-      if (MBirdSdk.isConnected()) {        
+      if (MBirdSdk.isConnected()) {
         MBirdSdk.App.OnInactivity(function () {
           var kioskContainer = document.getElementById('kiosk');
           kioskContainer.contentWindow.postMessage('inactivity', '*');
         });
       }
-      
+
       function loaded () {
-        var progressContainer = document.getElementById('progressContainer');        
+        var progressContainer = document.getElementById('progressContainer');
         progressContainer.style.display = 'none';
       }
     </script>

@@ -4,7 +4,7 @@
 
     <title>planet-kiosk</title>
     <meta name="description" content="planet-kiosk description">
-    
+
     <link rel="icon" href="./images/favicon.ico">
 
     <link rel="manifest" href="./manifest.json">
@@ -14,10 +14,10 @@
     <script src="./bower_components/moment/min/moment.min.js"></script>
     <script src="./bower_components/moment/locale/fr.js"></script>
     <script src="./bower_components/moment/locale/de.js"></script>
-    <script src="./bower_components/moment/locale/nl.js"></script>    
+    <script src="./bower_components/moment/locale/nl.js"></script>
     <script src="./libs/mbird-jssdk.js"></script>
     <script src="./libs/smoothscroll.js"></script>
-    
+
     </head>
   <body><div hidden="" by-vulcanize=""><!--
 @license
@@ -9831,7 +9831,7 @@ Or, in a Polymer element, you can include a meta in your template:
     :root {
       /* General colors  */
       --planet-color-white: #fff;
-      --planet-color-black: #000;      
+      --planet-color-black: #000;
       --planet-color-algae: #5fa765;
       --planet-color-softGreen: #78bd7e;
       --planet-color-grayish: #f5f9f5;
@@ -9841,19 +9841,19 @@ Or, in a Polymer element, you can include a meta in your template:
       --planet-color-paleRed: #cb2b2b;
       --planet-color-tealish: #27afd0;
       --planet-color-whiteTwo: #d4d4d4;
-      --planet-color-lightGrey: #e9eee9;      
+      --planet-color-lightGrey: #e9eee9;
       --planet-color-grey: #8c8d8c;
-      
+
       /* Main flat colors */
       --planet-color-theme-primary: var(--planet-color-algae);
       --planet-color-theme-warning: var(--planet-color-paleRed);
       --planet-color-theme-opposite: var(--planet-color-white);
-      
+
       --planet-color-theme-mainbg: var(--planet-color-grayish);
       --planet-color-theme-blockbg: var(--planet-color-white);
-      --planet-color-theme-infobg: var(--planet-color-lightGrey);      
-      
-      --planet-color-theme-maintitle: var(--planet-color-algae);      
+      --planet-color-theme-infobg: var(--planet-color-lightGrey);
+
+      --planet-color-theme-maintitle: var(--planet-color-algae);
       --planet-color-theme-title: var(--planet-color-charcoalGrey);
       --planet-color-theme-message: var(--planet-color-charcoalGrey);
       --planet-color-theme-price: var(--planet-color-charcoalGrey);
@@ -9861,15 +9861,15 @@ Or, in a Polymer element, you can include a meta in your template:
       --planet-color-theme-cancel: var(--planet-color-charcoalGrey);
       --planet-color-theme-confirm: var(--planet-color-white);
       --planet-color-theme-btn: var(--planet-color-mediumGrey);
-      --planet-color-theme-information: var(--planet-color-algae);      
-      --planet-color-theme-desc: var(--planet-color-mediumGrey);      
+      --planet-color-theme-information: var(--planet-color-algae);
+      --planet-color-theme-desc: var(--planet-color-mediumGrey);
       --planet-color-theme-sub: var(--planet-color-tealish);
       --planet-color-theme-disabled: var(--planet-color-whiteTwo);
-      
+
       --planet-color-theme-border: var(--planet-color-coolGrey);
       --planet-color-theme-border-btn: var(--planet-color-grey);
       --planet-color-theme-border-sep: var(--planet-color-mediumGrey);
-            
+
       --planet-font-family-heavy: "AvenirLTStd-Heavy", "Avenir LT Std 85 Heavy";
       --planet-font-family-black: "AvenirLTStd-Black", "Avenir LT Std 95 Black";
       --planet-font-family-book: "AvenirLTStd-Book", "Avenir LT Std 45 Book";
@@ -9880,35 +9880,35 @@ Or, in a Polymer element, you can include a meta in your template:
     }
 
     /* Fonts */
-    
+
     @font-face {
       font-family: 'Avenir LT Std 85 Heavy';
       font-style: normal;
       font-weight: normal;
       src: local('Avenir LT Std 85 Heavy'), url("fonts/AvenirLTStd/AvenirLTStd-Heavy.otf") format('truetype');
     }
-    
+
     @font-face {
       font-family: 'Avenir LT Std 95 Black';
       font-style: normal;
       font-weight: normal;
       src: local('Avenir LT Std 95 Black'), url("fonts/AvenirLTStd/AvenirLTStd-Black.otf") format('truetype');
     }
-    
+
     @font-face {
       font-family: 'Avenir LT Std 45 Book';
       font-style: normal;
       font-weight: normal;
       src: local('Avenir LT Std 45 Book'), url("fonts/AvenirLTStd/AvenirLTStd-Book.otf") format('truetype');
     }
-    
+
     @font-face {
       font-family: 'Avenir LT Std 65 Medium';
       font-style: normal;
       font-weight: normal;
       src: local('Avenir LT Std 65 Medium'), url("fonts/AvenirLTStd/AvenirLTStd-Medium.otf") format('truetype');
     }
-    
+
     @font-face {
       font-family: 'Avenir LT Std 55 Roman';
       font-style: normal;
@@ -9922,34 +9922,34 @@ Or, in a Polymer element, you can include a meta in your template:
       font-weight: normal;
       src: local('Latin Modern Mono'), url("fonts/Latin-Modern-Mono/lmmono10-regular.otf") format('truetype');
     }
-    
+
     html {
       font-size: 10px;
       touch-action: pan-y;
     }
-    
+
     body {
       font-size: 10px;
       margin: 0;
       background-color: var(--planet-color-theme-mainbg);
-      width: 108em;      
-      -webkit-user-select: none;      
+      width: 108em;
+      -webkit-user-select: none;
     }
-    
-    ::-webkit-scrollbar { 
+
+    ::-webkit-scrollbar {
       display: none;
-      width: 0px; 
-      background: transparent; 
+      width: 0px;
+      background: transparent;
     }
-    
+
     iron-overlay-backdrop {
       --iron-overlay-backdrop-background-color: var(--planet-color-theme-mainbg);
-      --iron-overlay-backdrop-opacity: 0.96;    
+      --iron-overlay-backdrop-opacity: 0.96;
     }
-</style> <dom-module id="planet-kiosk-services" assetpath="src/planet-kiosk-app/">  
-  <script>  
+</style><dom-module id="planet-kiosk-services" assetpath="src/planet-kiosk-app/">
+  <script>
   Polymer({
-    is: 'planet-kiosk-services',    
+    is: 'planet-kiosk-services',
     // Always fullfilled promise
     // kioskId error managment in index.html
     getNestIdentifier : function () {
@@ -9972,7 +9972,7 @@ Or, in a Polymer element, you can include a meta in your template:
       var promise = new Promise(function(resolve, reject) {
         if (MBirdSdk.isConnected()) {
           MBirdSdk.Peripherals.Status().then(function (result) {
-            resolve(result.IsPaymentAvailable && result.IsPrinterAvailable);  
+            resolve(result.IsPaymentAvailable && result.IsPrinterAvailable);
           }).catch(function (error) {
             resolve(-1);
           });
@@ -14045,7 +14045,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 			h-4v8h4v4h-4v4h8V52z M48,72v4h4v-4h4v4h4v-8H48v-8h-4v12H48z M36,56h4v4h4v-4h4v-4H36V56z M44,48h4v-4h-4V48z M48,48v4h4v-4H48z
 			 M64,48v-4h-4v4H64z M68,40h-4v4h4V40z M72,40v8h4v-8H72z M72,56v4h4v-4h4v-4h4v-8h-4v4h-4v4h-8v4H72z M64,60h4v-4h-4V60z M80,6v4
 			h10v10h4V6H80z M10,10h10V6H6v14h4V10z M10,80H6v14h14v-4H10V80z M90,90H80v4h14V80h-4V90z M84,60v-4h-4v4H84z"></path>
-      </g>      
+      </g>
       <g id="nfc">
         <path d="M86.585,18.383L72.538,4.335c-2.836-1.438-5.719-1.001-8.59-0.163
           c-4.605,1.344-8.756,3.636-12.773,6.193c-5.724,3.646-11.015,7.852-16.02,12.427c-0.374,0.341-0.788,0.637-1.183,0.954
@@ -14095,7 +14095,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           c1.836-2.021,1.836-6.304,0-8.323c-1.151-1.368-1.68-1.488-6.03-1.488c-5.609,0-6.344-0.947-0.995-1.306
           c4.612-0.299,5.714-1.427,5.714-5.826c0-4.339-1.048-5.409-5.661-5.825c-3.671-0.297-5.348-1.308-2.202-1.308
           c3.723,0,5.663-6.063,3.093-9.749l-1.05-1.545l-17.932,0.06C55.417,31.516,49.805,31.753,48.286,32.288z"></path>
-        <polygon fill-rule="evenodd" clip-rule="evenodd" points="3.978,55.53 3.978,74.851 12.106,74.851 20.233,74.851 20.233,55.53 
+        <polygon fill-rule="evenodd" clip-rule="evenodd" points="3.978,55.53 3.978,74.851 12.106,74.851 20.233,74.851 20.233,55.53
           20.233,36.211 12.106,36.211 3.978,36.211 	"></polygon>
         <path fill-rule="evenodd" clip-rule="evenodd" d="M21.859,41.205c-0.368,0.536-0.578,2.378-0.472,4.934l0.157,4.043l3.041,0.178
           l3.041,0.179l-0.158-4.935l-0.156-4.934l-2.413-0.178C23.274,40.373,22.277,40.611,21.859,41.205z"></path>
@@ -14187,7 +14187,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         text-align: center;
         margin: 0 5em;
       }
-      
+
       .message {
         font-size: 4em;
         font-family: var(--planet-font-family-book);
@@ -14195,13 +14195,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         text-align: center;
         margin: 1em 0 2em 0;
       }
-      
+
       .info {
         font-size: 3em;
         font-family: var(--planet-font-family-book);
         color: var(--planet-color-theme-desc);
         text-align: center;
-        margin: 1em 0 2em 0;        
+        margin: 1em 0 2em 0;
       }
       </style>
     </template>
@@ -14220,16 +14220,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             outline: none;
             @apply(--shadow-elevation-4dp);
         }
-        
+
         input[aria-invalid]:invalid {
             border: 2px solid var(--planet-color-theme-warning);
-            box-shadow: none;   
+            box-shadow: none;
         }
-        
+
         ::-webkit-input-placeholder {
             color: var(--planet-color-theme-desc);
         }
-        
+
         input.date {
           margin-left: 1.5em;
           text-align: center;
@@ -14238,13 +14238,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         input.dd,
         input.mm {
-            width: 6.7em;            
+            width: 6.7em;
         }
-        
+
         input.yyyy {
-            width: 7.65em;            
+            width: 7.65em;
         }
-        
+
         label {
             font-family: var(--planet-font-family-heavy);
             color: var(--planet-color-theme-title);
@@ -14260,11 +14260,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           font-size: 2em;
           text-transform: uppercase;
           border-radius: 4.4em;
-          width: 22em;         
+          width: 22em;
           padding: 1.2em 2em 1em 2em;
           margin: 0 1em;
         }
-        
+
         paper-button.cancel {
           font-family: var(--planet-font-family-heavy);
           color: var(--planet-color-theme-cancel);
@@ -14272,18 +14272,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           border: 1px solid var(--planet-color-theme-border-btn);
           text-align: center;
         }
-   
+
         paper-button.confirm {
           font-family: var(--planet-font-family-heavy);
           color: var(--planet-color-theme-confirm);
           background-color: var(--planet-color-theme-primary);
           text-align: center;
         }
-        
+
         paper-button.detail {
-          width: 18em;         
+          width: 18em;
         }
-        
+
         paper-button.secondary {
           font-size: 2em;
           font-family: var(--planet-font-family-book);
@@ -14291,17 +14291,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           background-color: transparent;
           border: 1px solid var(--planet-color-theme-border-btn);
           text-transform: none;
-          border-radius: 4.4em;          
+          border-radius: 4.4em;
           padding: 1.2em 2em 1em 2em;
-          margin: 0.4em 0;          
+          margin: 0.4em 0;
         }
-        
+
         paper-button.secondary.confirm {
           color: var(--planet-color-theme-confirm);
           background-color: var(--planet-color-theme-primary);
           border: none;
         }
-        
+
         paper-button.tertiary {
           font-size: 2em;
           font-family: var(--planet-font-family-book);
@@ -14309,11 +14309,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           background-color: transparent;
           border: 1px solid var(--planet-color-theme-border-btn);
           border-radius: 4.4em;
-          width: 6em;         
+          width: 6em;
           padding: 1em 1.8em 0.8em 1.8em;
           margin: 0.4em 0;
         }
-        
+
       </style>
     </template>
 </dom-module><script>
@@ -14332,7 +14332,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _isPMRActive: function (pmr) {
       return pmr;
     },
-    _getPMRClass: function (pmr) {      
+    _getPMRClass: function (pmr) {
       return pmr ? 'pmr': '';
     },
     _pmrChanged: function() {
@@ -14350,18 +14350,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 ActivitiesBehavior = {
   properties: {
     activities: {
-      type: Object      
+      type: Object
     }
   },
-  _getActivityIndex: function (item) {    
+  _getActivityIndex: function (item) {
     return this.get('activities').indexOf(item);
   },
-  _getActivityByCode: function (code) {    
-    return this.get('activities').find(function (activity) {      
+  _getActivityByCode: function (code) {
+    return this.get('activities').find(function (activity) {
       return activity.code === code;
     });
   },
-  _getActivityIndexByCode: function (code) {    
+  _getActivityIndexByCode: function (code) {
     return this._getActivityIndex(this._getActivityByCode(code));
   }
 };
@@ -15591,23 +15591,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         text-decoration: none;
         margin: 0 0 5em 5em;
       }
-      
-      .card-container:active {        
+
+      .card-container:active {
         transform: scale(0.98);
       }
-  
+
       paper-card {
-        display: block;             
+        display: block;
         width: 46.5em;
         height: 52em;
         border-radius: 1em;
       }
-      
+
       .card-content {
         text-align: center;
         padding-top: 18.5em;
       }
-  
+
       .card-content h3 {
         font-size: 4em;
         font-family: var(--planet-font-family-heavy);
@@ -15641,21 +15641,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
     </style>
-    
+
     <a href="#/hub" class$="card-container [[_getPMRClass(pmr)]]">
       <paper-card elevation="3">
         <div class="card-content">
           <img src="./images/[[lang]].png">
-          <h3>[[_getBlockTitle(localize, lang)]]</h3>                
-        </div>              
+          <h3>[[_getBlockTitle(localize, lang)]]</h3>
+        </div>
       </paper-card>
     </a>
-    
+
   <iron-meta-query id="appconfig" key="config" value="{{appconfig}}"></iron-meta-query>
-  <iron-ajax id="activitiesrequest" url="[[appconfig.api]]/getBookingParisActivities?lang=[[language]]&amp;showMultiPx=1&amp;timestamp=[[_getTimestamp()]]&amp;dateFrom=[[_getDateFrom()]]&amp;dateTo=[[_getDateTo()]]" on-response="_onActivitiesResponse" last-response="{{activities}}" on-error="_onActivitiesError"></iron-ajax> 
+  <iron-ajax id="activitiesrequest" url="[[appconfig.api]]/getBookingParisActivities?lang=[[language]]&amp;showMultiPx=1&amp;timestamp=[[_getTimestamp()]]&amp;dateFrom=[[_getDateFrom()]]&amp;dateTo=[[_getDateTo()]]" on-response="_onActivitiesResponse" last-response="{{activities}}" on-error="_onActivitiesError"></iron-ajax>
   </template>
 
-  <script>  
+  <script>
   Polymer({
     is: 'planet-kiosk-lang-block',
     behaviors: [
@@ -15671,9 +15671,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         type: String
       },
       activities: Object
-    },    
+    },
     _changeLanguage: function (e) {
-      e.preventDefault();      
+      e.preventDefault();
       var main = document.querySelector('planet-kiosk-app');
       globals.language = this.lang;
       main.language = this.lang;
@@ -15687,7 +15687,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var ironRequest = activitiesRequest.generateRequest();
       ironRequest.addEventListener('progress-changed', this._onProgressChanged.bind(this));
       this.setDataLayerItem('language', this.lang);
-      this.trackEvent('Language selection', 'choose language', this.lang, 'noevent');      
+      this.trackEvent('Language selection', 'choose language', this.lang, 'noevent');
     },
     _getDateFrom: function () {
       return moment().format('YYYY-MM-DD');
@@ -15696,16 +15696,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var dateTo = moment().add(7, 'days');
       return dateTo.format('YYYY-MM-DD');
     },
-    _getTimestamp: function() {      
+    _getTimestamp: function() {
       return moment().format('YYYYMMDDHH');
     },
-    _getBlockTitle: function (localize, lang) {      
+    _getBlockTitle: function (localize, lang) {
       return this.localize('language_' + this.lang);
     },
-    _getPercentResponse: function (progress) {      
+    _getPercentResponse: function (progress) {
       return Math.round(progress.loaded * 100 / progress.total);
     },
-    _onProgressChanged: function (e) {      
+    _onProgressChanged: function (e) {
       var xhr = e.target;
       globals.loader.progress = this._getPercentResponse(xhr.progress);
     },
@@ -15794,9 +15794,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <div class="payment">
         <p>[[localize('language_payment_desc')]]</p>
-        <img src="images/cb.png">        
+        <img src="images/cb.png">
       </div>
-      <p class="version">v1.4.0 - Maps BF</p>
+      <p class="version">v1.4.1 Hours prices</p>
     </div>
   </template>
 
@@ -15817,49 +15817,49 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="planet-kiosk-hub-block" assetpath="src/planet-kiosk-app/">
   <template>
     <style include="iron-flex iron-flex-alignment">
-      
+
       .card-container {
         display: block;
         float: left;
         text-decoration: none;
-        margin: 0 0 5em 5em;        
+        margin: 0 0 5em 5em;
       }
-      
-      .card-container:active {        
+
+      .card-container:active {
         transform: scale(0.98);
       }
-  
+
       paper-card {
-        display: block;             
+        display: block;
         width: 46.5em;
         height: 52em;
-        border-radius: 1em;        
+        border-radius: 1em;
       }
-      
+
       .card-content iron-icon {
         width:7.4em;
         height:7.4em;
         margin-bottom: 2em;
         color: var(--planet-color-theme-primary);
       }
-  
-      .card-content h3 {        
+
+      .card-content h3 {
         font-size: 4em;
         font-family: var(--planet-font-family-heavy);
         color: var(--planet-color-theme-title);
-        width: 8.1em;        
+        width: 8.1em;
         overflow: hidden;
-        margin: 0;        
+        margin: 0;
         text-align: center;
         @apply --layout;
         @apply --layout-center-justified;
         @apply --layout-center;
       }
-      
+
       .card-content p {
-        font-size: 2em;        
+        font-size: 2em;
         font-family: var(--planet-font-family-book);
-        color: var(--planet-color-theme-desc);        
+        color: var(--planet-color-theme-desc);
         margin: 1em 1.5em;
       }
 
@@ -15891,20 +15891,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
     </style>
-    
+
     <a class$="card-container [[_getPMRClass(pmr)]]" href="[[_getPage(suffix)]]" on-tap="_track">
       <paper-card class="vertical layout center-justified" elevation="3">
         <div class="card-content vertical layout center">
           <iron-icon icon="[[prefix]]:[[suffix]]"></iron-icon>
           <h3>[[_getBlockTitle(localize, prefix, suffix)]]</h3>
           <p>[[_getBlockDesc(localize, prefix, suffix)]]</p>
-        </div>              
+        </div>
       </paper-card>
     </a>
-    
+
   </template>
 
-  <script>  
+  <script>
   Polymer({
     is: 'planet-kiosk-hub-block',
     behaviors: [
@@ -15949,12 +15949,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           break;
         default:
           return '';
-      }      
+      }
     },
-    _getBlockTitle: function (localize, prefix, suffix) {      
+    _getBlockTitle: function (localize, prefix, suffix) {
       return this.localize('' + this._getReformedPrefix(prefix) + 'hub_title_' + suffix);
     },
-    _getBlockDesc: function (localize, prefix, suffix) {      
+    _getBlockDesc: function (localize, prefix, suffix) {
       return this.localize('' + this._getReformedPrefix(prefix) + 'hub_desc_' + suffix);
     },
     _getReformedPrefix: function (prefix) {
@@ -15966,7 +15966,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           return ''
       }
     },
-    _getEventCategory: function () {      
+    _getEventCategory: function () {
       switch (this.prefix) {
         case 'login':
           return 'Login';
@@ -15976,7 +15976,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     },
     _track: function () {
-      this.trackEvent(this._getEventCategory(), this.suffix, 'click', 'noevent');      
+      this.trackEvent(this._getEventCategory(), this.suffix, 'click', 'noevent');
     }
   });
 
@@ -16035,7 +16035,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <planet-kiosk-hub-block pmr="[[pmr]]" prefix="hub" suffix="az" language="[[language]]">AZ</planet-kiosk-hub-block>
         <br style="clear:both;">
       </div>
-      
+
     </div>
   </template>
 
@@ -16124,7 +16124,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       _cancel: function () {
         // Clear pending items on cancel
-        var detail = document.querySelector('planet-kiosk-detail');        
+        var detail = document.querySelector('planet-kiosk-detail');
         detail.clearPendingItems();
         detail.restoreItemDisplay();
       }
@@ -21228,7 +21228,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       this.$.popcontainer.appendChild(this._popIn);
     },
-    cancel: function () {                  
+    cancel: function () {
       globals.router.set('route.path', '/identification');
     },
     didReceiveResponse: function(request) {
@@ -21268,7 +21268,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var action = identification.get('action');
         switch (action) {
           case 'basket':
-            globals.router.set('route.path', '/basket');            
+            globals.router.set('route.path', '/basket');
             break;
           default:
             // Detail
@@ -21302,13 +21302,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         'eventAction': 'authentification',
         'eventLabel': 'success',
         'event': 'noevent',
-        'uid': globals.uid     
+        'uid': globals.uid
       };
       dataLayer.push(layer);
     }
   };
 </script><dom-module id="planet-kiosk-login-info" assetpath="src/planet-kiosk-app/">
-  <style include="iron-flex iron-flex iron-flex-alignment planet-kiosk-page-styles planet-kiosk-form-styles">    
+  <style include="iron-flex iron-flex iron-flex-alignment planet-kiosk-page-styles planet-kiosk-form-styles">
     .form {
       margin: 50em 5em 4em 5em;
     }
@@ -21479,7 +21479,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var form = e.currentTarget;
         var request = form.request;
         request.params.siteCode = globals.siteCode;
-        request.params.kiosk = globals.kioskId;        
+        request.params.kiosk = globals.kioskId;
         request.headers = globals.headers;
       },
       _datePreSubmit : function (e) {
@@ -21532,41 +21532,41 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="planet-kiosk-chrono" assetpath="src/planet-kiosk-app/">
   <template>
     <style include="planet-kiosk-page-styles">
-      
+
       .anticlockwise {
         transform: rotate(-90deg);
       }
-      
+
       path {
-        fill: var(--chrono-main-color, --planet-color-algae);        
+        fill: var(--chrono-main-color, --planet-color-algae);
       }
-      
+
       @keyframes grow { to { stroke-dasharray: 376 376} }
-      
+
       circle {
         fill: none;
         stroke: var(--chrono-alternate-color, --planet-color-softGreen);
-        stroke-width: 120;        
+        stroke-width: 120;
         animation-name: grow;
         animation-timing-function: linear;
-        animation-iteration-count: 1;        
+        animation-iteration-count: 1;
       }
-      
+
       text {
         font-family: var(--chrono-font-family ,--planet-font-family-heavy);
         fill: var(-chrono-font-color, --planet-color-softGreen);
         font-size: var(--chrono-font-size, 10em);
       }
     </style>
-    
+
     <template is="dom-if" if="{{graphic}}">
-      <svg viewBox="0 0 500 500" width$="{{size}}" height$="{{size}}" class="anticlockwise">        
+      <svg viewBox="0 0 500 500" width$="{{size}}" height$="{{size}}" class="anticlockwise">
         <path d="m 211.52712,466.78814 c -100,0 -181.299999,-81.3 -181.299999,-181.3 0.1,-99.9 81.399999,-181.2 181.299999,-181.2 99.9,0 181.3,81.3 181.3,181.3 0,99.9 -81.3,181.2 -181.3,181.2 z m 0,-320.2 c -76.6,0 -139,62.4 -139,139 0,76.6 62.4,139 139,139 76.6,0 139,-62.4 139,-139 0,-76.7 -62.3,-139 -139,-139 z"></path>
         <path d="m 298.1484,417.62127 30.4,-30.4 c 1.3,-1.3 3.5,-1.3 4.8,0 l 43.6,43.6 c 1.3,1.3 1.3,3.5 0,4.8 l -30.4,30.4 c -1.3,1.3 -3.5,1.3 -4.8,0 l -43.6,-43.6 c -1.3,-1.3 -1.3,-3.5 0,-4.8 z m 0,-263.19999 30.4,30.4 c 1.3,1.3 3.5,1.3 4.8,0 l 43.6,-43.7 c 1.3,-1.3 1.3,-3.5 0,-4.8 l -30.4,-30.30001 c -1.3,-1.3 -3.5,-1.3 -4.8,0 l -43.6,43.60001 c -1.3,1.4 -1.3,3.5 0,4.8 z m 114.3,110.6 0,42 -39.7,0 0,-42 z m 16.5,66.29999 0,-90.59999 c 0,-1.8 1.5,-3.3 3.3,-3.3 l 41.99999,0 c 1.8,0 3.3,1.5 3.3,3.3 l 0,90.59999 c 0,1.8 -1.5,3.3 -3.3,3.3 l -41.99999,0 c -1.8,0 -3.3,-1.5 -3.3,-3.3 z M 92.048396,286.02128 c -63.000003,-169.26668 -31.5,-84.63333 0,0 z"></path>
         <circle r="60" cx="210" cy="284" stroke-dasharray="0 376"></circle>
       </svg>
     </template>
-    
+
     <template is="dom-if" if="{{!graphic}}">
       <svg viewBox="0 0 500 500" width$="{{size}}" height$="{{size}}">
         <path d="M253.9 479.5c-100 0-181.3-81.3-181.3-181.3C72.7 198.3 154 117 253.9 117s181.3 81.3 181.3 181.3c0 99.9-81.3 181.2-181.3 181.2zm0-320.2c-76.6 0-139 62.4-139 139s62.4 139 139 139 139-62.4 139-139c0-76.7-62.3-139-139-139z"></path>
@@ -21580,7 +21580,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
     Polymer({
       is: 'planet-kiosk-chrono',
-      properties: {        
+      properties: {
         size: {
           type: String,
           value: '150px'
@@ -21606,22 +21606,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       attached: function () {
-        this._init();        
+        this._init();
       },
       _init: function () {
         this.set('_count', this.get('time'));
       },
       _nextCount: function () {
-        this._count--;        
-        if(this._count > 0) {          
+        this._count--;
+        if(this._count > 0) {
           this._handle = this.async(this._nextCount, 1000);
         } else {
-          this.stop();          
+          this.stop();
         }
         // Stop of animation forced before last frame
         if (this._count == 1) {
           this.async(function () {
-            if (this.graphic) {   
+            if (this.graphic) {
               this.circle.style.animationPlayState = 'paused';
               this.circle.style.strokeDasharray = "376px 376px";
             }
@@ -21632,20 +21632,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if(this._count > 0) {
           if (this.graphic) {
             this.circle = Polymer.dom(this.root).querySelector('circle');
-            this.circle.style.animationDuration = parseInt(this.get('time') + this.get('_offset')) + 's';          
-            this.circle.style.animationPlayState = 'running';          
+            this.circle.style.animationDuration = parseInt(this.get('time') + this.get('_offset')) + 's';
+            this.circle.style.animationPlayState = 'running';
           }
           this._nextCount();
         }
       },
       stop: function () {
         this.cancelAsync(this._handle);
-        if (this.graphic) {          
+        if (this.graphic) {
           this.circle.style.animationPlayState = 'paused';
         }
       },
       reset: function () {
-        this.set('_count', this.get('time'));        
+        this.set('_count', this.get('time'));
       }
     });
   </script>
@@ -21665,7 +21665,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin-bottom: 2em;
         color: var(--planet-color-theme-primary);
       }
-      
+
       .message {
         font-size: 4em;
         font-family: var(--planet-font-family-book);
@@ -21673,7 +21673,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         text-align: center;
         margin: 1em 3em 0;
       }
-      
+
       .chrono {
         margin: 3em 0;
       }
@@ -21728,7 +21728,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .pmr #popcontainer {
         font-size: 0.6em;
       }
-      
+
       .pmr .chrono {
         margin: 0.4em;
       }
@@ -21737,15 +21737,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <div class$="[[_getPMRClass(pmr)]]">
       <h2>[[localize('login_hub')]]</h2>
       <div class="content">
-        <iron-icon icon="login:qrcode"></iron-icon>            
+        <iron-icon icon="login:qrcode"></iron-icon>
         <p class="message">[[localize('login_qrcode_subtitle')]]</p>
         <p class="chrono">
           <planet-kiosk-chrono id="chrono" size="[[_getChronoSize(pmr)]]" time="[[_scanDuration]]"></planet-kiosk-chrono>
-        </p>    
+        </p>
       </div>
       <svg viewBox="0 0 32 32" id="arrow">
         <path d="M32 9l-8 8-17-17-7 7 17 17-8 8h23v-23z"></path>
-      </svg>      
+      </svg>
       <div id="popcontainer"></div>
     </div>
     <iron-ajax id="loginrequest" url="[[appconfig.api]]/getUserKiosk" on-response="didReceiveResponse" on-error="fail">
@@ -21791,9 +21791,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.$.chrono.start();
           // Start scaning
           MBirdSdk.Scanner.Scan(this.get('_scanDuration')).then(function (result) {
-            this.set('bookingId', result);            
+            this.set('bookingId', result);
             this.$.chrono.stop();
-            this._successScan();            
+            this._successScan();
           }.bind(this)).catch(function (error) {
             this.fail();
           }.bind(this));
@@ -21852,7 +21852,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="planet-kiosk-login-nfcscan" assetpath="src/planet-kiosk-app/">
   <template>
     <style include="iron-flex iron-flex iron-flex-alignment planet-kiosk-page-styles planet-kiosk-form-styles">
-      
+
       .content {
         text-align: center;
         margin: 55em 0 0 0;
@@ -21864,7 +21864,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin-bottom: 2em;
         color: var(--planet-color-theme-primary);
       }
-      
+
       .message {
         font-size: 4em;
         font-family: var(--planet-font-family-book);
@@ -21872,7 +21872,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         text-align: center;
         margin: 1em 3em 0;
       }
-      
+
       .chrono {
         margin: 3em 0;
       }
@@ -21880,7 +21880,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .buttons {
         margin-top: 8em;
       }
-      
+
       /* PMR Mode override */
 
       .pmr iron-icon {
@@ -21892,11 +21892,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-size: 3em;
         margin: 0.4em 7em 0;
       }
-      
+
       .pmr #popcontainer {
         font-size: 0.6em;
       }
-      
+
       .pmr .chrono {
         margin: 0.4em;
       }
@@ -21905,12 +21905,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <div class$="[[_getPMRClass(pmr)]]">
       <h2>[[localize('login_hub')]]</h2>
       <div class="content">
-        <iron-icon icon="login:nfc-hand"></iron-icon>            
+        <iron-icon icon="login:nfc-hand"></iron-icon>
         <p class="message">[[localize('login_nfc_subtitle')]]</p>
-        <p class="chrono">          
+        <p class="chrono">
           <planet-kiosk-chrono id="chrono" size="[[_getChronoSize(pmr)]]" time="[[_scanDuration]]"></planet-kiosk-chrono>
-        </p>    
-      </div>            
+        </p>
+      </div>
       <div id="popcontainer"></div>
     </div>
     <iron-ajax id="loginrequest" url="[[appconfig.api]]/getUserKiosk" on-response="didReceiveResponse" on-error="fail">
@@ -21939,7 +21939,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
         bookingId: String,
         _time: {
-          type: Object          
+          type: Object
         },
         _scanDuration: {
           type: Number,
@@ -21969,26 +21969,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _validResult: function (result) {
         isNotEmpty = result && typeof (result.ReadContent) !== 'undefined' && result.ReadContent != '';
         if (isNotEmpty) {
-          isNotAnErr = result.ReadContent.indexOf('ERR') === -1;  
-        }        
+          isNotAnErr = result.ReadContent.indexOf('ERR') === -1;
+        }
         return isNotEmpty && isNotAnErr;
       },
       scan: function() {
         if (MBirdSdk.isConnected()) {
-          this.$.chrono.start();          
-          // Start scanning          
-          MBirdSdk.Nfc.ReadFileInfo(this.get('_scanDuration'), this.get('_applicationId'), this.get('_authenticationKey')).then(function (result) {            
-            if (this._validResult(result)) {              
-              this.set('bookingId', result.ReadContent);                
+          this.$.chrono.start();
+          // Start scanning
+          MBirdSdk.Nfc.ReadFileInfo(this.get('_scanDuration'), this.get('_applicationId'), this.get('_authenticationKey')).then(function (result) {
+            if (this._validResult(result)) {
+              this.set('bookingId', result.ReadContent);
               this.$.chrono.stop();
               this._successScan();
             } else {
               this.fail();
             }
-          }.bind(this)).catch(function (error) {            
+          }.bind(this)).catch(function (error) {
             this.fail();
           }.bind(this));
-        } else {          
+        } else {
           this.fail();
         }
       },
@@ -22018,7 +22018,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (typeof globals.nfcApplicationId !== 'undefined' && globals.nfcApplicationId !== '') {
           this._applicationId = globals.nfcApplicationId;
         }
-        
+
         if (typeof globals.nfcAuthenticationKey !== 'undefined' && globals.nfcAuthenticationKey !== '') {
           this._authenticationKey = globals.nfcAuthenticationKey;
         }
@@ -22824,7 +22824,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         text-align: center;
         margin: 2em 0 0 0;
       }
-      
+
       .age {
         font-size: 7em;
         font-family: var(--planet-font-family-heavy);
@@ -22833,15 +22833,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-weight: bold;
         margin: 0.5em 0 1em 0;
       }
-      
+
       /* PMR Mode override */
       .pmr {
         font-size: 0.8em;
       }
-      .pmr img {      
+      .pmr img {
         width: 25.1em;
         height: 21.7em;
-      }      
+      }
       .pmr .age{
         margin: 0.5em 0;
       }
@@ -22849,26 +22849,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin: 1em 0;
       }
     </style>
-    
+
     <div class$="[[_getPMRClass(pmr)]]">
-    
+
       <img src="images/warning.png">
-      
+
       <p class="message">[[message]]</p>
       <p class="age">[[age]]</p>
-      
+
       <div class="buttons">
         <paper-button class="primary cancel" on-tap="_cancel">[[localize('activity_warning_cancel_button')]]</paper-button>
-        <paper-button class="primary confirm" on-tap="_confirm">[[localize('activity_warning_confirm_button')]]</paper-button>  
+        <paper-button class="primary confirm" on-tap="_confirm">[[localize('activity_warning_confirm_button')]]</paper-button>
       </div>
     </div>
-    
+
   </template>
 
-  <script>  
+  <script>
   Polymer({
     is: 'planet-kiosk-detail-warning',
-    behaviors: [        
+    behaviors: [
       AppLocalizeBehavior,
       PMRBehavior,
       Polymer.IronOverlayBehavior
@@ -22876,14 +22876,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     properties: {
       message: String,
       age: String
-    },    
+    },
     _cancel: function () {
-      this.close();          
+      this.close();
     },
     _confirm : function () {
       var detail = document.querySelector('planet-kiosk-detail');
       this.close();
-      detail.callConfirm();            
+      detail.callConfirm();
     }
   });
 
@@ -22907,22 +22907,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _getFirstDuration: function (localize, item) {
       var duration;
       if (typeof item.duration !== 'undefined') {
-        duration = item.duration        
+        duration = item.duration
       } else {
         duration = this._getFirstHour(item).duration;
-      }      
+      }
       if (duration >= 180) {
         return ' ';
       } else {
         if (duration>=60 && duration < 180) {
           var h = duration / 60 | 0;
           var mm = duration % 60 | 0;
-          var sDuration = h + 'h' + (mm === 0 ? '' : mm);          
+          var sDuration = h + 'h' + (mm === 0 ? '' : mm);
           return this.localize('activity_session_label') + ' ' + sDuration;
         } else {
           return this.localize('activity_session', 'duration', duration);
         }
-      } 
+      }
     },
     _getDurationInterval: function(localize, item) {
       var result = '';
@@ -22931,10 +22931,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var begin = moment(item.begin, 'HH:mm:ss');
         var end = moment(item.end, 'HH:mm:ss');
         var sBegin = begin.format('HH') + 'h' + (begin.minute() ? begin.format('mm') : '');
-        var sEnd = end.format('HH') + 'h' + (end.minute() ? end.format('mm') : ''); 
+        var sEnd = end.format('HH') + 'h' + (end.minute() ? end.format('mm') : '');
 
-        result = this.localize('activity_hours', 'begin', sBegin, 'end', sEnd);        
-        
+        result = this.localize('activity_hours', 'begin', sBegin, 'end', sEnd);
+
       }
 
       return result
@@ -22946,7 +22946,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       result = durationInteval;
       if (firstDuration !== ' ') {
         if (durationInteval !== '') {
-          result += ' - '  
+          result += ' - '
         }
         result += firstDuration;
       }
@@ -23108,17 +23108,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var hour = session.hours[hour];
       return this._formatPrice(hour.price.value, 2);
     },
-    _isMultiPx : function(item) {      
+    _isMultiPx : function(item) {
       if (item && item.multiPx) {
-        return item.multiPx.length > 0;  
+        return item.multiPx.length > 0;
       }
       return 0;
     },
-    _getPriceMultiPx: function (localize, activity, day, hour, index) {      
-      var session = activity.dates[day];      
+    _getPriceMultiPx: function (localize, activity, day, hour, index) {
+      var session = activity.dates[day];
       var hours = session.hours;
       var code = this._getMultiPxPriceCodeByIndex(activity, index);
-      var hoursFiltered = hours.filter(function (item) {              
+      var hoursFiltered = hours.filter(function (item) {
         return item.code === code;
       });
       var hour = hoursFiltered[hour];
@@ -23146,11 +23146,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       return mPxCode;
     },
     _getPriceLabel: function (localize, item) {
-      if (!this._isMultiPx(item)) {
-        return this._getFirstPrice(item) + ' ' + localize('activity_currency');
-      } else {
-        return this._getPricesInterval(localize, item);
-      }
+      return this._getPricesInterval(localize, item);
     },
     _getPricesInterval: function (localize, item) {
       var min, max;
@@ -23178,7 +23174,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       // format
       var minPrice = this._formatPrice(min, 2) + ' ' + localize('activity_currency');
       var maxPrice = this._formatPrice(max, 2) + ' ' + localize('activity_currency');
-      return minPrice + ' - ' + maxPrice;
+      if (minPrice !== maxPrice) {
+        return minPrice + ' - ' + maxPrice;
+      } else {
+        return minPrice;
+      }
     },
     _getVatAmount: function (localize, item, day, hour) {
       var session = item.dates[day];
@@ -23498,18 +23498,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _openDescription: function () {
         this.$.dialog.open();
       },
-      _isOverflowing: function (el) {        
+      _isOverflowing: function (el) {
         return el.clientWidth < el.scrollWidth || el.clientHeight < el.scrollHeight;
       },
       _updateDisplay: function () {
         this.async(function() {
           var descs = Polymer.dom(this.root).querySelectorAll('.overflow');
           var moreButtons = Polymer.dom(this.root).querySelectorAll('.overflow-button');
-  
+
           for (var i = 0; i < descs.length; i++) {
             var desc = descs[i];
             var moreButton = moreButtons[i];
-  
+
             if (desc && moreButton) {
               desc.classList.remove('short');
               moreButton.hidden = true;
@@ -23517,11 +23517,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 if (this._isOverflowing(desc)) {
                   desc.classList.add('short');
                   moreButton.hidden = false;
-                } 
+                }
               }
             }
           }
-        }, 100);        
+        }, 100);
       }
     });
   </script>
@@ -23536,8 +23536,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _buttonDown: null,
     _buttonRight: null,
     _buttonLeft: null,
-    
-    properties: {      
+
+    properties: {
       scrollAmount: {
         type: Number,
         value: 500
@@ -23558,13 +23558,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         type: Object,
         value: null
       },
-    },    
+    },
     disableButtons: function () {
       if (this._buttonDown && this._buttonUp) {
         this._buttonDown.set('disabled', true);
         this._buttonUp.set('disabled', true);
       }
-      
+
       if (this._buttonRight && this._buttonLeft) {
         this._buttonRight.set('disabled', true);
         this._buttonLeft.set('disabled', true);
@@ -23575,7 +23575,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._buttonDown.set('disabled', false);
         this._buttonUp.set('disabled', false);
       }
-      
+
       if (this._buttonRight && this._buttonLeft) {
         this._buttonRight.set('disabled', false);
         this._buttonLeft.set('disabled', false);
@@ -23591,11 +23591,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
     updateScrollButton: function () {
       var showButtons = this.get('_showButtons');
-      
+
       if (this._buttonUp && this._buttonDown) {
-        // Vertical managment regarding document      
+        // Vertical managment regarding document
         var top = (window.pageYOffset || document.documentElement.scrollTop)  - (document.documentElement.clientTop || 0);
-        
+
         if (!top|| !showButtons) { // TOP of the screen
           this._buttonUp.set('hidden', true);
         }
@@ -23609,26 +23609,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this._buttonDown.set('hidden', false);
         }
       }
-      
+
       if (this._buttonLeft && this._buttonRight) {
-        // Horizontal Managment regarding content container     
+        // Horizontal Managment regarding content container
         var container = Polymer.dom(this.$.layout).querySelector('.content');
         var left = container.scrollLeft;
-        
+
         if (left === 0 || !showButtons) {
           this._buttonLeft.set('hidden', true);
         } else {
           this._buttonLeft.set('hidden', false)
         }
-        
+
         if (left + container.clientWidth >= container.scrollWidth || !showButtons) {
           this._buttonRight.set('hidden', true);
         } else {
           this._buttonRight.set('hidden', false)
-        }        
+        }
       }
-      
-      
+
+
     },
     _onScroll:function () {
       this.contentChanged();
@@ -23660,7 +23660,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (properties.hasOwnProperty(key)) {
           button.set(key, properties[key]);
         }
-      }      
+      }
       Polymer.dom(this.$.layout).appendChild(button);
       return button;
     }
@@ -23696,7 +23696,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .down iron-icon{
         animation: down 1.5s infinite;
       }
-      
+
       .left iron-icon {
         animation: left 1.5s infinite;
       }
@@ -23732,7 +23732,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           opacity: 0;
         }
       }
-      
+
       @keyframes left {
         0% {
           transform: translate(5em, 0);
@@ -23746,7 +23746,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           opacity: 0;
         }
       }
-      
+
       @keyframes right {
         0% {
           transform: translate(-5em, 0) rotate(180deg);
@@ -23780,7 +23780,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
         direction: {
           type: String
-          
+
         },
         down: {
           type: Boolean,
@@ -23820,7 +23820,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    * @polymerBehavior ScrollVerticalBehavior
    */
   ScrollVerticalBehaviorImpl = {
-    attached: function () {      
+    attached: function () {
       this._buttonUp = this._createScrollButton({direction:"up", taper: this.scrollUp.bind(this)});
       this._buttonDown = this._createScrollButton({direction:"down", taper: this.scrollDown.bind(this)});
       window.addEventListener('scroll', this._onScroll.bind(this), true);
@@ -23832,7 +23832,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       window.scrollBy({ top: this.get('scrollAmount'), left: 0, behavior: 'smooth' });
     }
   };
-  
+
 /**
  * @polymerBehavior
  */
@@ -24081,13 +24081,13 @@ Custom property | Description | Default
         background-color: transparent;
       }
     </style>
-    
+
     <div class$="control [[_getPMRClass(pmr)]]">
       <paper-fab id="minus" label="-"></paper-fab>
       <input id="quantity" is="iron-input" bind-value="{{value}}" value="{{value::input}}" type="number" disabled="">
       <paper-fab id="plus" label="+"></paper-fab>
     </div>
-    
+
     <p id="error" class="error" hidden$="{{errorHidden}}">[[errorMessage]]</p>
   </template>
 
@@ -24102,13 +24102,13 @@ Custom property | Description | Default
         value: {
           type: Number,
           reflectToAttribute: true,
-          notify: true          
+          notify: true
         },
         min: {
-          type: Number          
+          type: Number
         },
         max: {
-          type: Number          
+          type: Number
         },
         factor : {
           type: Number,
@@ -24143,16 +24143,16 @@ Custom property | Description | Default
       _factorChange: function () {
         this._validate();
       },
-      _validate: function () {        
+      _validate: function () {
         if (!this.multi) {
           var max = this.get('max');
           var min = this.get('min');
           var adjust = (this.factor < 1) ? 1 : this.factor;
           var value = this.value * adjust;
-          
+
           this.$.minus.removeAttribute('disabled');
           this.$.plus.removeAttribute('disabled');
-                             
+
           if (value <= min) {
             this.$.minus.setAttribute('disabled', true);
             this.set('errorMessage', '');
@@ -24172,30 +24172,30 @@ Custom property | Description | Default
             this.set('errorMessage', this.localize('activity_quantity_over'));
             this.set('errorHidden', false);
           }
-          
-          if (max === 0) {            
+
+          if (max === 0) {
             this.set('errorMessage', this.localize('activity_quantity_full'));
             this.set('errorHidden', false);
-          }          
+          }
         }
       },
-      checkActivation: function (quantity) {        
-        if (!this.multi) {          
-          var max = this.get('max');                
+      checkActivation: function (quantity) {
+        if (!this.multi) {
+          var max = this.get('max');
           // Default values setting
           this.set('value', quantity);
           this.set('errorHidden', true);
           this.$.minus.removeAttribute('disabled');
           this.$.plus.removeAttribute('disabled');
-          
-          if (max <= 1) {            
+
+          if (max <= 1) {
             this.$.minus.setAttribute('disabled', true);
             this.$.plus.setAttribute('disabled', true);
-  
-            if (max === 1) {              
+
+            if (max === 1) {
               this.set('errorMessage', this.localize('activity_quantity_max'));
               this.set('errorHidden', false);
-            } else if (max === 0) {              
+            } else if (max === 0) {
               this.set('value', 0);
               this.set('errorMessage', this.localize('activity_quantity_full'));
               this.set('errorHidden', false);
@@ -24213,7 +24213,7 @@ Custom property | Description | Default
 <dom-module id="planet-kiosk-sessions" assetpath="src/planet-kiosk-app/">
   <template>
     <style include="planet-kiosk-page-styles">
-      :host {        
+      :host {
         width:100%;
         --paper-fab-background: none;
         --paper-fab-keyboard-focus-background: transparent;
@@ -24277,7 +24277,7 @@ Custom property | Description | Default
         @apply(--layout-horizontal);
         @apply(--layout-wrap);
         max-width: 58em;
-        margin-bottom: 2em;        
+        margin-bottom: 2em;
       }
       .hours paper-fab[normal] {
         box-shadow: none;
@@ -24433,41 +24433,41 @@ Custom property | Description | Default
         nbHour: {
           type: Number,
           value: -1
-        }        
+        }
       },
       // Common
       observers: [
-        '_dayChanged(day)'        
-      ],      
-      _highlightItem: function (index, className) {        
+        '_dayChanged(day)'
+      ],
+      _highlightItem: function (index, className) {
         this.async(function() {
           var current =  Polymer.dom(this.root).querySelectorAll('.' + className + ' paper-fab')[index];
           if (!this.multi || className === 'days') {
             // Reset previous active element
-            var previousActivated = Polymer.dom(this.root).querySelector('.' + className + ' paper-fab[activated]');            
-            if (previousActivated !== null) {            
-              previousActivated.removeAttribute('activated');  
+            var previousActivated = Polymer.dom(this.root).querySelector('.' + className + ' paper-fab[activated]');
+            if (previousActivated !== null) {
+              previousActivated.removeAttribute('activated');
             }
             if (current) {
-              current.setAttribute('activated', true);  
-            }            
+              current.setAttribute('activated', true);
+            }
           } else {
-            // check toogle element for same index            
+            // check toogle element for same index
             if (current) {
               var activated = current.hasAttribute('activated');
               if (activated) {
                 current.removeAttribute('activated');
               } else {
-                current.setAttribute('activated', true);  
-              }              
+                current.setAttribute('activated', true);
+              }
             }
-            
-          }          
+
+          }
         });
-      },      
+      },
       _getFirstAvailableHour: function () {
         var hours = this.hours;
-        var len = hours.length;        
+        var len = hours.length;
         for (var i=0; i<len; i++) {
           if (this.get('selectedQuantity') <= hours[i].availability) {
             return i;
@@ -24476,7 +24476,7 @@ Custom property | Description | Default
         return null;
       },
       // Days part
-      _dayChanged: function (day) {                
+      _dayChanged: function (day) {
         this.set('hours', null);
         this.set('startingHourIndex', 0);
         this.async(function() {
@@ -24488,8 +24488,8 @@ Custom property | Description | Default
               this._highlightItem(day, 'days');
               this.initSelectedHours();
               if (!this.multi || hoursLen === 1) {
-                this.updateHour(this._getFirstAvailableHour());  
-              }              
+                this.updateHour(this._getFirstAvailableHour());
+              }
             }
           }
         });
@@ -24503,38 +24503,38 @@ Custom property | Description | Default
       _dayHandler: function (e) {
         this.set('day', e.model.index);
       },
-      // Hours part      
+      // Hours part
       _getHours: function (day) {
         var hours = [];
-        if (day !== null) {          
-          if (!this._isMultiPx) {            
+        if (day !== null) {
+          if (!this._isMultiPx) {
             hours = this.dates[day].hours;
-          } else {            
+          } else {
             var firstCode = this.dates[day].hours[0].code;
-            hours = this.dates[day].hours.filter(function (item) {              
+            hours = this.dates[day].hours.filter(function (item) {
               return item.code === firstCode;
             });
           }
-        }        
+        }
         return hours;
       },
       _getNbSelectedHours: function () {
         if (this.selectedHours) {
-              return this.selectedHours.filter(function (entry) {                
-                return entry.selected === true;
-              }).length;
+            return this.selectedHours.filter(function (entry) {
+              return entry.selected === true;
+            }).length;
           }
           return 0;
       },
       _getHourLabel: function (hour) {
-        return moment(hour.begin, 'HH:mm:ss').format('HH:mm');
+        return moment(hour.begin, 'HH:mm:ss').format('HH:mm');g
       },
-      initSelectedHours: function () {        
+      initSelectedHours: function () {
         var len = this.get('hours').length;
         var aTmp = Array.apply(null, Array(len)).map(function() {return {'selected':false};});
         this.set('selectedHours', aTmp);
       },
-      updateHour: function (index) {        
+      updateHour: function (index) {
         if (!this.multi) {
           // Reset previous selection in single selection mode
           this.initSelectedHours();
@@ -24556,9 +24556,9 @@ Custom property | Description | Default
                 // toggle value only if limits are not reached
                 this.splice('selectedHours', index, 1, {'selected':!selected});
                 // force event handler
-                this._hourChanged(index);  
+                this._hourChanged(index);
               }
-            }            
+            }
           }
         }
       },
@@ -24572,10 +24572,10 @@ Custom property | Description | Default
             this._highlightItem(hour, 'hours');
           }
         }
-      },      
+      },
       _isOutOfavailability: function (selectedQuantity, availability) {
         return selectedQuantity > Number(availability);
-      },      
+      },
       _isHourDisplayed: function (index, start, nbElem) {
         if (nbElem < 0) {
           return true;
@@ -24655,12 +24655,12 @@ Custom property | Description | Default
       header p.price {
         @apply --title-pres;
       }
-      
-      .content {        
+
+      .content {
         padding-bottom: 50em;
         margin-top: 0;
       }
-      
+
       .closed .content {
         padding-bottom: 30em;
       }
@@ -24708,9 +24708,9 @@ Custom property | Description | Default
         transition-property: bottom;
         transition-duration: 2s;
       }
-      
+
       .closed .buttons {
-        bottom: 18em;        
+        bottom: 18em;
       }
 
       .normal .left {
@@ -24720,7 +24720,7 @@ Custom property | Description | Default
       .buttons iron-icon {
         margin-right: 1em;
       }
-      
+
       .quantity-container {
         position: relative;
         @apply(--layout-horizontal);
@@ -24730,10 +24730,10 @@ Custom property | Description | Default
       planet-kiosk-quantity {
         padding: 0;
       }
-      
+
       p.quantity-title {
         font-size: 3em;
-        font-family: var(--planet-font-family-heavy);        
+        font-family: var(--planet-font-family-heavy);
         color: var(--planet-color-black);
         margin: 1em 0;
         text-align: center;
@@ -24751,67 +24751,67 @@ Custom property | Description | Default
         text-align: right;
         padding: 0 0.25em 0 0;
       }
-      
-      .shift0 {        
+
+      .shift0 {
         top: 2.8em;
       }
-      
-      .shift1 {        
+
+      .shift1 {
         top: 7.1em;
       }
-      
-      .shift2 {        
+
+      .shift2 {
         top: 11.5em;
       }
-      
-      .shift3 {        
+
+      .shift3 {
         top: 15.8em;
       }
-      
-      .shift4 {        
+
+      .shift4 {
         top: 20.2em;
       }
-      
-      .shift5 {        
+
+      .shift5 {
         top: 24.6em;
       }
-      
-      .shift6 {        
+
+      .shift6 {
         top: 29em;
       }
-      
-      .shift7 {        
+
+      .shift7 {
         top: 33.4em;
       }
-      
-      .shift8 {        
+
+      .shift8 {
         top: 37.8em;
       }
-      
-      .shift9 {        
+
+      .shift9 {
         top: 42em;
       }
-      
-      .shift10 {        
+
+      .shift10 {
         top: 46.4em;
       }
-      
-      .shift11 {        
+
+      .shift11 {
         top: 50.8em;
       }
-      
-      .shift12 {        
+
+      .shift12 {
         top: 55.2em;
       }
-      
-      .shift13 {        
+
+      .shift13 {
         top: 59.6em;
       }
-      
-      .shift14 {        
+
+      .shift14 {
         top: 64em;
       }
-      
+
       planet-kiosk-scroll-button {
         right: 48em;
       }
@@ -24823,21 +24823,21 @@ Custom property | Description | Default
       planet-kiosk-scroll-button[down] {
         bottom: 58em;
       }
-      
+
       .closed planet-kiosk-scroll-button[down] {
         bottom: 45em;
       }
-      
+
       /* DTK ACTIVITIES STYLE */
-      
+
       .dtk {
         margin-top: 4.5em;
       }
-      
+
       .dtk .caption {
         padding: 0 4em;
       }
-      
+
       .dtk p.duration {
         color: var(--planet-color-theme-desc);
         margin: 0;
@@ -24873,7 +24873,7 @@ Custom property | Description | Default
         -webkit-line-clamp: 6;
         -webkit-box-orient: vertical;
       }
-      
+
       .dtk .information {
         margin: 5em;
         padding: 2em 3em;
@@ -24895,7 +24895,7 @@ Custom property | Description | Default
       /* PMR SPECIFIC STYLE */
 
       .pmr .content {
-        margin-top: 0;        
+        margin-top: 0;
         padding-bottom: 0;
       }
 
@@ -24931,19 +24931,19 @@ Custom property | Description | Default
         text-align: left;
         padding: 0;
       }
-      
+
       .pmr .quantity-wrapper {
         position: relative;
-        width: 37em;        
+        width: 37em;
       }
-      
+
       .pmr p.quantity-title {
         font-size: 2.2em !important;
         position: relative;
         top: 0;
         width: 17em;
         height: 2.4em;
-        overflow:hidden;        
+        overflow:hidden;
       }
 
       .pmr .left, .pmr .right {
@@ -24968,64 +24968,64 @@ Custom property | Description | Default
       .pmr planet-kiosk-quantity {
         padding: 0;
       }
-      
-      .pmr .shift0 {        
+
+      .pmr .shift0 {
         top: 2.8em;
       }
-      
-      .pmr .shift1 {        
+
+      .pmr .shift1 {
         top: 7.2em;
       }
-      
-      .pmr .shift2 {        
+
+      .pmr .shift2 {
         top: 11.6em;
       }
-      
-      .pmr .shift3 {        
+
+      .pmr .shift3 {
         top: 16em;
       }
-      
-      .pmr .shift4 {        
+
+      .pmr .shift4 {
         top: 20.4em;
       }
-      
-      .pmr .shift5 {        
+
+      .pmr .shift5 {
         top: 24.8em;
       }
-      
-      .pmr .shift6 {        
+
+      .pmr .shift6 {
         top: 29.2em;
       }
-      
-      .pmr .shift7 {        
+
+      .pmr .shift7 {
         top: 33.6em;
       }
-      
-      .pmr .shift8 {        
+
+      .pmr .shift8 {
         top: 38em;
       }
-      
-      .pmr .shift9 {        
+
+      .pmr .shift9 {
         top: 42.4em;
       }
-      
-      .pmr .shift10 {        
+
+      .pmr .shift10 {
         top: 46.8em;
       }
-      
-      .pmr .shift11 {        
+
+      .pmr .shift11 {
         top: 51.2em;
       }
-      
-      .pmr .shift12 {        
+
+      .pmr .shift12 {
         top: 55.6em;
       }
-      
-      .pmr .shift13 {        
+
+      .pmr .shift13 {
         top: 60.2em;
       }
-      
-      .pmr .shift14 {        
+
+      .pmr .shift14 {
         top: 64.4em;
       }
 
@@ -25045,33 +25045,33 @@ Custom property | Description | Default
       .pmr planet-kiosk-detail-warning {
         font-size:0.6em;
       }
-      
+
       .pmr planet-kiosk-scroll-button {
         display: none;
       }
     </style>
-    
+
     <app-header-layout id="layout">
       <template is="dom-if" if="[[_isBookable]]">
-      <div class$="[[_getPMRClass(pmr)]]"> 
+      <div class$="[[_getPMRClass(pmr)]]">
         <div class="content">
             <h2>[[localize('activity_details_pmr_title')]]</h2>
-            
+
             <header class="horizontal layout">
-              <h3 class="flex">[[activity.title]]</h3>              
+              <h3 class="flex">[[activity.title]]</h3>
               <template is="dom-if" if="[[_isFree(activity)]]">
                 <p class="price">[[localize('activity_free')]]</p>
               </template>
               <template is="dom-if" if="[[!_isFree(activity)]]">
                 <p class="price">[[_getPriceLabel(localize, activity)]]</p>
-              </template>              
+              </template>
             </header>
-            
-      
+
+
             <!-- STEP 1 PMR !-->
             <div hidden$="[[_isStepHidden(pmr, step, 'step1')]]">
               <planet-kiosk-detail-desc pmr="[[pmr]]" activity="[[activity]]" visible="[[visible]]" language="[[language]]"></planet-kiosk-detail-desc>
-      
+
               <template is="dom-if" if="[[pmr]]">
                 <div class="buttons layout horizontal center-justified">
                   <paper-button class="primary detail cancel" on-tap="_cancel">
@@ -25083,10 +25083,10 @@ Custom property | Description | Default
                 </div>
               </template>
             </div>
-      
+
             <!-- STEP 2 PMR !-->
             <div hidden$="[[_isStepHidden(pmr, step, 'step2')]]">
-      
+
               <div class$="form [[_getLayoutClass(pmr)]]">
                 <div class="left">
                   <p class="title">[[localize('activity_quantity_title')]]</p>
@@ -25094,11 +25094,11 @@ Custom property | Description | Default
                     <p hidden$="[[!_isFacility(activity)]]">[[localize('activity_quantity_warning')]]</p>
                   </div>
                   <div class="layout horizontal center quantity-container">
-                    
-                    <template is="dom-if" if="[[!_isMultiPxFlag]]">                      
+
+                    <template is="dom-if" if="[[!_isMultiPxFlag]]">
                       <planet-kiosk-quantity id="quantity" min="1" value="{{quantity}}" factor="[[nbSelectedHours]]" error-hidden="{{notFull}}" pmr="[[pmr]]" language="[[language]]"></planet-kiosk-quantity>
                     </template>
-                    
+
                     <template is="dom-if" if="[[_isMultiPxFlag]]">
                       <div class="layout vertical center-justified">
                         <template id="quantities" is="dom-repeat" items="[[activity.multiPx]]">
@@ -25109,7 +25109,7 @@ Custom property | Description | Default
                         </template>
                       </div>
                     </template>
-                    
+
                     <template is="dom-if" if="[[_isFree(activity)]]">
                       <div class="total-price">[[localize('activity_free')]]</div>
                     </template>
@@ -25117,9 +25117,9 @@ Custom property | Description | Default
                       <template is="dom-if" if="[[!_isMultiPxFlag]]">
                         <div class="total-price">[[_getTotalPrice(activity, quantity, nbSelectedHours)]]  [[localize('activity_currency')]]</div>
                       </template>
-                      
+
                       <template is="dom-if" if="[[_isMultiPxFlag]]">
-                        <template id="subtotals" is="dom-repeat" items="[[activity.multiPx]]">                          
+                        <template id="subtotals" is="dom-repeat" items="[[activity.multiPx]]">
                           <div id="total_price_[[index]]" class$="total-price shift[[index]]">[[_getSubTotalPrice(activity, index, nbSelectedHours, quantities.*)]]  [[localize('activity_currency')]]</div>
                         </template>
                       
@@ -25134,9 +25134,9 @@ Custom property | Description | Default
                   </planet-kiosk-sessions>
                 </div>
               </div>
-              
+
               <div class="buttons layout horizontal center-justified ">
-      
+
                 <template is="dom-if" if="[[pmr]]">
                   <paper-button class="primary detail cancel" on-tap="_goToStep1">
                     <iron-icon icon="misc:arrow"></iron-icon> [[localize('activity_details_pmr_step_prev')]]
@@ -25145,15 +25145,15 @@ Custom property | Description | Default
                 <template is="dom-if" if="[[!pmr]]">
                   <paper-button class="primary detail cancel" on-tap="_cancel"><iron-icon icon="misc:arrow"></iron-icon>[[localize('activity_back_button')]]</paper-button>
                 </template>
-      
+
                 <paper-button id="confirm" class="primary detail confirm" on-tap="_checkWarning"></paper-button>
               </div>
             </div>
-      
+
         </div>
       </div>
       </template>
-      
+
       <template is="dom-if" if="[[!_isBookable]]">
         <div class="dtk">
           <template is="dom-if" if="[[!pmr]]">
@@ -25178,7 +25178,7 @@ Custom property | Description | Default
                 [[_getMinMaxHoursLabel(localize, activity)]] - [[_getFirstDuration(localize, activity)]]
               </p>
               <p class="location">[[_getAge(localize, activity)]] [[_getFirstLocation(activity)]]</p>
-              <p class="description">[[activity.description]]</p>            
+              <p class="description">[[activity.description]]</p>
             </div>
             <div class="information" hidden$="[[!_hasCondition(activity)]]">
               <p class="title">[[localize('activity_conditions_title')]]</p>
@@ -25186,9 +25186,9 @@ Custom property | Description | Default
             </div>
             <div class="buttons layout horizontal center-justified ">
               <paper-button class="primary detail cancel" on-tap="_cancel"><iron-icon icon="misc:arrow"></iron-icon>[[localize('activity_back_button')]]</paper-button>
-            </div>          
+            </div>
           </template>
-          
+
           <template is="dom-if" if="[[pmr]]">
             <div class$="[[_getPMRClass(pmr)]]">
             <header class="horizontal layout">
@@ -25204,13 +25204,13 @@ Custom property | Description | Default
               <div class="buttons layout horizontal center-justified">
                 <paper-button class="primary detail cancel" on-tap="_cancel">
                   <iron-icon icon="misc:arrow"></iron-icon>[[localize('activity_back_button')]]
-                </paper-button>                
+                </paper-button>
               </div>
             </div>
           </template>
         </div>
       </template>
-      
+
     </app-header-layout>
     <planet-kiosk-detail-warning language="[[language]]" pmr="[[pmr]]" id="warning" with-backdrop="" no-cancel-on-outside-click=""></planet-kiosk-detail-warning>
   </template>
@@ -25232,22 +25232,22 @@ Custom property | Description | Default
           type: String,
           value: 'add'
         },
-        
+
         quantities: {
           type: Array,
           value: []
-        },      
-        
+        },
+
         quantity: {
           type:Number,
           observer:'_onQuantityChange'
         },
-        
+
         selectedQuantity: {
           type: Number,
           computed: '_getSelectedQuantity(quantity, quantities.*)'
         },
-        
+
         nbSelectedHours: Number,
 
         activity: Object,
@@ -25258,43 +25258,43 @@ Custom property | Description | Default
           type: Array,
           value: []
         },
-        
+
         maxAvailability: Number,
 
         index: Number,
-        
+
         _isBookable: {
         type: Boolean,
         computed: '_checkBookable(activity)'
         },
-        
+
         _isMulti: {
         type: Boolean,
         computed: '_checkType(activity)'
         },
-        
+
         _isMultiPxFlag: {
         type: Boolean,
         computed: '_checkMultiPx(activity)'
         },
-        
+
         notFull: {
           type: Boolean
         }
-        
+
       },
       observers: [
         '_itemChanged(activity, visible)',
         '_onQuantitiesChange(quantities.*)'
-      ],      
-      _quantitiesItem: function(change, index, path) {        
+      ],
+      _quantitiesItem: function(change, index, path) {
         return this.get(path, change.base[index]);
       },
       _getMaxOfQuantities: function (quantities) {
         return Math.max.apply(Math, quantities.map(function(o) { return o.value; }));
       },
-      _getSelectedQuantity: function (quantity, quantities) {        
-        if (!this._isMultiPxFlag) {          
+      _getSelectedQuantity: function (quantity, quantities) {
+        if (!this._isMultiPxFlag) {
           return this.get('quantity');
         } else {
           // Force to have array of quantities of first init page
@@ -25311,41 +25311,41 @@ Custom property | Description | Default
       },
       _getControlValueByIndex: function (index) {
         if (this._isMultiPxFlag) {
-          var control = this.$$('#quantity_' + index);          
+          var control = this.$$('#quantity_' + index);
           return control.value;
         }
         return 0;
       },
-      _itemChanged: function (item, visible) {        
-        if (visible) {          
-          this.previous = item.title;          
+      _itemChanged: function (item, visible) {
+        if (visible) {
+          this.previous = item.title;
           if (this._isBookable) {
             this.async(function() {
               this._resetDisplay();
               this._resetMode();
-              this._resetForm(item);              
+              this._resetForm(item);
             }.bind(this), 50);
-            
+
           }
         }
       },
-      _checkBookable: function (activity) {        
+      _checkBookable: function (activity) {
         return activity.bookable;
       },
-      _checkType: function (activity) {        
+      _checkType: function (activity) {
         return activity.type == 'Facility';
       },
       _checkMultiPx: function (activity) {
-        return this._isMultiPx(activity);        
+        return this._isMultiPx(activity);
       },
       _resetDisplay: function () {
-        var miniBasket = document.getElementById('minibasket');        
+        var miniBasket = document.getElementById('minibasket');
         miniBasket.close();
         this.$$('#confirm').hidden = !globals.payment;
         this.set('step', 'step1');
       },
       _resetMode: function () {
-        // Setting default mode        
+        // Setting default mode
         var queryParams = globals.router.queryParams;
         if (Object.keys(queryParams).length >0 && 'mode' in queryParams) {
           this.set('mode', queryParams.mode);
@@ -25362,7 +25362,7 @@ Custom property | Description | Default
         if (this._isMultiPxFlag) {
           var self = this;
           var activity = this.get('activity');
-          var multiPx = activity.multiPx;          
+          var multiPx = activity.multiPx;
           // Reset controls
           multiPx.forEach(function (px, index) {
             var control = self.$$('#quantity_' + index);
@@ -25374,13 +25374,13 @@ Custom property | Description | Default
             total.hidden = false;
             total.className = "total-price shift" + index + " style-scope planet-kiosk-detail";
             control.max = 100;
-            if (!hide) {              
+            if (!hide) {
               control.checkActivation(0);
               self.splice('quantities', index, 1, {value:0});
             } else {
               if (index === multiPxIndex) {
                 control.checkActivation(quantity);
-                self.splice('quantities', multiPxIndex, 1, {value:quantity});                
+                self.splice('quantities', multiPxIndex, 1, {value:quantity});
                 total.className = "total-price shift0 style-scope planet-kiosk-detail";
               } else {
                 self.splice('quantities', index, 1, {value:0});
@@ -25401,20 +25401,20 @@ Custom property | Description | Default
         // Dirty Hack to shunt max avaibility for facilities
         if (this._isMulti) {
           this.maxAvailability = 100;
-        }        
-        if (!this._isMultiPxFlag) {          
+        }
+        if (!this._isMultiPxFlag) {
           // Set unique controle quantity
-          this.$$('#quantity').max = this.maxAvailability;        
-          this.$$('#quantity').checkActivation(cartItem.quantity);  
-        } else {          
+          this.$$('#quantity').max = this.maxAvailability;
+          this.$$('#quantity').checkActivation(cartItem.quantity);
+        } else {
           // Reset all quantities of multiple prices
           this._resetMultiPxControls(true, cartItem.multiPxIndex, cartItem.quantity);
-        } 
-        // Force single selection        
+        }
+        // Force single selection
         this.$$('#sessions').set('multi', false);
         // Force selected-quantity
         this.$$('#sessions').set('selectedQuantity', this._getSelectedQuantity(this.get('quantity')));
-        // Force day mutation        
+        // Force day mutation
         this.$$('#sessions').set('day', null);
         this.$$('#sessions').set('day', cartItem.day);
         this.async(function() {
@@ -25440,14 +25440,14 @@ Custom property | Description | Default
           this._resetMultiPxControls();
         }
         var queryParams = globals.router.queryParams;
-        // Set multi selection mode for sessions components        
+        // Set multi selection mode for sessions components
         this.$$('#sessions').set('multi', this.get('_isMulti'));
         // Force selected-quantity
         this.$$('#sessions').set('selectedQuantity', this._getSelectedQuantity(this.get('quantity')));
         // Force day mutation
         this.$$('#sessions').set('day', null);
         this.$$('#sessions').set('day', queryParams['day'] ? queryParams['day'] : 0);
-        
+
         if (queryParams['hour']) {
           this.async(function() {
             this.$$('#sessions').set('hour', queryParams['hour']);
@@ -25472,7 +25472,7 @@ Custom property | Description | Default
       },
       _cancel: function () {
         // restore empty queryParams for futur navigation
-        // remove edit mode after detail activity modification in basket        
+        // remove edit mode after detail activity modification in basket
         globals.router.set('queryParams', {});
         globals.router.set('route.path', '/' + globals.lastList);
         this._restoreMiniBasket();
@@ -25480,19 +25480,19 @@ Custom property | Description | Default
       _checkingOK: function () {
         var nbHours = this.get('nbSelectedHours');
         if (!this._isMultiPxFlag) {
-          var quantity = this.$$('#quantity').get('value');                  
+          var quantity = this.$$('#quantity').get('value');
           var adjust = (nbHours < 1) ? 1 : nbHours;
           var max = this.maxAvailability;
-          var value = quantity * adjust;        
+          var value = quantity * adjust;
           return quantity > 0 && value <= max && nbHours > 0;
         } else {
-          var quantityMax = this._getMaxOfQuantities(this.get('quantities'));          
+          var quantityMax = this._getMaxOfQuantities(this.get('quantities'));
           return quantityMax > 0 && nbHours > 0;
         }
       },
       _checkWarning : function () {
         var activity = this.activity;
-        
+
         if (this._checkingOK()) {
           if (this._hasAgeWarning(this.localize, this.activity)) {
             var message = this._getMessageWarning(this.localise, this.activity);
@@ -25503,18 +25503,18 @@ Custom property | Description | Default
           } else {
             this._confirm();
           }
-        }        
+        }
       },
-      _confirm: function () {        
+      _confirm: function () {
         var self=this;
         var localize = this.localize;
         var activity = this.activity;
         var day = this.$$('#sessions').get('day');
         var hours = this.$$('#sessions').get('selectedHours').reduce(function(a, e, i) {if (e.selected)a.push(i); return a;}, []);
-        
+
         if (this._checkingOK()) {
-          if (!this._isMultiPxFlag) {            
-            var quantity = this.$$('#quantity').get('value');            
+          if (!this._isMultiPxFlag) {
+            var quantity = this.$$('#quantity').get('value');
             hours.forEach(function (hour) {
               var item = {
                 "code": self.activity.code,
@@ -25540,9 +25540,9 @@ Custom property | Description | Default
                 "error": false
               };
               self.push('pendingItems', item);
-            });            
-          } else {            
-            var quantities = this.get('quantities');            
+            });
+          } else {
+            var quantities = this.get('quantities');
             quantities.forEach(function (quantityItem, index) {
               var quantity = quantityItem.value;
               if (quantity > 0) {
@@ -25576,7 +25576,7 @@ Custom property | Description | Default
               }
             });
           }
-          
+
           if (globals.token !== null) {
             this.addPendingItems();
           } else {
@@ -25586,20 +25586,20 @@ Custom property | Description | Default
             globals.router.set('route.path', '/identification');
           }
           this._restoreMiniBasket();
-        }        
-        
+        }
+
       },
       callConfirm : function () {
         this._confirm();
       },
       restoreItemDisplay: function () {
-        var activity = this.get('activity');        
+        var activity = this.get('activity');
         if (activity.dayIndex !== undefined) {
           globals.router.set('queryParams', {
             day: activity.dayIndex,
             hour: activity.hourIndex
           });
-        }        
+        }
         globals.router.set('route.path', '/detail/' + activity.code);
       },
       clearPendingItems: function () {
@@ -25617,31 +25617,50 @@ Custom property | Description | Default
             });
         }
         // restore empty queryParams for futur navigation
-        // remove edit mode after detail activity modification in basket        
+        // remove edit mode after detail activity modification in basket
         globals.router.set('queryParams', {});
         globals.router.set('route.path', '/basket');
-        this.clearPendingItems();        
+        this.clearPendingItems();
       },
-      _getTotalPrice: function (activity, quantity, factor) {        
-        var price = this._getFirstPrice(activity);        
-        return this._formatPrice(price * quantity * factor * 100, 2);
+      _getTotalPrice: function (activity, quantity, factor) {
+        var self = this;
+        var day = this.$$('#sessions').get('day');
+        var hours = this.$$('#sessions').get('selectedHours').reduce(function(a, e, i) {if (e.selected)a.push(i); return a;}, []);
+        var sum = 0;
+
+        if (day !== null) {
+          hours.forEach(function (hour) {
+            var price = parseInt(self._getPrice(self, activity, day, hour), 10);
+            sum += price;
+          });
+          return this._formatPrice(sum * 100, 2);
+        }
+        return this._formatPrice(0,2);
       },
-      _getSubTotalPrice: function (activity, index, factor, quantities) {        
-        if (this._isMultiPxFlag) {
+      _getSubTotalPrice: function (activity, index, factor, quantities) {
+        var self = this;
+        var day = this.$$('#sessions').get('day');
+        var hours = this.$$('#sessions').get('selectedHours').reduce(function(a, e, i) {if (e.selected)a.push(i); return a;}, []);
+        var quantity = this.$$('#quantity_' + index).value;
+        var sum = 0;
+
+        if (day !== null) {
           if (index < activity.multiPx.length) {
             var code = this._getMultiPxPriceCodeByIndex(activity, index);
-            var firstHours = activity.dates[0].hours;
-            var firstHoursFiltered = firstHours.filter(function (item) {              
+            var selectedHours = activity.dates[day].hours;
+            var selectedHoursFiltered = selectedHours.filter(function (item) {
               return item.code === code;
             });
-            var firstHour = firstHoursFiltered[0];        
-            var price = firstHour.price.value;
-            var quantity = this.$$('#quantity_' + index).value;        
-  
-            return this._formatPrice(price * quantity * factor, 2);  
+
+            hours.forEach(function (hour) {
+              var selectedHour = selectedHoursFiltered[hour];
+              var price = parseInt(selectedHour.price.value, 10) * quantity;
+              sum += price;
+            });
+            return this._formatPrice(sum, 2);
           }
-          this._formatPrice(0, 2);  
         }
+        return this._formatPrice(0,2);
       },
       _isStepHidden: function (pmr, currentStep, value) {
         return pmr && currentStep !== value;
@@ -25664,28 +25683,28 @@ Custom property | Description | Default
         }
         return -1;
       },
-      _onQuantityChange: function (e) {        
+      _onQuantityChange: function (e) {
         if (this._isMulti) {
           // Force day mutation for sub-template refresh
-          var sessions = this.$$('#sessions');        
+          var sessions = this.$$('#sessions');
           if (sessions)  {
-            var day = sessions.get('day');          
+            var day = sessions.get('day');
             sessions.set('day', null);
             if (day !== null && day !== undefined) {
               this.async(function() {
                 sessions.set('day', day);
-              });    
+              });
             }
-          }        
-        }        
+          }
+        }
       },
-      _onQuantitiesChange: function (e) {        
-        this._onQuantityChange(e);        
+      _onQuantitiesChange: function (e) {
+        this._onQuantityChange(e);
       },
-      _quantitiesTap: function (e) {        
+      _quantitiesTap: function (e) {
         var index = e.model.index;
         var newValue = this._getControlValueByIndex(index);
-        this.set('quantities.' + index + '.value', newValue);        
+        this.set('quantities.' + index + '.value', newValue);
       },
       checkScrollButtons: function () {
         this.contentChanged();
@@ -28791,7 +28810,7 @@ Mixin | Description | Default
         font-size: 3em;
         font-family: var(--planet-font-family-heavy);
         color: var(--planet-color-theme-price);
-      }      
+      }
       </style>
     </template>
 </dom-module><dom-module id="planet-kiosk-activity" assetpath="src/planet-kiosk-app/">
@@ -28856,7 +28875,7 @@ Mixin | Description | Default
         height: 12em;
       }
 
-      .pmr.column .duration {        
+      .pmr.column .duration {
         font-size: 1.2em;
       }
 
@@ -28872,17 +28891,13 @@ Mixin | Description | Default
       .pmr.column paper-card p.price {
         width: auto;
         position: relative;
-        font-size: 1.6em;        
+        font-size: 1.6em;
         padding-left: 0.5em;
       }
 
       /** ROW **/
       .card-container.row {
         display: block;
-      }
-
-      .row paper-card {
-
       }
 
       .row div, .row iron-image {
@@ -28957,7 +28972,7 @@ Mixin | Description | Default
       }
 
       .pmr.row paper-card p.price {
-        font-size: 2em;
+        font-size: 1.8em;
         line-height: 3.5em;
       }
     </style>
@@ -28972,10 +28987,10 @@ Mixin | Description | Default
           <p class="location">[[_getAge(localize, activity)]] [[_getFirstLocation(activity)]]</p>
         </div>
         <div class="price-container">
-          <template is="dom-if" if="[[_isFree(activity)]]">            
+          <template is="dom-if" if="[[_isFree(activity)]]">
             <p class="price">[[localize('activity_free')]]</p>
           </template>
-          <template is="dom-if" if="[[!_isFree(activity)]]">               
+          <template is="dom-if" if="[[!_isFree(activity)]]">
             <p class="price">[[_getPriceLabel(localize, activity)]]</p>
           </template>
         </div>
@@ -29035,14 +29050,14 @@ Mixin | Description | Default
         min-width: 0;
         outline: none;
         padding: 1em 0;
-        position: relative;        
+        position: relative;
         -webkit-user-select: none;
         user-select: none;
         width: 5em;
         margin-bottom: 1em;
         z-index: 0;
 
-        
+
         -webkit-tap-highlight-color: rgba(0,0,0,0);
         -webkit-tap-highlight-color: transparent;
 
@@ -29065,7 +29080,7 @@ Mixin | Description | Default
         background: var(--planet-kiosk-alphaselector-letter-disabled-background, --paper-grey-300);
         @apply(--planet-kiosk-alphaselector-letter-disabled);
       }
-      
+
       :host([activated]) {
         color: var(--planet-kiosk-alphaselector-letter-disabled-text, --paper-grey-500);
         background: var(--planet-kiosk-alphaselector-letter-disabled-background, --paper-pink-900);
@@ -29094,7 +29109,7 @@ Mixin | Description | Default
         Polymer.PaperButtonBehavior
       ],
        listeners: {
-        'tap': '_tapHandler',        
+        'tap': '_tapHandler',
       },
       properties: {
         src: {
@@ -29116,10 +29131,10 @@ Mixin | Description | Default
           reflectToAttribute: true
         },
         label: {
-          type: String          
+          type: String
         }
-      },      
-      _tapHandler: function (e) {        
+      },
+      _tapHandler: function (e) {
         this.fire('alpha-letter-change', {rank:this.rank});
       }
     });
@@ -29127,16 +29142,16 @@ Mixin | Description | Default
 </dom-module>
 <dom-module id="planet-kiosk-alphaselector" assetpath="src/planet-kiosk-app/">
   <template>
-    <style>      
+    <style>
       :host {
 				--planet-kiosk-alphaselector-letter-label: {
 					font-size: 2.6em;
 					font-family: var(--planet-font-family-book);
 				}
-				
-				--planet-kiosk-alphaselector-letter-mini: {					
+
+				--planet-kiosk-alphaselector-letter-mini: {
 					background: none;
-					box-shadow: none;					
+					box-shadow: none;
 					color: var(--planet-color-theme-desc);
 					margin-bottom: 0.4em;
 				}
@@ -29150,28 +29165,28 @@ Mixin | Description | Default
 					color: var(--planet-color-theme-disabled);
 				}
       }
-      
-      planet-kiosk-alphaselector-letter.pmr {        
+
+      planet-kiosk-alphaselector-letter.pmr {
         float: left;
         font-size: 0.8em;
       }
     </style>
-    <template id="letterlist" is="dom-repeat" items="[[letters]]" as="letter">			
+    <template id="letterlist" is="dom-repeat" items="[[letters]]" as="letter">
       <planet-kiosk-alphaselector-letter disabled="[[_isDisabled(letter)]]" label="[[letter]]" rank="[[index]]" mini="" class$="[[_getPMRClass(pmr)]]"></planet-kiosk-alphaselector-letter>
     </template>
-        
+
   </template>
 
-  <script>  
+  <script>
 
   Polymer({
 
     is: 'planet-kiosk-alphaselector',
-    
+
     behaviors: [
       PMRBehavior
     ],
-    
+
     properties: {
 			letters: {
 				type: Array,
@@ -29183,7 +29198,7 @@ Mixin | Description | Default
 				type: Array
 			}
 		},
-		attached: function () {						
+		attached: function () {
 			document.addEventListener('alpha-letter-change', this._onAlphaLetterChange.bind(this));
 		},
     _charsGenerator: function () {
@@ -29197,42 +29212,42 @@ Mixin | Description | Default
 			this._scrollToZone(e.detail.rank);
 		},
 		_isDisabled: function (letter) {
-			var activeLetters = this.get('activeLetters');			
-			return !activeLetters.includes(letter);			
+			var activeLetters = this.get('activeLetters');
+			return !activeLetters.includes(letter);
 		},
-		_highlightElement: function (index) {			
+		_highlightElement: function (index) {
 			// Reset previous active element
 			var previousActivated = document.querySelector('planet-kiosk-alphaselector-letter[activated]');
 			var currentActivated = document.querySelector('planet-kiosk-alphaselector-letter[rank="' + index + '"]');
 			if (previousActivated !== null) {
 				previousActivated.set('activated', false);
-			}			
-			currentActivated.set('activated', true);			
+			}
+			currentActivated.set('activated', true);
 		},
 		_scrollToZone: function (index) {
 			var letter = String.fromCharCode(65+index);
 			var anchor = document.querySelector('a[href="#' + letter + '"]');
 			if (anchor) {
-				anchor.scrollIntoView({block: "start", behavior: "smooth"});				
-			}			
+				anchor.scrollIntoView({block: "start", behavior: "smooth"});
+			}
 		},
-		highLightFirstLetter: function () {			
+		highLightFirstLetter: function () {
 			var activeLetters = this.get('activeLetters');
 			if (activeLetters.length > 0) {
 				var index = activeLetters[0].charCodeAt(0) - 65;
 				this._highlightElement(index);
-			}			
+			}
 		},
-		highLightLetter: function (letter) {			
+		highLightLetter: function (letter) {
 			var index = letter.charCodeAt(0) - 65;
 			this._highlightElement(index);
 		},
-		highLightLastLetter: function () {			
+		highLightLastLetter: function () {
 			var activeLetters = this.get('activeLetters');
 			if (activeLetters.length > 0) {
 				var index = activeLetters[activeLetters.length-1].charCodeAt(0) - 65;
 				this._highlightElement(index);
-			}			
+			}
 		},
   });
 
@@ -29247,25 +29262,25 @@ Mixin | Description | Default
           padding-left: 0.4em;
         }
       }
-      
+
       app-header, .sticky-header {
         background-color: var(--planet-color-theme-mainbg);
         margin-bottom: 2em;
         min-height: 4em;
         z-index: 0;
       }
-      
+
       .sticky-header {
-        padding-top: 3em;        
+        padding-top: 3em;
       }
-      
+
       .sticky-for-clock {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         background-color: var(--planet-color-theme-mainbg);
-        min-height: 2em;        
+        min-height: 2em;
       }
 
       .content {
@@ -29295,7 +29310,7 @@ Mixin | Description | Default
         top: 16em;
         z-index: 1;
       }
-      
+
       planet-kiosk-scroll-button {
         right: 48em;
       }
@@ -29307,16 +29322,16 @@ Mixin | Description | Default
       planet-kiosk-scroll-button[down] {
         bottom: 50em;
       }
-      
+
       .closed planet-kiosk-scroll-button[down] {
         bottom: 25em;
       }
-      
+
       /* PMR Mode override */
       .pmr app-header, .pmr .sticky-header {
         z-index: 1;
       }
-      
+
       .pmr .content {
         margin: 0 2em 5em 8em;
         padding-bottom: 5em;
@@ -29332,29 +29347,29 @@ Mixin | Description | Default
       .pmr h2 {
         padding: 0;
       }
-      
+
       .pmr header {
         font-size: 2.5em;
       }
-      
+
       .pmr header a {
         padding-top: 3em;
       }
-      
-      .pmr planet-kiosk-alphaselector {        
+
+      .pmr planet-kiosk-alphaselector {
         position: relative;
         top: auto;
         right: auto;
       }
-      
+
       .pmr .sticky-for-clock {
         display: none;
       }
-      
+
       .pmr .sticky-header {
         margin: 0.5em 5em 0.5em 5em;
       }
-      
+
       .pmr planet-kiosk-scroll-button {
         left: -1.5em;
         right: auto;
@@ -29368,12 +29383,12 @@ Mixin | Description | Default
         bottom: 10em;
       }
     </style>
-    
+
     <div class$="[[_getPMRClass(pmr)]]">
       <app-header-layout id="layout">
-        <app-header fixed="" condenses="">          
+        <app-header fixed="" condenses="">
           <h2>[[localize('az_title')]]</h2>
-          <p class="sub-title">[[localize('az_desc')]]</p>          
+          <p class="sub-title">[[localize('az_desc')]]</p>
           <div id="sticky" class="sticky-header" sticky=""></div>
         </app-header>
         <div class="content">
@@ -29416,7 +29431,7 @@ Mixin | Description | Default
       ],
       _refreshLayout: function () {
         // Hack to avoid wrong positioning of the content in the layout
-        this.$.layout.resetLayout();        
+        this.$.layout.resetLayout();
       },
       attributeChanged: function(name, type) {
         // Check visibility of the list and attach or remove handler
@@ -29477,9 +29492,9 @@ Mixin | Description | Default
         alphaSelector.setAttribute('active-letters', JSON.stringify(activeLetters));
         this.alphaSelector = alphaSelector;
         if (this.pmr) {
-          Polymer.dom(this.$.sticky).appendChild(alphaSelector);          
+          Polymer.dom(this.$.sticky).appendChild(alphaSelector);
         } else {
-          Polymer.dom(this.$.layout).appendChild(alphaSelector);        
+          Polymer.dom(this.$.layout).appendChild(alphaSelector);
         }
       },
       _scrollHandler: function () {
@@ -29500,15 +29515,15 @@ Mixin | Description | Default
           alphaSelector.highLightLastLetter();
         }
       },
-      _onPmrChanged: function (pmr) {        
+      _onPmrChanged: function (pmr) {
         if (this.alphaSelector) {
           this.alphaSelector.set('pmr', pmr);
           if (this.pmr) {
-            Polymer.dom(this.$.sticky).appendChild(this.alphaSelector);          
+            Polymer.dom(this.$.sticky).appendChild(this.alphaSelector);
           } else {
-            Polymer.dom(this.$.layout).appendChild(this.alphaSelector);        
+            Polymer.dom(this.$.layout).appendChild(this.alphaSelector);
           }
-        }        
+        }
       }
     });
 
@@ -29637,7 +29652,7 @@ Mixin | Description | Default
         --info-pres : {
           font-size: 1.7em;
           font-family: var(--planet-font-family-book);
-          padding-left: 0.4em;          
+          padding-left: 0.4em;
         };
       }
 
@@ -29663,11 +29678,11 @@ Mixin | Description | Default
       planet-kiosk-scroll-button[down] {
         bottom: 50em;
       }
-      
+
       .closed planet-kiosk-scroll-button[down] {
         bottom: 25em;
       }
-      
+
       /* PMR Mode override */
 
       .pmr .content {
@@ -29807,17 +29822,17 @@ Mixin | Description | Default
           // filtered
           for (var i = 0; i < selectedFilters.length; i++) {
             var currentFilter = filters[selectedFilters[i]];
-            
+
             // Avoid for all ages on filter with notAll flag
-            if (currentFilter.notAll && (!activity.age.min && !activity.age.max)) {              
+            if (currentFilter.notAll && (!activity.age.min && !activity.age.max)) {
               continue;
             }
-  
+
             var min = !activity.age.max || !(currentFilter.min && activity.age.max < currentFilter.min);
             var max = !activity.age.min || !(currentFilter.max && activity.age.min >= currentFilter.max);
-            
+
             // Include activity with age in range or without age specification
-            if ((max && min) || (!max && !min)) {              
+            if ((max && min) || (!max && !min)) {
               return true;
             }
           }
@@ -29896,7 +29911,7 @@ Mixin | Description | Default
       planet-kiosk-scroll-button[down] {
         bottom: 50em;
       }
-      
+
       .closed planet-kiosk-scroll-button[down] {
         bottom: 25em;
       }
@@ -30037,16 +30052,16 @@ Mixin | Description | Default
         }
         this.set('intervals', intervals);
       },
-      _getSessions: function(activity, intervals) {        
+      _getSessions: function(activity, intervals) {
         for (var i = 0; i < activity.dates.length; i++) {
           var day = activity.dates[i];
           var hours = day.hours;
           if (this._isMultiPx(activity)) {
             // filter sessions on first multipx price oce
-            var firstCode = this._getFirstMultiPxPriceCode(activity);            
-            hours = day.hours.filter(function (item) {              
+            var firstCode = this._getFirstMultiPxPriceCode(activity);
+            hours = day.hours.filter(function (item) {
               return item.code === firstCode;
-            });            
+            });
           }
           for (var j = 0; j < hours.length; j++) {
             // Check availability of the session
@@ -30058,9 +30073,9 @@ Mixin | Description | Default
               if (this._isInBetween(moment(day.date + ' ' + hours[j].begin), intervals[k])) {
                 var session = this._sessionAsActivity(hours[j], activity);
                 session.dayIndex = i;
-                session.hourIndex = j;                
+                session.hourIndex = j;
                 intervals[k].sessions.push(session);
-              }             
+              }
             }
           }
         }
@@ -30889,7 +30904,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           white-space: normal;
         };
       }
-      
+
       .pmr paper-fab.lower {
         --paper-fab-label: {
           font-size: 1.4em;
@@ -30897,12 +30912,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           white-space: normal;
         };
       }
-      
+
       .pmr .stripes iron-icon {
         width: 5em;
         height: 5em;
       }
-      
+
     </style>
 
     <div class$="[[_getPMRClass(pmr)]] filter-wrapper">
@@ -31057,7 +31072,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       planet-kiosk-scroll-button[down] {
         bottom: 50em;
       }
-      
+
       .closed planet-kiosk-scroll-button[down] {
         bottom: 25em;
       }
@@ -31279,14 +31294,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           // BROWSE DAYS
           for(var j = 0; j < activities[i].dates.length; j++) {
             if (moment(activities[i].dates[j].date).isBetween(dayFilter.from, dayFilter.to, null, '[)')) {
-              var sessions = this._groupSessions(activities[i].dates[j].hours);              
-              if (!this._isMultiPx(activities[i])) {                  
+              var sessions = this._groupSessions(activities[i].dates[j].hours);
+              if (!this._isMultiPx(activities[i])) {
                   for (var k = 0; k < sessions.length;k++) {
                   sessions[k].dayIndex = j;
                   sessions[k].date = activities[i].dates[j].date;
                   result.push(this._sessionAsActivity(sessions[k], activities[i]));
-                }                
-              } else {                
+                }
+              } else {
                 var step = activities[i].multiPx.length;
                 for (var k = 0; k < sessions.length;k+=step) {
                   sessions[k].dayIndex = j;
@@ -31297,7 +31312,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               break;
             }
           }
-        }        
+        }
         this.set('_sessions', result);
       },
       _groupConsecutiveSessions: function(sessions) {
@@ -31427,33 +31442,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-size: 3em;
         font-family: var(--planet-font-family-heavy);
         color: var(--planet-color-theme-title);
-        font-weight: normal; 
+        font-weight: normal;
       }
-      
+
       --info-pres : {
         font-size: 2em;
         font-family: var(--planet-font-family-book);
       }
-      
+
       --desc-pres : {
         font-size: 2em;
         font-family: var(--planet-font-family-roman);
       }
-      
+
       --error-pres: {
         font-size: 2.5em;
         font-family: var(--planet-font-family-book);
         color: var(--planet-color-theme-warning);
-        font-weight: normal; 
+        font-weight: normal;
       }
-      
+
       --error-sub-pres: {
         font-size: 2em;
         font-family: var(--planet-font-family-book);
         color: var(--planet-color-theme-warning);
-        font-weight: normal; 
+        font-weight: normal;
       }
-      
+
       --paper-fab-background: none;
       --paper-fab-keyboard-focus-background: transparent;
       --paper-fab: {
@@ -31464,110 +31479,110 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       --paper-fab-label: {
         font-size: 4em;
         font-family: var(--planet-font-family-book);
-        color: var(--planet-color-theme-btn);        
+        color: var(--planet-color-theme-btn);
       }
     }
-    
+
     /* Classic */
-    paper-fab {      
+    paper-fab {
       box-shadow: none;
       border: 1px solid var(--planet-color-theme-border-btn);
     }
-    
+
     paper-fab[disabled] {
       background: none;
       opacity: 0.2;
     }
-    
+
     paper-fab[pressed] {
       box-shadow: none;
-      
+
     }
-    
+
     article {
       position: relative;
     }
-    
+
     .cross {
       position: absolute;
       top: 4em;
-      right: 5em;      
+      right: 5em;
     }
-    
-    .item {      
+
+    .item {
       border-bottom: 1px solid var(--planet-color-theme-border-sep);
       padding: 2em 0;
       min-height: 18.2em;
       @apply(--layout-vertical);
     }
-    
+
     header, .wrapper {
       @apply(--layout-horizontal);
     }
-    
+
     .item h3 {
-      @apply --title-pres; 
-      margin: 0;      
+      @apply --title-pres;
+      margin: 0;
     }
-    
+
     .item p.session,
     .item p.duration,
     .item p.price,
-    .item p.quantity {        
-      color: var(--planet-color-theme-desc);      
+    .item p.quantity {
+      color: var(--planet-color-theme-desc);
       margin: 0;
       @apply --info-pres;
     }
-    
+
     .item p.quantity,
     .item p.duration {
       margin-right: 2em;
     }
-    
+
     .item p.session {
       padding-bottom: 0.4em;
     }
-    
-    .item p.warning {        
+
+    .item p.warning {
       color: var(--planet-color-theme-warning);
       margin: 0;
       @apply --info-pres;
     }
-    
-    .item p.warning iron-icon {            
+
+    .item p.warning iron-icon {
       width: 1.6em;
       height: 1.6em;
       padding-bottom: 0.4em;
     }
-    
-    .item p.location {        
+
+    .item p.location {
      color: var(--planet-color-theme-sub);
      @apply --info-pres;
      margin: 0;
     }
-    
+
     .error {
       text-align: center;
-      margin-left: 3em;      
+      margin-left: 3em;
     }
-    
+
     .error-title  {
       @apply --error-pres;
       margin: 0;
     }
-    
+
     .error-desc {
       @apply --error-sub-pres;
       font-weight: bold;
-      margin: 0;      
+      margin: 0;
     }
-    
+
     /* PMR */
     .card-container.pmr {
       display: block;
-      width: 20em;      
+      width: 20em;
     }
-    
+
     .card-container.pmr:active {
       transform: none;
     }
@@ -31576,7 +31591,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       height: 38em;
       margin: 1em 0.6em 0;
       z-index: 1;
-      
+
     }
 
     .pmr paper-card .card-content {
@@ -31587,33 +31602,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     .pmr paper-card iron-image {
       width: 19em;
-      height: 10em;             
+      height: 10em;
     }
 
     .pmr paper-card h3 {
       font-size: 1.6em;
       min-height: 2.8em;
     }
-    
+
     .pmr p.unitary {
       color: var(--planet-color-theme-desc);
       font-size: 1.3em;
       margin: 0;
     }
-    
+
     .pmr p.warning {
       color: var(--planet-color-theme-warning);
       margin: 0;
       font-size: 1.2em;
     }
-    
-    .pmr p.warning iron-icon {            
+
+    .pmr p.warning iron-icon {
       width: 2.2em;
       height: 2.2em;
       margin-left: -0.4em;
       padding-bottom: 0.4em;
     }
-    
+
     .pmr paper-button {
       font-size: 1.3em;
       position: absolute;
@@ -31628,7 +31643,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       right: 2em;
       top: auto;
     }
-    
+
     .pmr .error {
       color: var(--planet-color-theme-warning);
       margin: 2em 0;
@@ -31636,13 +31651,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       text-align: left;
       font-weight: bold;
     }
-    
+
     /* MINI */
     .card-container.mini {
       display: block;
-      width: 20em;      
+      width: 20em;
     }
-    
+
     .card-container.mini:active {
       transform: none;
     }
@@ -31650,9 +31665,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     .mini paper-card {
       height: 20em;
       margin: 1em 0.6em 0;
-      z-index: 1;      
+      z-index: 1;
     }
-    
+
     .mini paper-card .card-content {
       position: relative;
       padding: 0 0.7em;
@@ -31661,34 +31676,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     .mini paper-card iron-image {
       width: 19em;
-      height: 10em;             
+      height: 10em;
     }
 
     .mini paper-card h3 {
       font-size: 1.6em;
       min-height: 2.8em;
     }
-    
+
     .mini p.unitary {
       color: var(--planet-color-theme-desc);
       font-size: 1.3em;
       margin: 0;
     }
   </style>
-  <template>    
+  <template>
     <!-- Classic mode -->
     <template is="dom-if" if="[[_isClassic(pmr, mini)]]">
       <div class="item">
         <header>
           <h3 class="flex">[[entry.title]]</h3>
-          <p class="quantity self-center">[[localize('activity_quantity', 'quantity', entry.quantity)]]</p>  
+          <p class="quantity self-center">[[localize('activity_quantity', 'quantity', entry.quantity)]]</p>
           <p class="price self-center">
             <template is="dom-if" if="[[_isFree(entry.price)]]">
               [[localize('activity_free')]]
               </template>
               <template is="dom-if" if="[[!_isFree(entry.price)]]">
               [[localize('activity_price', 'price', entry.price)]] [[localize('activity_currency')]]
-              </template> 
+              </template>
           </p>
         </header>
         <article>
@@ -31697,20 +31712,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <div class="wrapper">
             <p class="duration" hidden="[[_isDurationEmpty(entry.durationLabel)]]">[[entry.durationLabel]]</p>
             <p class="location">[[entry.age]][[_getLocation(entry)]]</p>
-          </div>        
-          <div class="wrapper">          
+          </div>
+          <div class="wrapper">
             <paper-button class$="secondary[[_getConfirmClassOnError(entry.incorrect)]]" on-tap="_edit">[[localize('activity_modify_button')]]</paper-button>
-            <div class="error vertical layout center-justified" hidden$="[[!entry.incorrect]]">                        
-              <template is="dom-repeat" items="{{entry.errors}}" as="error">                      
+            <div class="error vertical layout center-justified" hidden$="[[!entry.incorrect]]">
+              <template is="dom-repeat" items="{{entry.errors}}" as="error">
                 <p class="error-desc">[[error.title]]</p>
-              </template>              
+              </template>
             </div>
           </div>
           <paper-fab class="cross" label="x" on-tap="_delete"></paper-fab>
         </article>
       </div>
     </template>
-    
+
     <!-- PMR mode -->
     <template is="dom-if" if="[[_isPMR(pmr, mini)]]">
       <a class="card-container pmr">
@@ -31728,24 +31743,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <template is="dom-if" if="[[!_isFree(entry.price)]]">
                 -
               [[localize('activity_price', 'price', entry.price)]] [[localize('activity_currency')]]
-              </template>              
+              </template>
             </p>
             <p class="warning" hidden$="[[!_hasWarning(entry.warning)]]"><iron-icon icon="misc:warning"></iron-icon>[[entry.warning]]</p>
-            <div class="error vertical layout" hidden$="[[!entry.incorrect]]">                        
-              <template is="dom-repeat" items="{{entry.errors}}" as="error">                      
+            <div class="error vertical layout" hidden$="[[!entry.incorrect]]">
+              <template is="dom-repeat" items="{{entry.errors}}" as="error">
                 <p class="error-desc">[[error.title]]</p>
-              </template>              
+              </template>
             </div>
             <div class="wrapper">
               <paper-button class$="secondary[[_getConfirmClassOnError(entry.incorrect)]]" on-tap="_edit">[[localize('activity_modify_button')]]</paper-button>
-              <paper-fab class="cross" label="x" on-tap="_delete"></paper-fab>              
+              <paper-fab class="cross" label="x" on-tap="_delete"></paper-fab>
             </div>
-          
-          </div>          
+
+          </div>
         </paper-card>
       </a>
     </template>
-    
+
     <!-- Mini mode -->
     <template is="dom-if" if="[[_isMini(pmr, mini)]]">
       <a class="card-container mini">
@@ -31763,13 +31778,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <template is="dom-if" if="[[!_isFree(entry.price)]]">
                 -
               [[localize('activity_price', 'price', entry.price)]] [[localize('activity_currency')]]
-              </template>              
+              </template>
             </p>
-          </div>          
+          </div>
         </paper-card>
     </a></template>
   </template>
-  <script>  
+  <script>
   Polymer({
     is: 'planet-kiosk-basket-item',
     behaviors: [
@@ -31785,8 +31800,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       mini: {
         type: Boolean,
-        value: false        
-      }      
+        value: false
+      }
     },
     _isClassic: function (pmr, mini) {
       return pmr === false && mini === false;
@@ -31794,12 +31809,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _isPMR: function (pmr, mini) {
       return pmr === true && mini === false;
     },
-    _isMini: function (pmr, mini) {      
+    _isMini: function (pmr, mini) {
       return pmr === false && mini === true;
     },
     _hasWarning: function (warning) {
       return warning !== '';
-    },    
+    },
     _getConfirmClassOnError: function (error) {
       if (error) {
         return ' confirm';
@@ -31807,16 +31822,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return '';
       }
     },
-    _delete: function () {      
+    _delete: function () {
       this.fire('cart-delete-item', {
-        index: this.get('index')        
+        index: this.get('index')
       });
     },
     _edit: function () {
       this.fire('cart-edit-item', {
         code: this.get('entry').code,
         index: this.get('index')
-      });      
+      });
     },
     _getLocation: function(entry) {
       if (entry.location) {
@@ -31824,7 +31839,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
       return '';
     },
-    _isFree: function (price) {      
+    _isFree: function (price) {
       return price === 0;
     },
     _isDurationEmpty: function (durationLabel) {
@@ -31840,22 +31855,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     :host {
         text-align: center;
     }
-    
+
     object {
       width: 100em;
       height: 100em;
-      margin-bottom: 4em;      
+      margin-bottom: 4em;
       overflow: auto;
       border: 1px solid var(--planet-color-theme-border);
-      background-color: var(--planet-color-theme-opposite);    
+      background-color: var(--planet-color-theme-opposite);
     }
-    
-    /* PMR Mode override */    
-    .pmr h2 {      
+
+    /* PMR Mode override */
+    .pmr h2 {
       padding: 0;
     }
-    .pmr object {      
-      height: 40em;      
+    .pmr object {
+      height: 40em;
     }
     .pmr paper-button {
       font-size: 1em;
@@ -31868,10 +31883,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <div class$="[[_getPMRClass(pmr)]]">
   </div></div></template>
 
-  <script>  
+  <script>
   Polymer({
     is: 'planet-kiosk-cgu',
-    behaviors: [        
+    behaviors: [
       AppLocalizeBehavior,
       PMRBehavior,
       Polymer.IronOverlayBehavior
@@ -31885,7 +31900,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _confirm : function () {
       this.close();
     },
-    _getUpperLanguage: function (language) {      
+    _getUpperLanguage: function (language) {
       return language.toUpperCase();
     }
   });
@@ -31912,12 +31927,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-weight: bold;
         margin: 0.5em 0 1em 0;
       }
-      
+
       /* PMR Mode override */
       .pmr {
         font-size: 0.8em;
       }
-      .pmr img {      
+      .pmr img {
         width: 15.9em;
         height: 20.8em;
       }
@@ -31930,16 +31945,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .pmr .buttons {
         font-size: 0.6em;
         margin: 1em 0;
-      }   
+      }
     </style>
-    
+
     <div class$="[[_getPMRClass(pmr)]]">
 
       <img src="images/lock.png">
-  
+
       <p class="message">[[message]]</p>
       <p class="number">[[number]]</p>
-  
+
       <div class="buttons">
         <paper-button class="primary cancel" on-tap="_cancel">[[localize('login_bis_cancel_button')]]</paper-button>
         <paper-button class="primary confirm" on-tap="_confirm">[[localize('login_bis_confirm_button')]]</paper-button>
@@ -31984,7 +31999,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       /* PMR Mode override */
       .pmr {
         font-size: 0.8em;
-      }      
+      }
       .pmr .message {
         margin: 1em 0;
       }
@@ -31996,26 +32011,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin: 1em 0;
       }
     </style>
-    
+
     <div class$="[[_getPMRClass(pmr)]]">
       <h2>[[localize('basket_payment_error_title')]]</h2>
-      
+
       <p class="message">[[localize('basket_payment_error_desc')]]</p>
-      
+
       <p class="info">[[localize('basket_payment_error_info')]]</p>
-      
+
       <div class="buttons">
         <paper-button class="primary cancel" on-tap="_cancel">[[localize('basket_payment_error_abandon_button')]]</paper-button>
-        <paper-button class="primary confirm" on-tap="_confirm">[[localize('basket_payment_error_tryagain_button')]]</paper-button>  
+        <paper-button class="primary confirm" on-tap="_confirm">[[localize('basket_payment_error_tryagain_button')]]</paper-button>
       </div>
     </div>
-    
+
   </template>
 
-  <script>  
+  <script>
   Polymer({
     is: 'planet-kiosk-basket-error',
-    behaviors: [        
+    behaviors: [
       AppLocalizeBehavior,
       PMRBehavior,
       Polymer.IronOverlayBehavior
@@ -32075,11 +32090,11 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
       --paper-checkbox-size: 3em;
       --paper-checkbox-margin: 0 1em;
       --paper-checkbox-label: {
-        @apply --cgu-pres;        
+        @apply --cgu-pres;
       }
       --paper-checkbox-checked-color: var(--planet-color-theme-primary);
     }
-    
+
     app-header {
       background-color: var(--planet-color-theme-mainbg);
     }
@@ -32112,7 +32127,7 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
       margin: 4em;
       width: 66em;
     }
-    
+
     .cgu-text {
       padding-right: 1em;
     }
@@ -32139,7 +32154,7 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
     .empty p.info {
       @apply --info-pres;
     }
-    
+
     planet-kiosk-scroll-button {
       display: none;
     }
@@ -32148,40 +32163,40 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
     .pmr h2 {
       padding: 0;
     }
-    
+
     .pmr .sub-title {
-      margin: 0;      
+      margin: 0;
     }
-    
+
     .pmr .wrapper {
       @apply(--layout-horizontal);
     }
-    
+
     .pmr .content {
-      margin: 0;      
+      margin: 0;
       padding: 0 2em;
       width: 82em;
       height: 44em;
       overflow-y: scroll;
-      @apply(--layout-horizontal);      
+      @apply(--layout-horizontal);
       z-index: 1;
     }
-    
+
     .pmr .content::-webkit-scrollbar {
       display: none;
     }
-    
+
     .pmr .content:not([visible]) {
       display: none;
     }
-    
+
     .pmr .empty {
       height: 34em;
       width: 100%;
       font-size: 0.8em;
     }
-    
-    .pmr .summary {      
+
+    .pmr .summary {
       position:fixed;
       left: auto;
       right: 0;
@@ -32195,13 +32210,13 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
       @apply(--layout-vertical);
       @apply(--layout-center-center);
     }
-    
+
     .pmr .summary .buttons paper-button {
       width: 21em;
       margin: 0 0 2em 0em;
     }
     .pmr .summary .cgu-block {
-      position: relative;            
+      position: relative;
       margin: 0;
       width: 35em;
     }
@@ -32217,9 +32232,9 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
     .pmr .summary .total {
       position: relative;
       text-align: center;
-      right: auto;      
+      right: auto;
     }
-    
+
     .pmr planet-kiosk-scroll-button {
       display: block;
     }
@@ -32243,7 +32258,7 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
             <div class="content" visible$="[[_hasItems]]">
               <template id="cartList" is="dom-repeat" items="{{cart}}" as="entry">
                 <planet-kiosk-basket-item entry="[[entry]]" error$="[[entry.incorrect]]" index="[[index]]" pmr="[[pmr]]"></planet-kiosk-basket-item>
-              </template>              
+              </template>
             </div>
             <div class="empty layout vertical center-center" visible$="[[!_hasItems]]">
               <p class="info">[[localize('basket_empty_title')]]</p>
@@ -32254,17 +32269,17 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
               </p><div class="cgu-block">
                 <paper-checkbox id="cgu" on-tap="_onCGUChanged"><span class="cgu-text">[[localize('basket_salesconditions')]]</span></paper-checkbox>
                 <paper-button class="tertiary" on-tap="_openCGU">[[localize('basket_salesconditions_button')]]</paper-button>
-              </div>              
+              </div>
               <div class="buttons layout horizontal center-justified">
                 <paper-button class="primary cancel" on-tap="_cancel">[[localize('basket_continue_button')]]</paper-button>
                 <paper-button class="primary confirm" on-tap="_confirm">[[localize('basket_payment_button')]]</paper-button>
               </div>
             </div>
           </div>
-          
+
         </app-header-layout>
     </div>
-    
+
     <planet-kiosk-cgu id="cgupopin" language="[[language]]" pmr="[[pmr]]" with-backdrop="" no-cancel-on-outside-click=""></planet-kiosk-cgu>
     <planet-kiosk-basket-authentification id="authentification" language="[[language]]" pmr="[[pmr]]" with-backdrop="" no-cancel-on-outside-click=""></planet-kiosk-basket-authentification>
     <planet-kiosk-basket-error id="error" language="[[language]]" pmr="[[pmr]]" with-backdrop="" no-cancel-on-outside-click=""></planet-kiosk-basket-error>
@@ -32310,10 +32325,10 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
         'cart-edit-item': '_onCartEditItem',
         'do-payment': 'doPayment'
       },
-      _refreshLayout: function () {        
+      _refreshLayout: function () {
         // Hack to avoid wrong positioning of the content in the layout
-        this.$.layout.resetLayout();        
-      },      
+        this.$.layout.resetLayout();
+      },
       _computeHasItem: function(cartLength) {
         return cartLength > 0;
       },
@@ -32365,7 +32380,7 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
             var login = document.querySelector('planet-kiosk-login-info');
             if (typeof login.villa !== 'undefined' || typeof globals.cottageNumbers !== 'undefined' || globals.nfcScan) {
               var number, message;
-              
+
               if (!globals.nfcScan) {
                 message = this.localize('login_bis_popin_msg');
 
@@ -32377,12 +32392,12 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
                   if (globals.cottageNumbers.value.length > 1) {
                     message = this.localize('login_bis_popin_msg_plural');
                   }
-                }                
+                }
               } else {
                 message = this.localize('login_bis_popin_msg_name');
                 number = this.localize('login_bis_popin_number', 'number', globals.name);
               }
-              
+
               this.$.authentification.set('number', number);
               this.$.authentification.set('message', message);
               this.$.authentification.open();
@@ -32398,8 +32413,8 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
       },
       _getProducts: function () {
         var products = [];
-        this.cart.forEach(function (item) {          
-          var stamp = item.date.replace(/-/g, '') + item.begin.replace(/:/g, '');          
+        this.cart.forEach(function (item) {
+          var stamp = item.date.replace(/-/g, '') + item.begin.replace(/:/g, '');
           var current = {
             'sku': item.subCode + '_' + stamp,
             'name': item.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ""),
@@ -32410,26 +32425,26 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
           products.push(current);
         });
         return products;
-      },      
+      },
       _success: function(data) {
         var payment = document.querySelector('planet-kiosk-payment');
         payment.set('transaction', data.transaction);
         payment.set('products', this._getProducts());
         payment.set('amount', data.total.value);
-        payment.set('orderId', data.orderId);        
+        payment.set('orderId', data.orderId);
         globals.router.set('route.path', '/payment');
       },
       _fail: function() {
         this.$.error.open();
         this.trackEvent('Error', 'basket transaction error', this.localize('basket_payment_error_title'), 'noevent');
       },
-      _scrollToFirstError: function () {        
-        var firstError = document.querySelector('planet-kiosk-basket-item[error]');        
+      _scrollToFirstError: function () {
+        var firstError = document.querySelector('planet-kiosk-basket-item[error]');
         if (firstError) {
-          this.async(function() {            
-            firstError.scrollIntoView({block: "start", behavior: "smooth"});				
-          });          
-        }			
+          this.async(function() {
+            firstError.scrollIntoView({block: "start", behavior: "smooth"});
+          });
+        }
       },
       _onContentUnavailable : function (activities) {
         activities.forEach(function (activity) {
@@ -32441,7 +32456,7 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
               item.errors = activity.errors;
               globals.cart.editItem(item, index);
               globals.cart.notifyErrorChange(item, index);
-            }            
+            }
           }
         });
         this._scrollToFirstError();
@@ -32490,7 +32505,7 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
             "code": key,
             "sessions": groups[key].map(function(item) {
               return {
-                "code": item.subCode,                
+                "code": item.subCode,
                 "date": item.date,
                 "begin": item.begin,
                 "duration": item.duration,
@@ -32991,26 +33006,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="planet-kiosk-payment-error" assetpath="src/planet-kiosk-app/">
   <template>
     <style include="planet-kiosk-page-styles planet-kiosk-popin-styles"></style>
-    
+
     <h2>[[localize('payment_error_title')]]</h2>
-    
+
     <p class="message">[[localize('payment_error_desc')]]</p>
-    
+
     <p class="info">[[localize('payment_error_info')]]</p>
-    
+
     <p class="info">[[localize('payment_error_info_bis')]]</p>
-    
+
     <div class="buttons">
       <paper-button class="primary cancel" on-tap="_cancel">[[localize('payment_error_abandon_button')]]</paper-button>
-      <paper-button class="primary confirm" on-tap="_confirm">[[localize('payment_error_tryagain_button')]]</paper-button>  
+      <paper-button class="primary confirm" on-tap="_confirm">[[localize('payment_error_tryagain_button')]]</paper-button>
     </div>
-    
+
   </template>
 
-  <script>  
+  <script>
   Polymer({
     is: 'planet-kiosk-payment-error',
-    behaviors: [        
+    behaviors: [
       AppLocalizeBehavior,
       Polymer.IronOverlayBehavior
     ],
@@ -33021,7 +33036,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       this.async(function() {
         payment.cancel();
       }, 1200);
-      this.close();      
+      this.close();
     },
     _confirm : function () {
       var payment = document.querySelector('planet-kiosk-payment');
@@ -33037,25 +33052,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="planet-kiosk-printer-error" assetpath="src/planet-kiosk-app/">
   <template>
     <style include="planet-kiosk-page-styles planet-kiosk-popin-styles"></style>
-    
+
     <h2>[[localize('printer_error_title')]]</h2>
-    
+
     <p class="message">[[localize('printer_error_desc')]]</p>
-    
-    <div class="buttons">      
-      <paper-button class="primary confirm" on-tap="_confirm">[[localize('printer_error_confirm_button')]]</paper-button>  
+
+    <div class="buttons">
+      <paper-button class="primary confirm" on-tap="_confirm">[[localize('printer_error_confirm_button')]]</paper-button>
     </div>
-    
+
   </template>
 
-  <script>  
+  <script>
   Polymer({
     is: 'planet-kiosk-printer-error',
-    behaviors: [        
+    behaviors: [
       AppLocalizeBehavior,
       Polymer.IronOverlayBehavior
-    ],    
-    _confirm : function () {      
+    ],
+    _confirm : function () {
       this.close();
       globals.router.set('route.path', '/outage');
     }
@@ -33101,7 +33116,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       return '<@PaymentCustomerReceipt>'; // TODO :  Maybe directly add partial cut
     },
     // Text decoration
-    charSize: function(content) { 
+    charSize: function(content) {
       return "<@CharSizeOn>" + "<@CharSizeOff>";
     },
     bold: function(content) {
@@ -33155,7 +33170,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       else {
         var words = content.split(' ');
         var count = 0;
-  
+
         for (var i = 0; i < words.length; i++) {
           count += words[i].length + (i ? 1 : 0);
           if (count >= 21 - 3) { // End of line
@@ -33372,20 +33387,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         line-height: 1.8em;
         margin: 0;
       }
-      
+
       .progress {
         @apply --layout-vertical;
         @apply(--layout-center-center);
         min-height: 2em;
       }
-      
+
       .progress p.info {
         font-size: 4em;
         font-family: var(--planet-font-family-book);
         color: var(--planet-color-theme-title);
         min-height: 1.2em;
       }
-    
+
       paper-progress {
          --paper-progress-active-color: var(--planet-color-theme-primary);
          width: 30em;
@@ -33394,7 +33409,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .buttons {
         margin-top: 10em;
       }
-      
+
       /* PMR Mode override */
       .pmr planet-kiosk-payment-error, .pmr planet-kiosk-printer-error {
         font-size: 0.6em;
@@ -33423,32 +33438,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         width: 15em;
       }
 
-      .pmr .progress p.info {      
+      .pmr .progress p.info {
         margin: 0.25em;
       }
     </style>
     <div class$="[[_getPMRClass(pmr)]]">
     <template is="dom-if" if="[[_isEqualToInitial]]">
-      
+
       <template is="dom-if" if="[[!_isFree]]">
-  
+
         <h2>[[localize('payment_title')]]</h2>
-  
+
         <div class="content_pay">
           <img src="images/paycard.png">
           <p class="message">[[localize('payment_desc')]]</p>
         </div>
-  
+
       </template>
-      
+
       <template is="dom-if" if="[[_isFree]]">
-  
+
         <h2>[[localize('payment_free_title')]]</h2>
-  
-        <div class="content_pay">          
+
+        <div class="content_pay">
           <p class="message">[[localize('payment_free_desc')]]</p>
         </div>
-  
+
       </template>
     </template>
 
@@ -33460,26 +33475,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <img src="images/success_tick.png">
 
         <p class="message">[[localize('payment_success_desc')]]</p>
-        
+
         <div class="progress">
           <p class="info">[[_getPrintStateLabel(localize, printState)]]</p>
           <paper-progress indeterminate="" hidden="[[!_isPrintInProgress(printState)]]"></paper-progress>
         </div>
-        
+
         <template is="dom-if" if="[[isPrintSuccess]]">
           <div class="information">
             <p class="title">[[localize('payment_ticket_title')]]</p>
             <p>[[localize('payment_ticket_desc')]]</p>
           </div>
         </template>
-        
+
         <div class="buttons">
           <paper-button class="primary confirm" on-tap="_end">[[localize('payment_success_button_end')]]</paper-button>
         </div>
 
       </div>
     </template>
-    
+
     <template is="dom-if" if="[[_isEqualToPartial]]">
 
       <h2>[[localize('payment_partial_title')]]</h2>
@@ -33488,19 +33503,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <img src="images/warning.png">
 
         <p class="message">[[localize('payment_partial_desc')]]</p>
-        
+
         <div class="progress">
           <p class="info">[[_getPrintStateLabel(localize, printState)]]</p>
           <paper-progress indeterminate="" hidden="[[!_isPrintInProgress(printState)]]"></paper-progress>
         </div>
-        
+
         <template is="dom-if" if="[[isPrintSuccess]]">
           <div class="information">
             <p class="title">[[localize('payment_ticket_partial_title')]]</p>
             <p>[[localize('payment_ticket_partial_desc')]]</p>
           </div>
         </template>
-        
+
         <div class="buttons">
           <paper-button class="primary confirm" on-tap="_end">[[localize('payment_partial_button_end')]]</paper-button>
         </div>
@@ -33552,7 +33567,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               ERROR: 3
             }
           }
-        },        
+        },
         printState: {
           type: String,
           value: 0
@@ -33584,25 +33599,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _isEqualTo : function (state, value) {
         return state === value;
       },
-      _checkFree : function (amount) {        
+      _checkFree : function (amount) {
         return amount === 0;
       },
-      _checkPrintState: function (printState, value) {        
+      _checkPrintState: function (printState, value) {
         return printState === value;
       },
       _visibiltyChanged : function (visible) {
         if (visible && this.state === 'initial') {
           this.pay();
         }
-      },      
+      },
       pay: function () {
         var amount = this.get('amount');
         var transaction = this.get('transaction');
-        
-        if (amount !== 0) {          
+
+        if (amount !== 0) {
           if (MBirdSdk.isConnected()) {
             MBirdSdk.Payment.Pay(amount, transaction).then(function (result) {
-              this.set('paymentInfo', result);            
+              this.set('paymentInfo', result);
               this._setTransaction();
             }.bind(this)).catch(function (error) {
               this._fail();
@@ -33611,9 +33626,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             this._fail();
           }
         } else {
-          // Bypass payment        
-          this.set('paymentInfo', []);            
-          this._setTransaction();          
+          // Bypass payment
+          this.set('paymentInfo', []);
+          this._setTransaction();
         }
       },
       cancel: function () {
@@ -33646,10 +33661,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         transactionrequest.body = data;
         transactionrequest.generateRequest();
       },
-      _onCancelResponse: function (e) {        
+      _onCancelResponse: function (e) {
         this.trackEvent('Payment', 'cancel transaction', this.get('transaction'), 'noevent');
       },
-      _onCancelError: function (e) {        
+      _onCancelError: function (e) {
         this.trackEvent('Error', 'cancel transaction error', this.get('transaction'), 'noevent');
       },
       _cancelTransaction: function () {
@@ -33657,7 +33672,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var data = 'token=' + globals.token + '&booking=' + globals.bookingId + '&transaction=' + this.get('transaction') + '&orderId=' + this.get('orderId');
         transactionrequest.headers = globals.headers;
         transactionrequest.body = data;
-        transactionrequest.generateRequest();        
+        transactionrequest.generateRequest();
       },
       _trackTransaction: function () {
         var layer = {
@@ -33679,13 +33694,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _transactionFail: function () {
         this.set('state', 'partial');
         this.trackEvent('Error', 'set transaction error', this.get('transaction'), 'noevent');
-        this._launchPrint();  
-      },     
+        this._launchPrint();
+      },
       _success: function () {
         this.set('state', 'success');
         this._trackTransaction();
         this._launchPrint();
-      },      
+      },
       _isPrintInProgress: function (printState) {
         return printState === this.printStates.INPROGRESS;
       },
@@ -33707,17 +33722,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               ''
           }
       },
-      _printFail: function () {        
+      _printFail: function () {
         //this.$.printererror.open();
         this.set('printState', this.printStates.ERROR);
         this.trackEvent('Error', 'print error', this.localize('printer_error_title'), 'noevent');
-      },      
+      },
       _print: function () {
         if (MBirdSdk.isConnected()) {
           var printContent = this._getAllContent();
           MBirdSdk.Printer.TagContent(printContent).then(function (result) {
             this.set('printState', this.printStates.SUCCESS);
-            this.set('printInfo', result);            
+            this.set('printInfo', result);
           }.bind(this)).catch(function (error) {
             this._printFail();
           }.bind(this));
@@ -33727,11 +33742,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       _getAllContent: function () {
         var content = '';
-        
+
         content += this._getCBContent();
         content += this._getCartContent();
         if (!this._isEqualToPartial) {
-          content += this._getCounterMarks();  
+          content += this._getCounterMarks();
         }
 
         return content;
@@ -33746,14 +33761,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         tva = tva.toFixed(2) + currency;
         return this.cr + this.bold(this.alignRight(totalTVALbl  + ' ' + tva));
       },
-      _getVATContent: function () {        
+      _getVATContent: function () {
         var vatRates = globals.cart.extractVATRates();
         var vatContent = '';
         var self = this;
         vatRates.forEach(function (rate) {
           if (rate !== "0") {
-            vatContent += self._getVATLine(parseInt(rate, 10));  
-          }          
+            vatContent += self._getVATLine(parseInt(rate, 10));
+          }
         });
         return vatContent;
       },
@@ -33768,10 +33783,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var bookingLbl = this.localize('payment_ticket_cart_booking_label');
         var customerLbl = this.localize('payment_ticket_cart_customer_label');
         var kioskLbl = this.localize('payment_ticket_cart_kiosk_label');
-        var transactionLbl = this.localize('payment_ticket_cart_transaction_label');        
+        var transactionLbl = this.localize('payment_ticket_cart_transaction_label');
         var totalLbl = this.localize('payment_ticket_cart_total_label');
         var paidLbl = this.localize('payment_ticket_cart_paid_label');
-        
+
         var headerContent = [
           this.localize('printer_basket_product_label_ml_25'),
           this.localize('printer_basket_product_quantity_ml_2'),
@@ -33787,12 +33802,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         ];
 
         var content = this.partialCut() + this.logo() + this.center(header);
-        
+
         if (this._isEqualToPartial) {
           content += this.cr + this.center(provisionalHeader);
-        } 
-        content +=   this.cr + this.cr;  
-        
+        }
+        content +=   this.cr + this.cr;
+
         content += parcLbl + this.cr;
         content += transactionLbl + ' ' + this._getTransactionId() + this.cr;
         content += dateLbl + ' ' + moment().format('DD-MM-YYYY') + this.cr;
@@ -33800,7 +33815,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         content += bookingLbl + ' ' + globals.bookingId + this.cr;
         content += customerLbl + ' ' + globals.customer + this.cr;
         content += kioskLbl + ' ' + globals.kioskId + this.cr + this.cr;
-        
+
         var cartItems = globals.cart.get('cart');
 
         var cartArray = [{ content: headerContent, bold: true, underline: false }];
@@ -33808,14 +33823,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         cartArray = cartArray.concat(cartItems.map(function (item) {
           return {content: [item.title,  item.quantity, item.unitPrice, item.price.toFixed(2)]};
         }));
-        
+
         content += this.array(cartArray, layout);
-        
+
         //// VAT
         if (globals.countryCode !== 'NL' && globals.countryCode !== 'BE') {
           content += this._getVATContent();
         }
-        
+
         // TOTAL
         var total = globals.cart.get('total').toFixed(2) + currency;
         content += this.cr + this.bold(this.alignRight(totalLbl + ' ' + total));
@@ -33824,18 +33839,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           content += this.cr + this.cr + provisionalMsg + this.cr + this.cr;
           content += this.partialCut();
         } else {
-          content += this.cr + this.cr;  
+          content += this.cr + this.cr;
         }
-        
+
         return content;
       },
-      _getTransactionId: function () {        
+      _getTransactionId: function () {
         if (this._isEqualToPartial) {
           return this.get('transaction');
         } else {
           var counterMarks = this.get('counterMarks');
           if (counterMarks && counterMarks.length > 0) {
-            return counterMarks[0].transaction;          
+            return counterMarks[0].transaction;
           } else {
             return '';
           }
@@ -33856,7 +33871,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _getCounterMark : function(counterMark) {
         var content = '';
         var title = counterMark.title;
-        var lane = counterMark.lane ? counterMark.lane : "";        
+        var lane = counterMark.lane ? counterMark.lane : "";
         var date = moment(counterMark.date).format('DD-MM-YYYY');
         var hour = counterMark.hour;
         var location = counterMark.location;
@@ -33866,7 +33881,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (counterMark.duration) {
           timeLine += ' - ' + moment(hour, 'HH:mm:ss').add(counterMark.duration, 'm').format('HH:mm');
         }
-        
+
         // Logo
         content += this.magnification(2, this.bold(this.centerLogo(this.localize('printer_logo_label')))) + this.cr + this.cr;
         content += this.center(this.localize('printer_counter_mark_header')) + this.cr + this.cr;
@@ -33916,30 +33931,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
       .content {
         margin-top: 9em !important;
-      }      
-      img {        
+      }
+      img {
         margin: 4em 0;
-      }      
+      }
       .buttons {
         text-align: center;
-      }      
+      }
     </style>
     <div class$="[[_getPMRClass(pmr)]]">
         <h2>[[localize('map_title')]]</h2>
-        <div class="content">           
+        <div class="content">
             <img src="./data/MAPS/ZOOM-[[dynamicSiteCode]]-BORNES-[[dynamicLanguage]].jpg">
           <div class="buttons">
-            <paper-button class="primary confirm" on-tap="_confirm">[[localize('map_close_button')]]</paper-button>  
+            <paper-button class="primary confirm" on-tap="_confirm">[[localize('map_close_button')]]</paper-button>
           </div>
-        </div>        
+        </div>
     </div>
 
   </template>
 
-  <script>  
+  <script>
   Polymer({
     is: 'planet-kiosk-map',
-    behaviors: [        
+    behaviors: [
       AppLocalizeBehavior,
       PMRBehavior
     ],
@@ -33956,7 +33971,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _confirm : function () {
       window.history.back();
     },
-    _getUpperLanguage: function (language) {      
+    _getUpperLanguage: function (language) {
       return language.toUpperCase();
     },
     _getSiteCode: function (language) {
@@ -33977,7 +33992,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       margin: -16em 0 0 -40em;
       text-align: center;
     }
-    
+
     .message {
       font-size: 4em;
       font-family: var(--planet-font-family-book);
@@ -33985,7 +34000,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       text-align: center;
       margin: 1em 0 2em 0;
     }
-    
+
     /* PMR Mode override */
     .pmr {
       font-size: 0.8em;
@@ -33998,7 +34013,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       margin: -12em 0 0 -40em;
     }
   </style>
-  
+
   <template>
 
     <div class$="[[_getPMRClass(pmr)]]">
@@ -34007,10 +34022,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p class="message">[[localize('unavailable_desc')]]</p>
       </div>
     </div>
-    
+
   </template>
 
-  <script>  
+  <script>
   Polymer({
     is: 'planet-kiosk-outage',
     behaviors: [
@@ -34033,75 +34048,75 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     background-color: var(--planet-color-theme-mainbg);
     border-top: 1px solid var(--planet-color-theme-border);
     transition-property: bottom;
-    transition-duration: 2s;    
+    transition-duration: 2s;
     --info-pres : {
       font-size: 2.5em;
       font-family: var(--planet-font-family-book);
       color: var(--planet-color-theme-desc);
-    }          
+    }
   }
-  
+
   :host:not([opened]) {
-    bottom: -14em;    
+    bottom: -14em;
   }
-  
+
   :host:not([opened]) planet-kiosk-scroll-button {
     display: none;
   }
-  
+
   h2 {
     font-size: 3em;
     text-align: left;
     margin: 0;
     padding-left: 1em;
   }
-  
+
   .wrapper {
     @apply(--layout-horizontal);
     margin: 0 4em;
   }
-  
+
   .content:not([visible]),
   .empty:not([visible]),
   .buttons:not([visible]){
-    display: none;    
+    display: none;
   }
-  
-  .content {    
+
+  .content {
     overflow-y: scroll;
-    @apply(--layout-horizontal);      
+    @apply(--layout-horizontal);
     z-index: 1;
     margin: 0;
     padding: 2em 0;
   }
-  
+
   .content::-webkit-scrollbar {
     display: none;
   }
-  
+
   .empty p.info {
     @apply --info-pres;
   }
-  
+
   .buttons {
     position: absolute;
     top: 0.2em;
     right: 6em;
     font-size: 0.8em;
   }
-  
+
   .toggle {
     position: absolute;
     top: 0.6em;
     right: 30em;
     font-size: 0.8em;
   }
-  
+
   .toggle .tertiary {
     margin-right: 1.4em;
     text-transform: capitalize;
   }
-  
+
   planet-kiosk-scroll-button {
     position: absolute;
     display: block;
@@ -34119,22 +34134,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <div id="layout">
       <h2>[[localize('basket_mini_title')]] [[_getTotalLabel(total)]] [[_getNbItemsLabel(nbItems)]]</h2>
-      <div class="wrapper">        
+      <div class="wrapper">
         <div class="content" visible$="[[_hasItem(nbItems)]]">
           <template id="miniCartList" is="dom-repeat" items="{{cart}}" as="entry">
             <planet-kiosk-basket-item entry="[[entry]]" error$="[[entry.incorrect]]" index="[[index]]" pmr="[[pmr]]" mini=""></planet-kiosk-basket-item>
-          </template>          
+          </template>
         </div>
         <div class="empty" visible$="[[!_hasItem(nbItems)]]">
-          <p class="info">[[localize('basket_empty_title')]]</p>          
+          <p class="info">[[localize('basket_empty_title')]]</p>
         </div>
         <div class="toggle">
           <paper-button class="tertiary" on-tap="_toggle">[[_getToggleLabel(opened, localize)]]</paper-button>
         </div>
-        <div class="buttons" visible$="[[_hasItem(nbItems)]]">          
+        <div class="buttons" visible$="[[_hasItem(nbItems)]]">
           <paper-button class="secondary confirm" on-tap="_nav">[[localize('basket_mini_select')]]</paper-button>
         </div>
-      </div> 
+      </div>
     </div>
   </template>
 
@@ -34146,7 +34161,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         ScrollHorizontalBehavior,
         PMRBehavior
       ],
-      properties: {        
+      properties: {
         cart: {
           type: Array,
           notify: true
@@ -34200,12 +34215,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       _getToggleLabel: function (opened, localize) {
         if(this.opened) {
-          return this.localize('basket_mini_hide');          
+          return this.localize('basket_mini_hide');
         } else {
-          return this.localize('basket_mini_show');          
+          return this.localize('basket_mini_show');
         }
       },
-      _toggle: function () {        
+      _toggle: function () {
         this.opened = !this.opened;
       },
       _nav: function () {
@@ -34220,30 +34235,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _openedChange : function () {
         if (globals.router) {
           if(globals.router.data.page !== 'detail') {
-            this.restore = this.opened;            
+            this.restore = this.opened;
           } else {
-           var detail = document.querySelector('planet-kiosk-detail');           
+           var detail = document.querySelector('planet-kiosk-detail');
            detail.checkScrollButtons();
           }
         }
         this._adjustScrollButtons(this.opened);
       },
-      _adjustScrollButtons: function (opened) {        
+      _adjustScrollButtons: function (opened) {
         var listLayouts = document.querySelectorAll('app-header-layout');
-        this._adjustClassOnContainers(listLayouts, opened);        
+        this._adjustClassOnContainers(listLayouts, opened);
       },
       _adjustClassOnContainers: function (list, opened) {
         list.forEach(function (container) {
           if (opened) {
-            container.classList.remove('closed');  
+            container.classList.remove('closed');
           } else {
-            container.classList.add('closed');  
+            container.classList.add('closed');
           }
         });
       },
       checkBasketState: function () {
         if (this.restore) {
-          this.open();          
+          this.open();
         }
       }
     });
@@ -34492,23 +34507,23 @@ Custom property | Description | Default
       font-size: 0.8em;
     }
     </style>
-    
+
     <div class$="[[_getPMRClass(pmr)]]">
       <p class="message">[[localize('session_abandon_msg')]]</p>
-      
-      
+
+
       <div class="buttons">
         <paper-button class="primary cancel" on-tap="_cancel">[[localize('session_abandon_cancel')]]</paper-button>
-        <paper-button class="primary confirm" on-tap="_confirm">[[localize('session_abandon_confirm')]]</paper-button>  
+        <paper-button class="primary confirm" on-tap="_confirm">[[localize('session_abandon_confirm')]]</paper-button>
       </div>
     </div>
-    
+
   </template>
 
-  <script>  
+  <script>
   Polymer({
     is: 'planet-kiosk-abandon',
-    behaviors: [        
+    behaviors: [
       AppLocalizeBehavior,
       TagManagerBehavior,
       Polymer.IronOverlayBehavior,
@@ -34516,8 +34531,8 @@ Custom property | Description | Default
     ],
     properties: {
       number: String
-    },    
-    _cancel: function () {      
+    },
+    _cancel: function () {
       this.close();
       this.trackEvent('Are you sure to quit ?', 'no', 'click', 'noevent');
     },
@@ -34765,7 +34780,7 @@ Custom property | Description | Default
       _isEqualTo : function (collection, value) {
         return collection === value;
       },
-      _onGlobalTap: function () {        
+      _onGlobalTap: function () {
         var miniBasket = document.getElementById('minibasket');
         miniBasket.checkBasketState();
         // restore empty queryParams for futur navigation
@@ -34779,7 +34794,7 @@ Custom property | Description | Default
           return this.localize('tabbar_pmr');
         }
       },
-      _togglePMRMode: function () {        
+      _togglePMRMode: function () {
         if (globals.router.data.page !== 'map') {
           if (this.pmr) {
             this.setDataLayerItem('type_session', 'normal');
@@ -34849,12 +34864,12 @@ Custom property | Description | Default
        --paper-progress-active-color: var(--planet-color-theme-primary);
        width: 100%;
     }
-    
+
     /* PMR Mode override */
-    .pmr p.info {      
+    .pmr p.info {
       margin: 0.25em;
     }
-    .pmr p.percent {      
+    .pmr p.percent {
       font-size: 5em;
     }
     </style>
@@ -34866,10 +34881,10 @@ Custom property | Description | Default
     </div>
   </template>
 
-  <script>  
+  <script>
   Polymer({
     is: 'planet-kiosk-loader',
-    behaviors: [        
+    behaviors: [
       AppLocalizeBehavior,
       Polymer.IronOverlayBehavior,
       PMRBehavior
@@ -34881,7 +34896,7 @@ Custom property | Description | Default
       },
       indeterminate: {
         type: Boolean,
-        value: false        
+        value: false
       }
     }
   });
@@ -34892,8 +34907,8 @@ Custom property | Description | Default
 <dom-module id="planet-kiosk-inactivity" assetpath="src/planet-kiosk-app/">
   <template>
     <style include="planet-kiosk-page-styles planet-kiosk-popin-styles">
-      :host {      
-        background-color: var(--planet-color-theme-mainbg);        
+      :host {
+        background-color: var(--planet-color-theme-mainbg);
         display: block;
         width: 100%;
         height: 100%;
@@ -34915,16 +34930,16 @@ Custom property | Description | Default
         font-weight: bold;
         margin: 0.5em 0 1em 0;
       }
-      
+
     /* PMR Mode override */
     .pmr {
       font-size: 0.8em;
     }
-    .pmr img.warning {      
+    .pmr img.warning {
       width: 25.1em;
       height: 21.7em;
     }
-    .pmr img.touch {      
+    .pmr img.touch {
       width: 15.9em;
       height: 20.8em;
     }
@@ -34935,7 +34950,7 @@ Custom property | Description | Default
       margin: 1em 0;
     }
     </style>
-    
+
    <div class$="[[_getPMRClass(pmr)]]">
       <div on-tap="close">
         <img class="warning" src="images/warning.png">
@@ -34959,7 +34974,7 @@ Custom property | Description | Default
 
   </script>
 </dom-module><dom-module id="planet-kiosk-cart" assetpath="src/planet-kiosk-app/">
-  <script>  
+  <script>
      Polymer({
         is: 'planet-kiosk-cart',
         properties: {
@@ -34996,7 +35011,7 @@ Custom property | Description | Default
               }, 0);
           }
           return 0;
-        },        
+        },
         _getItem: function(code, session) {
           return this.get('cart').find(function(entry) {
               return entry.subCode === code && entry.session === session;
@@ -35007,7 +35022,7 @@ Custom property | Description | Default
               return entry.subCode === code && entry.session === session;
           });
         },
-        addItem: function(item) {          
+        addItem: function(item) {
           var found = this._getItem(item.subCode, item.session);
           var index = this._getItemIndex(item.subCode, item.session);
           if (typeof(found) === 'undefined') {
@@ -35015,18 +35030,18 @@ Custom property | Description | Default
               this.push('cart', item);
           } else {
               // modify quantity and price on existing session
-              var newQuantity = found.quantity + item.quantity;              
+              var newQuantity = found.quantity + item.quantity;
               item.quantity = newQuantity;
-              var newPrice = found.price + item.price;              
+              var newPrice = found.price + item.price;
               item.price = newPrice;
-              this.splice('cart', index, 1, item);              
+              this.splice('cart', index, 1, item);
           }
         },
-        notifyErrorChange: function(item, index) {          
+        notifyErrorChange: function(item, index) {
           this.notifyPath('cart.' + index + '.incorrect', item.incorrect);
           this.notifyPath('cart.' + index + '.errors', item.errors);
         },
-        editItem: function(item, index) {          
+        editItem: function(item, index) {
           this.splice('cart', index, 1, item);
         },
         deleteItem: function(index) {
@@ -35034,7 +35049,7 @@ Custom property | Description | Default
         },
         getItemByIndex: function(index) {
           return this.get('cart')[index];
-        },        
+        },
         computeNbItemsForCode: function(code) {
           if (this.cart) {
               return this.cart.filter(function(entry) {
@@ -35050,7 +35065,7 @@ Custom property | Description | Default
           if (this.cart) {
             result= this.cart.map(function(entry) {
               return entry.vatRate;
-            }).filter(function (value, index, self) { 
+            }).filter(function (value, index, self) {
               return self.indexOf(value) === index;
             });
           }
@@ -35060,14 +35075,14 @@ Custom property | Description | Default
           if (this.cart) {
               return this.cart.filter(function(entry) {
                   return parseInt(entry.vatRate, 10) === rate;
-              }).reduce(function(total, entry) {                  
+              }).reduce(function(total, entry) {
                   return total + entry.vatAmount;
               }, 0);
           }
           return 0;
         },
         groupBy: function(prop) {
-          return this.get('cart').reduce(function(groups, item, index) {              
+          return this.get('cart').reduce(function(groups, item, index) {
               var val = item[prop];
               item.token = item.code + '_' + index;
               groups[val] = groups[val] || [];
@@ -35077,45 +35092,45 @@ Custom property | Description | Default
         },
         clear: function() {
           this.cart = [];
-        }       
+        }
     });
   </script>
 </dom-module><dom-module id="planet-kiosk-clock" assetpath="src/planet-kiosk-app/">
   <template>
     <style>
-      :host {        
+      :host {
         font-size: 3em;
         font-family: var(--planet-font-family-book);
         color: var(--planet-color-charcoalGrey);
         font-weight: bold;
       }
-      
+
       p {
         margin: 0;
       }
-      
+
       .time {
         position: fixed;
-        top: 0;                
-        right: 0.1em;        
+        top: 0;
+        right: 0.1em;
       }
-      
+
       .date {
         position: fixed;
         top: 0;
-        left: 0.1em;        
+        left: 0.1em;
       }
-      
+
       /* Force classic rendering for pmr */
       .map {
         font-size: 20px !important;
       }
-      
+
     </style>
 
     <div on-tap="_navigateToAdmin">
       <p class="date">[[formatDate()]]</p>
-      <p class="time">[[formatTime(time)]]</p>      
+      <p class="time">[[formatTime(time)]]</p>
     </div>
   </template>
   <script>
@@ -35158,13 +35173,13 @@ Custom property | Description | Default
 
   </script>
 
-</dom-module><dom-module id="planet-kiosk-app" assetpath="src/planet-kiosk-app/">  
+</dom-module><dom-module id="planet-kiosk-app" assetpath="src/planet-kiosk-app/">
   <template>
-    <style>      
-      planet-kiosk-clock {        
-        font-size: 2.2em;        
+    <style>
+      planet-kiosk-clock {
+        font-size: 2.2em;
       }
-      
+
       planet-kiosk-clock.pmr {
         font-size: 1.6em;
       }
@@ -35175,25 +35190,25 @@ Custom property | Description | Default
     <app-route route="{{_subRoute}}" pattern="/:code" data="{{_idData}}" query-params="{{queryParams}}"></app-route>
 
     <app-scrollpos-control selected="[[_pageData.page]]"></app-scrollpos-control>
-    
+
     <app-tag-manager></app-tag-manager>
-    
+
     <iron-pages selected="[[_pageData.page]]" attr-for-selected="name" selected-attribute="visible" on-iron-select="_pageSelected" class$="[[_getPMRClass(pmr)]]">
-      
+
       <planet-kiosk-lang name="lang" language="[[language]]" pmr="[[pmr]]"></planet-kiosk-lang>
-      
+
       <planet-kiosk-hub name="hub" language="[[language]]" pmr="[[pmr]]"></planet-kiosk-hub>
-      
+
       <planet-kiosk-identification name="identification" language="[[language]]" pmr="[[pmr]]"></planet-kiosk-identification>
-      
+
       <planet-kiosk-login-info name="login" language="[[language]]" pmr="[[pmr]]"></planet-kiosk-login-info>
 
       <planet-kiosk-login-qrscan name="qrlogin" language="[[language]]" pmr="[[pmr]]"></planet-kiosk-login-qrscan>
-      
+
       <planet-kiosk-login-nfcscan name="nfclogin" language="[[language]]" pmr="[[pmr]]"></planet-kiosk-login-nfcscan>
 
       <planet-kiosk-az name="az" language="[[language]]" activities="[[activities]]" pmr="[[pmr]]"></planet-kiosk-az>
-      
+
       <planet-kiosk-age name="age" language="[[language]]" activities="[[activities]]" pmr="[[pmr]]"></planet-kiosk-age>
 
       <planet-kiosk-todonow name="now" language="[[language]]" activities="[[activities]]" pmr="[[pmr]]"></planet-kiosk-todonow>
@@ -35201,44 +35216,44 @@ Custom property | Description | Default
       <planet-kiosk-schedule name="planning" language="[[language]]" activities="[[activities]]" pmr="[[pmr]]"></planet-kiosk-schedule>
 
       <planet-kiosk-detail name="detail" language="[[language]]" activity="[[_getActivity(activities, _idData.code)]]" pmr="[[pmr]]"></planet-kiosk-detail>
-      
+
       <planet-kiosk-basket name="basket" language="[[language]]" activities="[[activities]]" cart="[[cart]]" nb-items="[[nbItems]]" total="[[total]]" pmr="[[pmr]]"></planet-kiosk-basket>
-      
+
       <planet-kiosk-payment name="payment" language="[[language]]" pmr="[[pmr]]"></planet-kiosk-payment>
-      
+
       <planet-kiosk-map name="map" language="[[language]]" pmr="[[pmr]]"></planet-kiosk-map>
-      
+
       <planet-kiosk-outage name="outage" language="[[language]]" pmr="[[pmr]]"></planet-kiosk-outage>
-      
+
     </iron-pages>
-    
+
     <planet-kiosk-clock class$="[[_getPMRClass(pmr)]]"></planet-kiosk-clock>
-    
+
     <planet-kiosk-loader id="loader" language="[[language]]" pmr="[[pmr]]" with-backdrop="" no-cancel-on-outside-click=""></planet-kiosk-loader>
     <planet-kiosk-inactivity id="inactivity" language="[[language]]" pmr="[[pmr]]" with-backdrop=""></planet-kiosk-inactivity>
     <planet-kiosk-cart id="cart" cart="{{cart}}" nb-items="{{nbItems}}" total="{{total}}"></planet-kiosk-cart>
-    
-    <planet-kiosk-basket-mini id="minibasket" hidden="[[_isMiniBasketHidden(_pageData.page, pmr)]]" visible="[[!_isTabBarHidden(_pageData.page)]]" language="[[language]]" cart="{{cart}}" nb-items="[[nbItems]]" total="[[total]]" pmr="[[pmr]]" opened="[[_isMiniBasketOpened(nbItems)]]">      
+
+    <planet-kiosk-basket-mini id="minibasket" hidden="[[_isMiniBasketHidden(_pageData.page, pmr)]]" visible="[[!_isTabBarHidden(_pageData.page)]]" language="[[language]]" cart="{{cart}}" nb-items="[[nbItems]]" total="[[total]]" pmr="[[pmr]]" opened="[[_isMiniBasketOpened(nbItems)]]">
     </planet-kiosk-basket-mini>
-    
+
     <planet-kiosk-tabbar hidden="[[_isTabBarHidden(_pageData.page)]]" collection="[[_getTabBarCollection(_pageData.page)]]" language="[[language]]" nb-cart-items="[[nbItems]]" highlighted-page="[[_pageData.page]]" pmr="{{pmr}}">
-    </planet-kiosk-tabbar>    
+    </planet-kiosk-tabbar>
   </template>
   <script>
 
   Polymer({
 
     is: 'planet-kiosk-app',
-    
+
     behaviors: [
       AppLocalizeBehavior,
       TagManagerBehavior,
       ActivitiesBehavior,
       PMRBehavior
     ],
-    
+
     properties: {
-      
+
       _route: Object,
 
       _subRoute: Object,
@@ -35246,14 +35261,14 @@ Custom property | Description | Default
       _pageData: Object,
 
       _idData: Object,
-      
+
       _miniBasketDisplayOn: {
         type: Array,
         value: function () {
           return ['hub', 'now', 'planning', 'age', 'az', 'detail'];
         }
       },
-      
+
       _pageInfos: {
         type:Object,
         value: {
@@ -35280,47 +35295,47 @@ Custom property | Description | Default
           }
         }
       },
-      
+
       activities: Object,
-      
+
       queryParams: Object,
-      
+
       cart: Array,
-      
+
       nbItems: Number,
-      
+
       total: Number,
-      
+
       pmr: {
         type: Boolean,
         value: false,
         observer: '_appPmrChange'
-      }      
+      }
     },
     attached: function () {
-      this.async(function() {        
+      this.async(function() {
         if (this._route.path !== 'lang') {
           this.set('_route.path', '/lang');
         }
       });
-      
-      if (MBirdSdk.isConnected()) {        
+
+      if (MBirdSdk.isConnected()) {
         this._checkInactivity();
-      }            
-    },    
+      }
+    },
     _getActivity: function() {
-      if (this.activities && this._idData.code) {        
-        var ref = this._getActivityIndexByCode(this._idData.code);        
+      if (this.activities && this._idData.code) {
+        var ref = this._getActivityIndexByCode(this._idData.code);
         var activity = this.activities[ref];
         return activity;
       }
       return null;
     },
-    _pageSelected: function(e) {           
-      var page = e.detail.item;      
+    _pageSelected: function(e) {
+      var page = e.detail.item;
       var name = page.getAttribute('name');
       globals.t1 = performance.now();
-      
+
       // Previous list backup
       if (name === 'az' || name === 'age' || name === 'now' || name === 'planning') {
         globals.lastList = name;
@@ -35335,24 +35350,24 @@ Custom property | Description | Default
       }
       // Tag
       if(name === 'lang') {
-        // Start Session        
-        this.async(function() {        
+        // Start Session
+        this.async(function() {
           this.trackEvent('Kiosk', 'language selection', 'activate session', 'start');
-          this.trackEvent('Kiosk', 'performance launch time', Math.round(globals.t1 - globals.t0), 'noevent');  
+          this.trackEvent('Kiosk', 'performance launch time', Math.round(globals.t1 - globals.t0), 'noevent');
         }, 300);
       }
       if(name === 'outage') {
-        // Start Session outage       
-        this.async(function() {        
+        // Start Session outage
+        this.async(function() {
           this.trackEvent('Kiosk', 'outage', 'connectivity or peripherals default', 'end');
         }, 300);
       }
-    },    
+    },
     _checkInactivity: function () {
        window.addEventListener('message', function (e) {
         if (e.data === 'inactivity') {
           this.$.inactivity.open();
-          this.trackEvent('Acrelec Notification', 'idle', 'inactivity', 'noevent');  
+          this.trackEvent('Acrelec Notification', 'idle', 'inactivity', 'noevent');
         }
       }.bind(this), false);
     },
@@ -35382,14 +35397,14 @@ Custom property | Description | Default
       return pageInfos.default.collection;
     },
     _isMiniBasketHidden: function (pageName, pmr) {
-      var miniBasketDisplayingList = this.get('_miniBasketDisplayOn');      
+      var miniBasketDisplayingList = this.get('_miniBasketDisplayOn');
       if (pmr || !globals.payment) {
         return true;
       } else {
         if (miniBasketDisplayingList.includes(pageName)) {
           return false
         }  else {
-          return true;    
+          return true;
         }
       }
     },
@@ -35397,11 +35412,11 @@ Custom property | Description | Default
       return nbItems > 0;
     },
     _appPmrChange: function (pmr) {
-      if (pmr) {      
+      if (pmr) {
         parent.document.getElementById('kiosk').classList.add('pmr');
       } else {
         parent.document.getElementById('kiosk').classList.remove('pmr');
-      } 
+      }
     }
   });
 
@@ -35411,23 +35426,23 @@ Custom property | Description | Default
     <template id="app" is="dom-bind">
       <iron-ajax auto="" url="./appconfig.json" handle-as="json" last-response="{{appconfig}}" on-response="configResponse"></iron-ajax>
       <iron-meta id="appconfig" key="config" value$="{{appconfig}}"></iron-meta>
-      <iron-ajax id="subconfig" handle-as="json" url="[[appconfig.api]]/getConfigKiosk" on-response="subConfigResponse" on-error="subConfigError"></iron-ajax>      
+      <iron-ajax id="subconfig" handle-as="json" url="[[appconfig.api]]/getConfigKiosk" on-response="subConfigResponse" on-error="subConfigError"></iron-ajax>
       <iron-ajax id="localWordings" url="./data/getWordings.json" handle-as="json" on-response="localWordingsResponse"></iron-ajax>
       <iron-ajax id="requestWordings" url="[[appconfig.api]]/getWordings?mode=kiosk" on-response="wordingsResponse" on-error="wordingsError"></iron-ajax>
       <planet-kiosk-services id="services"></planet-kiosk-services>
-    </template>    
-    <script>    
+    </template>
+    <script>
     var globals = {};
-    
+
     globals.t0 = performance.now();
-    
+
     if (MBirdSdk.isConnected()) {
-      // Change button close      
-      var closeImage = "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAABHmAAAR5gH+EeRsAAAAB3RJTUUH4QkcDQUX8G8KAAAAACdJREFUeNrtwQENAAAAwqD3T20ON6AAAAAAAAAAAAAAAAAAAACAdwNAQAABr3oO6AAAAABJRU5ErkJggg==";                 
+      // Change button close
+      var closeImage = "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAABHmAAAR5gH+EeRsAAAAB3RJTUUH4QkcDQUX8G8KAAAAACdJREFUeNrtwQENAAAAwqD3T20ON6AAAAAAAAAAAAAAAAAAAACAdwNAQAABr3oO6AAAAABJRU5ErkJggg==";
       var alignment = MBirdSdk.UIAlignment.TopRight;
       var xPadding = 0;
       var yPadding = 20;
-      MBirdSdk.UserInterface.CloseButton(alignment, closeImage, xPadding, yPadding)    
+      MBirdSdk.UserInterface.CloseButton(alignment, closeImage, xPadding, yPadding)
       .then(function(result) {
         // Silent success
         //MBirdSdk.Board.ShowNotification("CloseButton debug", JSON.stringify(result), MBirdSdk.NotificationType.HtmlContent, "", false);
@@ -35436,9 +35451,9 @@ Custom property | Description | Default
         //MBirdSdk.Board.ShowNotification("CloseButton debug error", JSON.stringify(error), MBirdSdk.NotificationType.HtmlContent, "", false);
       });
     }
-    
+
     app.connectivity = true;
-    
+
     // Configuration loaded handler ...
     app.configResponse = function() {
       // Retrieving config
@@ -35452,39 +35467,39 @@ Custom property | Description | Default
       try {
         // Sentry bug tracking
         Raven.config(config.raven).install();
-        // Service worker registration    
+        // Service worker registration
         if('serviceWorker' in navigator && config.serviceworker) {
           navigator.serviceWorker.register('./service-worker.js');
           //Clean old registrations
-          navigator.serviceWorker.getRegistrations().then(function(registrations) {                    
-              if (registrations.length > 1) {        
+          navigator.serviceWorker.getRegistrations().then(function(registrations) {
+              if (registrations.length > 1) {
               for(var i=0; i<registrations.length - 1; i++) {
                 registrations[i].unregister();
               }
             }
           });
         } else {
-          //Clean all registrations          
-          navigator.serviceWorker.getRegistrations().then(function(registrations) {                                         
-            for(var i=0; i<registrations.length; i++) {              
+          //Clean all registrations
+          navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            for(var i=0; i<registrations.length; i++) {
               registrations[i].unregister();
             }
           });
         }
-      } catch (e) {       
+      } catch (e) {
         // fail silent
       }
       // Sub-configuration fecthing
-      subConfigRequest.headers = globals.headers;      
+      subConfigRequest.headers = globals.headers;
       subConfigRequest.generateRequest();
     }
-    
+
     // Application setting default info on errors
-    app.settingUpFail = function () {      
+    app.settingUpFail = function () {
       globals.language = 'fr';
       globals.kioskId = -1;
     }
-    
+
     // Application next step : fetch wordings;
     app.continueLaunch = function () {
       // Requiring Wordings to continue app launch
@@ -35492,35 +35507,35 @@ Custom property | Description | Default
       requestWordings.headers = globals.headers;
       requestWordings.generateRequest();
     }
-    
+
     // SubConfig by kiosk fetching
     app.subConfigResponse = function(e) {
       try {
         if (e.detail.response.status.retC === 0) {
-          var subConfig;      
+          var subConfig;
           var data = e.detail.response.results;
-        
-          // Fetch kioskId      
+
+          // Fetch kioskId
           globals.services.getNestIdentifier().then(function (nestIdentifier) {
               subConfig = data[nestIdentifier];
               if (typeof(subConfig) !== 'undefined') {
-              // Setting up full            
+              // Setting up full
               globals.language = subConfig.lang;
               globals.headers.lang = subConfig.lang;
-              globals.MBirdNeeded = subConfig.MBirdNeeded;          
+              globals.MBirdNeeded = subConfig.MBirdNeeded;
               globals.kioskId = subConfig.kiosk;
               globals.siteCode = subConfig.site_code;
               globals.payment = subConfig.payment;
               globals.countryCode = subConfig.country_code;
               globals.pmr = subConfig.pmr;
               if (typeof (subConfig.nfc) !== 'undefined') {
-                globals.nfc = subConfig.nfc;  
+                globals.nfc = subConfig.nfc;
               } else {
                 globals.nfc = true;
               }
-              
+
               // BundleSettings
-              if (MBirdSdk.isConnected()) {                
+              if (MBirdSdk.isConnected()) {
                 // Store
                 MBirdSdk.BundleSettings.Store().then(function (result) {
                   globals.nfcApplicationId = result.StoreAlias;
@@ -35531,8 +35546,8 @@ Custom property | Description | Default
               }
             } else {
               app.settingUpFail();
-            }          
-          });        
+            }
+          });
         } else {
           app.settingUpFail();
         }
@@ -35542,26 +35557,26 @@ Custom property | Description | Default
         app.continueLaunch();
       }
     }
-    
+
     // subConfigError
     app.subConfigError = function (e) {
       app.settingUpFail();
       app.connectivity = false;
       app.continueLaunch();
     }
-    
+
     // Fallback local wordings
-    app.wordingsFallback = function () {      
+    app.wordingsFallback = function () {
       var requestLocalWordings = document.getElementById('localWordings');
       requestLocalWordings.generateRequest();
     }
-    
+
     // Wordings error
     app.wordingsError = function (e) {
       app.wordingsFallback();
       app.connectivity = false;
     }
-    
+
     // i18n managment + app init
     app.wordingsResponse = function (e) {
       try {
@@ -35573,14 +35588,14 @@ Custom property | Description | Default
         }
       } catch (e) {
         app.wordingsError(e);
-      }      
+      }
     }
-    
+
     // local wordings response
     app.localWordingsResponse = function (e) {
       app.init(e.detail.response.results);
     }
-    
+
     app.init = function (results) {
       var appMainElement = document.createElement('planet-kiosk-app');
       appMainElement.setAttribute('language', globals.language);
@@ -35588,11 +35603,11 @@ Custom property | Description | Default
       document.body.appendChild(appMainElement);
       globals.token = null;
       globals.bookingId = null;
-      globals.lastList = null;      
-      globals.loader = document.getElementById('loader');      
-      globals.router = document.querySelector('app-route');      
+      globals.lastList = null;
+      globals.loader = document.getElementById('loader');
+      globals.router = document.querySelector('app-route');
       globals.cart = document.getElementById('cart');
-      
+
       // Tag manager settings
       var tm = document.querySelector('app-tag-manager');
       tm.gtmId = globals.gtmId;
@@ -35600,17 +35615,17 @@ Custom property | Description | Default
       tm.kioskId = globals.kioskId;
       tm.mode = "normal"; // Default vue mode
       tm.lang = globals.language;
-      tm.init();      
-      
-      // Check MBirdSDK initialization if needed            
+      tm.init();
+
+      // Check MBirdSDK initialization if needed
       var noMBirdSDKNeeded = !globals.MBirdNeeded;
-      var correctKiosdId = globals.kioskId !== -1;      
-      globals.services.checkEssentialPeripherals().then(function (peripheralsOk){        
-        var MBirdOk = globals.MBirdNeeded && MBirdSdk.isConnected() && peripheralsOk;  
+      var correctKiosdId = globals.kioskId !== -1;
+      globals.services.checkEssentialPeripherals().then(function (peripheralsOk){
+        var MBirdOk = globals.MBirdNeeded && MBirdSdk.isConnected() && peripheralsOk;
         if (app.connectivity && correctKiosdId && (MBirdOk || noMBirdSDKNeeded)) {
-          globals.router.set('route.path', '/lang');          
+          globals.router.set('route.path', '/lang');
         } else {
-          globals.router.set('route.path', '/outage');          
+          globals.router.set('route.path', '/outage');
         }
       });
     }
