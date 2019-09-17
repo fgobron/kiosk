@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">
       </div>
-      <p class="version">v1.4.1 Hours prices</p>
+      <p class="version">v1.4.1 Hours prices (2)</p>
     </div>
   </template>
 
@@ -25631,7 +25631,7 @@ Custom property | Description | Default
         if (day !== null) {
           hours.forEach(function (hour) {
             var price = parseInt(self._getPrice(self, activity, day, hour), 10);
-            sum += price;
+            sum += price * quantity;
           });
           return this._formatPrice(sum * 100, 2);
         }
