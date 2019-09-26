@@ -15796,7 +15796,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">
       </div>
-      <p class="version">v1.4.1 Hours prices (2)</p>
+      <p class="version">v1.4.1 (2) - Hours prices fixed</p>
     </div>
   </template>
 
@@ -23106,7 +23106,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _getPrice: function (localize, item, day, hour) {
       var session = item.dates[day];
       var hour = session.hours[hour];
-      return this._formatPrice(hour.price.value, 2);
+      return (typeof hour !== 'undefined') ? this._formatPrice(hour.price.value, 2) : 0;
     },
     _isMultiPx : function(item) {
       if (item && item.multiPx) {
@@ -23122,7 +23122,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return item.code === code;
       });
       var hour = hoursFiltered[hour];
-      return this._formatPrice(hour.price.value, 2);
+      return (typeof hour !== 'undefined') ? this._formatPrice(hour.price.value, 2) : 0;
     },
     _getFirstMultiPxPriceCode : function(item) {
       var firstCode = '';
@@ -25625,11 +25625,11 @@ Custom property | Description | Default
       _getTotalPrice: function (activity, quantity, factor) {
         var self = this;
         var day = this.$$('#sessions').get('day');
-        var hours = this.$$('#sessions').get('selectedHours').reduce(function(a, e, i) {if (e.selected)a.push(i); return a;}, []);
+        var selectedHours = this.$$('#sessions').get('selectedHours').reduce(function(a, e, i) {if (e.selected)a.push(i); return a;}, []);
         var sum = 0;
 
         if (day !== null) {
-          hours.forEach(function (hour) {
+          selectedHours.forEach(function (hour) {
             var price = parseInt(self._getPrice(self, activity, day, hour), 10);
             sum += price * quantity;
           });
@@ -25640,21 +25640,24 @@ Custom property | Description | Default
       _getSubTotalPrice: function (activity, index, factor, quantities) {
         var self = this;
         var day = this.$$('#sessions').get('day');
-        var hours = this.$$('#sessions').get('selectedHours').reduce(function(a, e, i) {if (e.selected)a.push(i); return a;}, []);
+        var selectedHours = this.$$('#sessions').get('selectedHours').reduce(function(a, e, i) {if (e.selected)a.push(i); return a;}, []);
         var quantity = this.$$('#quantity_' + index).value;
         var sum = 0;
 
         if (day !== null) {
           if (index < activity.multiPx.length) {
             var code = this._getMultiPxPriceCodeByIndex(activity, index);
-            var selectedHours = activity.dates[day].hours;
-            var selectedHoursFiltered = selectedHours.filter(function (item) {
+            var dayHours = activity.dates[day].hours;
+            var dayHoursFiltered = dayHours.filter(function (item) {
               return item.code === code;
             });
 
-            hours.forEach(function (hour) {
-              var selectedHour = selectedHoursFiltered[hour];
-              var price = parseInt(selectedHour.price.value, 10) * quantity;
+            selectedHours.forEach(function (hour) {
+              var selectedHour = dayHoursFiltered[hour];
+              var price = 0;
+              if (typeof selectedHour !== 'undefined') {
+                price = parseInt(selectedHour.price.value, 10) * quantity;
+              }
               sum += price;
             });
             return this._formatPrice(sum, 2);
