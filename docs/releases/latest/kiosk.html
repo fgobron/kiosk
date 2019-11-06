@@ -15795,8 +15795,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <div class="payment">
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">
+        <p class="version">v1.4.2 (1) - Print 02</p>
       </div>
-      <p class="version">v1.4.2 (1) - Print 01</p>
     </div>
   </template>
 
@@ -33806,6 +33806,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _print: function () {
         if (MBirdSdk.isConnected()) {
           var printContent = this._getAllContent();
+
           MBirdSdk.Printer.TagContent(printContent).then(function (result) {
             this.set('printState', this.printStates.SUCCESS);
             this.set('printInfo', result);
@@ -33950,6 +33951,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var lane = counterMark.lane ? counterMark.lane : "";
         var date = moment(counterMark.date).format('DD-MM-YYYY');
         var hour = counterMark.hour;
+        var locationLabel = this.localize('printer_counter_mark_location');
         var location = counterMark.location;
         var counterMarkQuantity =  this.localize('printer_counter_mark_quantity', 'quantity', counterMark.quantity);
         var timeLine = date + ' ' + moment(hour, 'HH:mm:ss').format('HH:mm');
@@ -33970,7 +33972,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         content += this.center(counterMarkQuantity) + this.cr;
 
         if (location) {
-          content += this.bold(this.center(location)) + this.cr;
+          content += this.bold(this.center(locationLabel + ' ' + location)) + this.cr;
         }
 
         content += this.center(counterMark.cottageNumbers.title + ' ' + counterMark.cottageNumbers.label);
