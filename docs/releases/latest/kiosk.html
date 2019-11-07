@@ -13319,13 +13319,39 @@ Polymer.AppLocalizeBehavior = {
 AppLocalizeBehaviorImpl = {
   properties: {
     language: {
-      value: 'fr',      
+      value: 'fr',
     }
   },
   attached: function() {
     this.useKeyIfMissing = true;
     this.resources = globals.resources;
-    this.language = globals.language;    
+    this.language = globals.language;
+  },
+  _momentCustomization: function () {
+    // EN
+    moment.locale('en', {
+        longDateFormat : {
+        LT : 'HH.mm A'
+      }
+    });
+    // FR
+    moment.locale('fr', {
+        longDateFormat : {
+        LT : 'HH[h]mm'
+      }
+    });
+    // NL
+    moment.locale('nl', {
+        longDateFormat : {
+        LT : 'HH.mm [Uur]'
+      }
+    });
+    // DE
+    moment.locale('de', {
+        longDateFormat : {
+        LT : 'HH.mm [Uhr]'
+      }
+    });
   }
 };
 /**
@@ -15678,6 +15704,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       globals.language = this.lang;
       main.language = this.lang;
       globals.headers.lang = this.lang;
+      this._momentCustomization();
       moment.locale(this.lang);
       globals.loader.open();
       var activitiesRequest = this.$.activitiesrequest;
@@ -15796,7 +15823,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">
       </div>
-      <p class="version">v1.4.2 (1) - Print 03</p>
+      <p class="version">v1.4.2 (2) - EVOS</p>
     </div>
   </template>
 
@@ -22930,11 +22957,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       if (item.begin && item.end) {
         var begin = moment(item.begin, 'HH:mm:ss');
         var end = moment(item.end, 'HH:mm:ss');
-        var sBegin = begin.format('HH') + 'h' + (begin.minute() ? begin.format('mm') : '');
-        var sEnd = end.format('HH') + 'h' + (end.minute() ? end.format('mm') : '');
+        var sBegin = begin.format('LT');
+        var sEnd = end.format('LT');
 
         result = this.localize('activity_hours', 'begin', sBegin, 'end', sEnd);
-
       }
 
       return result
@@ -23000,8 +23026,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         });
       });
       // format
-      min = moment(min, 'HH:mm:ss').format('HH:mm');
-      max = moment(max, 'HH:mm:ss').format('HH:mm');
+      min = moment(min, 'HH:mm:ss').format('LT');
+      max = moment(max, 'HH:mm:ss').format('LT');
       return this.localize('activity_hours', 'begin', min, 'end', max);
     },
     _getAge: function (localize, item) {
@@ -23258,6 +23284,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           font-family: var(--planet-font-family-roman);
           padding-left: 0.4em;
         }
+
+        --warning-pres: {
+          color: var(--planet-color-theme-warning);
+          font-family: var(--planet-font-family-roman);
+          font-size: 2.2em;
+          margin: 0;
+        }
       }
 
       figure {
@@ -23347,13 +23380,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .information p.title {
-        color: var(--planet-color-black);
-        margin: 0;
+        @apply --warning-pres;
+        font-weight: bold;
       }
 
       .information p {
-        color: var(--planet-color-theme-desc);
-        @apply --desc-pres;
+        @apply --warning-pres;
         line-height: 1.8em;
         margin: 0;
       }
@@ -24713,6 +24745,13 @@ Custom property | Description | Default
           font-family: var(--planet-font-family-roman);
           padding-left: 0.4em;
         };
+
+        --warning-pres: {
+          color: var(--planet-color-theme-warning);
+          font-family: var(--planet-font-family-roman);
+          font-size: 2.2em;
+          margin: 0;
+        }
       }
 
       h2 {
@@ -24956,15 +24995,13 @@ Custom property | Description | Default
       }
 
       .dtk .information p.title {
-        color: var(--planet-color-black);
-        margin: 0;
+        @apply --warning-pres;
+        font-weight: bold;
       }
 
       .dtk .information p {
-        color: var(--planet-color-theme-desc);
-        @apply --desc-pres;
+        @apply --warning-pres;
         line-height: 1.8em;
-        margin: 0;
       }
 
       /* PMR SPECIFIC STYLE */
@@ -28982,7 +29019,9 @@ Mixin | Description | Default
       }
 
       .row .card-content {
-        width: 41em;
+        width: 47em;
+        padding-left: 0.6em;
+        padding-right: 0;
       }
 
       .row paper-card iron-image {
@@ -29008,7 +29047,7 @@ Mixin | Description | Default
 
       .row paper-card .price-container {
         text-align: right;
-        width: 28em;
+        width: 25em;
         height: 17em;
       }
 
