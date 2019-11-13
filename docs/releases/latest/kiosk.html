@@ -15823,7 +15823,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">
       </div>
-      <p class="version">v1.4.2 (2) - EVOS</p>
+      <p class="version">v1.4.2 (3)</p>
     </div>
   </template>
 
@@ -33328,7 +33328,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var leftOver = '';
 
       for (var i = 0; i < words.length; i++) {
-        var currentWord = (i ? ' ' : '') + words[i];
+        var currentWord = (i ? ' ' : '') + words[i];hyphenation
         if (buffer.length + currentWord.length > size) {
           if (currentWord.length > size) {
             var splitLength = size - buffer.length;
@@ -33395,6 +33395,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       return result;
     },
+    hyphenation : function(content) {
+      var SMALL_LINE_SIZE = 54;
+      var result = '';
+      if (content.length < SMALL_LINE_SIZE) {
+        result += content;
+      }
+      else {
+        var words = content.split(' ');
+        var sum = 0;
+        var i = 0;
+        while (i < words.length) {
+          sum += words[i].length;
+          if (i>0 && sum >= SMALL_LINE_SIZE -1) { // End of line
+              result += this.cr;
+              sum = 0;
+          }
+          result += words[i] + ' ';
+          i+=1;
+        }
+      }
+      return result;
+    },
 
     _test: function() {
       var layout = [
@@ -33413,7 +33435,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       return this.array(array, layout);
       /*var alphabet = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent efficitur quis felis eu mollis. Fusce nec diam vitae libero elementum egestas eget condimentum purus. Curabitur convallis, lorem eu eleifend ullamcorper, nisl diam varius nunc, a tempor odio dui et quam. Cras ante ex, mattis vitae enim vel, rhoncus accumsan leo. Morbi aliquam finibus tempus. Proin pharetra tortor sed ex semper amet.";
-      var content = '';
+      var content = '';hyphenation
 
       content += 'default' + this.cr;
       content += this.center(alphabet) + this.cr;*/
@@ -34011,7 +34033,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         content += this.center(counterMarkQuantity) + this.cr;
 
         if (location) {
-          content += this.bold(this.center(locationLabel + ' ' + location)) + this.cr;
+          content += this.bold(this.center(locationLabel+ ' ' + location)) + this.cr;
         }
 
         content += this.center(counterMark.cottageNumbers.title + ' ' + counterMark.cottageNumbers.label);
@@ -34019,7 +34041,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         content += this.bold(this.center(counterMark.code)) + this.cr;
 
         if (counterMark.conditions) {
-          content +=  this.cr + this.smaller(counterMark.conditions);
+          content +=  this.cr + this.smaller(this.hyphenation((counterMark.conditions)));
         }
 
         return content;
@@ -35370,7 +35392,7 @@ Custom property | Description | Default
     <planet-kiosk-clock class$="[[_getPMRClass(pmr)]]"></planet-kiosk-clock>
 
     <planet-kiosk-loader id="loader" language="[[language]]" pmr="[[pmr]]" with-backdrop="" no-cancel-on-outside-click=""></planet-kiosk-loader>
-    <planet-kiosk-inactivity id="inactivity" language="[[language]]" pmr="[[pmr]]" with-backdrop=""></planet-kiosk-inactivity>
+    <planet-kiosk-inactivity id="inactivity" language="[[language]]" pmr="[[pmr]]" with-backdrop="" always-on-top=""></planet-kiosk-inactivity>
     <planet-kiosk-cart id="cart" cart="{{cart}}" nb-items="{{nbItems}}" total="{{total}}"></planet-kiosk-cart>
 
     <planet-kiosk-basket-mini id="minibasket" hidden="[[_isMiniBasketHidden(_pageData.page, pmr)]]" visible="[[!_isTabBarHidden(_pageData.page)]]" language="[[language]]" cart="{{cart}}" nb-items="[[nbItems]]" total="[[total]]" pmr="[[pmr]]" opened="[[_isMiniBasketOpened(nbItems)]]">
