@@ -15823,7 +15823,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">
       </div>
-      <p class="version">v1.4.2 (5)</p>
+      <p class="version">v1.4.2 (6)</p>
     </div>
   </template>
 
@@ -34060,7 +34060,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         content += this.bold(this.center(counterMark.code)) + this.cr;
 
         if (counterMark.conditions) {
-          content +=  this.cr + this.smaller(this.hyphenation((counterMark.conditions)));
+          content +=  this.cr + this.smaller((counterMark.conditions));
         }
 
         return content;
