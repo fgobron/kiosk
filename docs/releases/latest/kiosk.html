@@ -15823,7 +15823,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">
       </div>
-      <p class="version">v1.4.2 (3)</p>
+      <p class="version">v1.4.2 (4)</p>
     </div>
   </template>
 
@@ -22951,6 +22951,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       }
     },
+    _straithtenHourFormat : function (sHour) {
+      var hourLabel = this.localize('planning_hour_filter_unit');
+      sHour = sHour.replace('h00', hourLabel);
+      sHour = sHour.replace('.00', '');
+      return sHour;
+    },
     _getDurationInterval: function(localize, item) {
       var result = '';
 
@@ -22959,6 +22965,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var end = moment(item.end, 'HH:mm:ss');
         var sBegin = begin.format('LT');
         var sEnd = end.format('LT');
+
+        // straightening
+        sBegin = this._straithtenHourFormat(sBegin);
+        sEnd = this._straithtenHourFormat(sEnd);
 
         result = this.localize('activity_hours', 'begin', sBegin, 'end', sEnd);
       }
@@ -28920,7 +28930,7 @@ Mixin | Description | Default
       }
 
       paper-card p.price {
-        font-size: 3em;
+        font-size: 2.8em;
         font-family: var(--planet-font-family-heavy);
         color: var(--planet-color-theme-price);
       }
@@ -30129,12 +30139,17 @@ Mixin | Description | Default
         '_onPmrChanged(pmr)'
       ],
       _getIntervalTitle: function(item) {
-        var fromH = moment(item.from).format('HH');
-        var fromM = moment(item.from).format('mm') !== '00' ? moment(item.from).format('mm') : '';
-        var toH = moment(item.to).format('HH');
-        var toM = moment(item.to).format('mm') !== '00' ? moment(item.to).format('mm') : '';
+        var from = moment(item.from, 'HH:mm:ss');
+        var to = moment(item.to, 'HH:mm:ss');
 
-        return this.localize('now_interval_title', 'fromH', fromH, 'fromM', fromM, 'toH', toH, 'toM', toM);
+        var sTo = from.format('LT');
+        var sFrom = to.format('LT');
+
+        // straightening
+        sTo = this._straithtenHourFormat(sTo);
+        sFrom = this._straithtenHourFormat(sFrom);
+
+        return this.localize('now_interval_title', 'from', sTo, 'to', sFrom);
       },
       _activitiesChanged: function (e) {
         this._getActivities(e);
@@ -31499,10 +31514,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         var start = this.get('_startingHour');
         var end = this.get('_endingHour');
+
         var hourLabel = this.localize('planning_hour_filter_unit');
 
-        for (var i = start; i < end; i++) {
-          result.push({label: i + hourLabel, value:i});
+        for (var hour = start; hour < end; hour++) {
+          var sHour = moment(hour, 'HH:mm:ss').format('LT');
+          // straightening
+          sHour = this._straithtenHourFormat(sHour);
+          result.push({label: sHour, value: hour});
         }
         return result;
       },
@@ -33396,7 +33415,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       return result;
     },
     hyphenation : function(content) {
-      var SMALL_LINE_SIZE = 54;
+      var SMALL_LINE_SIZE = 50;
       var result = '';
       if (content.length < SMALL_LINE_SIZE) {
         result += content;
