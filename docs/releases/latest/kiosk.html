@@ -15823,7 +15823,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">
       </div>
-      <p class="version">v1.4.2 (6)</p>
+      <p class="version">v1.4.2 (7) - MultiPX Quantities control</p>
     </div>
   </template>
 
@@ -24156,7 +24156,7 @@ Custom property | Description | Default
         },
         quantities: {
           type: Array,
-          observer:'_quantitiesChange'
+          observer:'_quantitiesChange',
         },
         errorMessage: {
           type: String,
@@ -24177,15 +24177,29 @@ Custom property | Description | Default
           this.$.quantity.bindValue -= 1;
         }
         this._validate();
+        this._checkOtherMultipxQuantities();
       },
       _onPlus: function () {
         if (this.value < this.get('max')) {
           this.$.quantity.bindValue += 1;
         }
         this._validate();
+        this._checkOtherMultipxQuantities();
       },
       _quantitiesChange: function () {
         this._validate();
+      },
+      _checkOtherMultipxQuantities: function () {
+        var quantities = this.get('quantities');
+        var controlIndex = this.get('index');
+        if (quantities.length > 0) {
+          quantities.forEach(function (quantity, index) {
+            if (index !== controlIndex) {
+              var control = document.querySelector('#quantity_' + index);
+              control._validate();
+            }
+          });
+        }
       },
       _getDiff: function () {
         var quantities = this.get('quantities');
@@ -24195,7 +24209,8 @@ Custom property | Description | Default
         if (quantities.length > 0) {
           quantities.forEach(function (quantity, index) {
             if (index !== controlIndex) {
-              diff += quantity.value;
+              var control = document.querySelector('#quantity_' + index);
+              diff += control.value;
             }
           });
         }
