@@ -15823,7 +15823,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">
       </div>
-      <p class="version">v1.4.2 (7) - MultiPX Quantities control</p>
+      <p class="version">v1.4.2 (8) - MULTIPX POSITIONNING</p>
     </div>
   </template>
 
@@ -24951,6 +24951,66 @@ Custom property | Description | Default
         top: 64em;
       }
 
+      .shift-error0 {
+        top: 2.8em;
+      }
+
+      .shift-error1 {
+        top: 8.6em;
+      }
+
+      .shift-error2 {
+        top: 14.5em;
+      }
+
+      .shift-error3 {
+        top: 20.1em;
+      }
+
+      .shift-error4 {
+        top: 26.2em;
+      }
+
+      .shift-error5 {
+        top: 31.8em;
+      }
+
+      .shift-error6 {
+        top: 37.8em;
+      }
+
+      .shift-error7 {
+        top: 43.4em;
+      }
+
+      .shift-error8 {
+        top: 49.2em;
+      }
+
+      .shift-error9 {
+        top: 55em;
+      }
+
+      .shift-error10 {
+        top: 60.8em;
+      }
+
+      .shift-error11 {
+        top: 66.6em;
+      }
+
+      .shift-error12 {
+        top: 72.4em;
+      }
+
+      .shift-error13 {
+        top: 78.2em;
+      }
+
+      .shift-error14 {
+        top: 84em;
+      }
+
       planet-kiosk-scroll-button {
         right: 48em;
       }
@@ -25166,6 +25226,67 @@ Custom property | Description | Default
         top: 64.4em;
       }
 
+      .pmr .shift-error0 {
+        top: 2.8em;
+      }
+
+      .pmr .shift-error1 {
+        top: 9em;
+      }
+
+      .pmr .shift-error2 {
+        top: 15em;
+      }
+
+      .pmr .shift-error3 {
+        top: 20.8em;
+      }
+
+      .pmr .shift-error4 {
+        top: 26.6em;
+      }
+
+      .pmr .shift-error5 {
+        top: 32.4em;
+      }
+
+      .pmr .shift-error6 {
+        top: 38.2em;
+      }
+
+      .pmr .shift-error7 {
+        top: 44.1em;
+      }
+
+      .pmr .shift-error8 {
+        top: 49.8em;
+      }
+
+      .pmr .shift-error9 {
+        top: 55.7em;
+      }
+
+      .pmr .shift-error10 {
+        top: 61.5em;
+      }
+
+      .pmr .shift-error11 {
+        top: 67.3em;
+      }
+
+      .pmr .shift-error12 {
+        top: 73.1em;
+      }
+
+      .pmr .shift-error13 {
+        top: 79em;
+      }
+
+      .pmr .shift-error14 {
+        top: 84em;
+        color: red;
+      }
+
       .pmr .warning-wrapper {
         min-height: 11em;
       }
@@ -25257,7 +25378,7 @@ Custom property | Description | Default
 
                       <template is="dom-if" if="[[_isMultiPxFlag]]">
                         <template id="subtotals" is="dom-repeat" items="[[activity.multiPx]]">
-                          <div id="total_price_[[index]]" class$="total-price shift[[index]]">[[_getSubTotalPrice(activity, index, nbSelectedHours, quantities.*)]]  [[localize('activity_currency')]]</div>
+                          <div id="total_price_[[index]]" class$="total-price shift[[index]] [[_getPriceShiftClass(notFull, index)]]">[[_getSubTotalPrice(activity, index, nbSelectedHours, quantities.*)]]  [[localize('activity_currency')]]</div>
                         </template>
                       
                     </template>
@@ -25812,6 +25933,12 @@ Custom property | Description | Default
           return 'pmr';
         }
         return 'normal';
+      },
+      _getPriceShiftClass: function (notFull, index) {
+        if (!notFull) {
+          return 'shift-error' + index;
+        }
+        return '';
       },
       _getNbHourDisplayed: function (pmr) {
         if (pmr) {
