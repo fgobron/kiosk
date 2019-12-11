@@ -15823,7 +15823,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">
       </div>
-      <p class="version">v1.4.2(8) - PATCH 02</p>
+      <p class="version">v1.4.2-1 - Hotfixes Qte &amp; MultiPx sessions</p>
     </div>
   </template>
 
@@ -24167,6 +24167,9 @@ Custom property | Description | Default
           type: Boolean,
           value: true,
           notify: true
+        },
+        isMultiPx: {
+          type: Boolean
         }
       },
       attached: function () {
@@ -24229,21 +24232,21 @@ Custom property | Description | Default
       },
       _getMultiPxPriceCode : function(item) {
         var firstCode = '';
-        if (this._isMultiPx(item)) {
+        if (this.isMultiPx) {
           firstCode = item.multiPx[0].code;
         }
         return firstCode;
       },
       _getPriceCodeByIndex : function(item, index) {
         var mPxCode = '';
-        if (this._isMultiPx(item)) {
+        if (this.isMultiPx) {
           mPxCode = item.multiPx[index].code;
         }
         return mPxCode;
       },
       _getMultiPxTitleByIndex : function(item, index) {
         var mPxCode = '';
-        if (this._isMultiPx(item)) {
+        if (this.isMultiPx) {
           mPxCode = item.multiPx[index].title;
         }
         return mPxCode;
@@ -24294,22 +24297,34 @@ Custom property | Description | Default
         this.$.minus.removeAttribute('disabled');
         this.$.plus.removeAttribute('disabled');
 
-        if (max <= 1) {
-          this.$.minus.setAttribute('disabled', true);
-          this.$.plus.setAttribute('disabled', true);
+        if (!this.isMultiPx) {
+          if (max <= 1) {
+            this.$.minus.setAttribute('disabled', true);
+            this.$.plus.setAttribute('disabled', true);
 
-          if (max === 1) {
-            this.set('errorMessage', this.localize('activity_quantity_max'));
-            this.set('errorHidden', false);
-          } else if (max === 0) {
-            this.set('value', 0);
-            this.set('errorMessage', this.localize('activity_quantity_full'));
-            this.set('errorHidden', false);
+            if (max === 1) {
+              this.set('errorMessage', this.localize('activity_quantity_max'));
+              this.set('errorHidden', false);
+            } else if (max === 0) {
+              this.set('value', 0);
+              this.set('errorMessage', this.localize('activity_quantity_full'));
+              this.set('errorHidden', false);
+            }
+          } else {
+            // Force validate on first checkActivation
+            this._validate();
           }
         } else {
-          // Force validate on first checkActivation
-          this._validate();
+            if (max === 0) {
+              this.set('value', 0);
+              this.set('errorMessage', this.localize('activity_quantity_full'));
+              this.set('errorHidden', false);
+            } else {
+            // Force validate on first checkActivation
+            this._validate();
+          }
         }
+
       }
     });
   </script>
@@ -25354,7 +25369,7 @@ Custom property | Description | Default
                   <div class="layout horizontal center quantity-container">
 
                     <template is="dom-if" if="[[!_isMultiPxFlag]]">
-                      <planet-kiosk-quantity id="quantity" min="1" value="{{quantity}}" index="0" quantities="{{_getQuantities(quantities.*)}}" error-hidden="{{notFull}}" pmr="[[pmr]]" language="[[language]]"></planet-kiosk-quantity>
+                      <planet-kiosk-quantity id="quantity" min="1" value="{{quantity}}" index="0" quantities="{{_getQuantities(quantities.*)}}" error-hidden="{{notFull}}" is-multi-px="[[_isMultiPxFlag]]" pmr="[[pmr]]" language="[[language]]"></planet-kiosk-quantity>
                     </template>
 
                     <template is="dom-if" if="[[_isMultiPxFlag]]">
@@ -25362,7 +25377,7 @@ Custom property | Description | Default
                         <template id="quantities" is="dom-repeat" items="[[activity.multiPx]]">
                           <div class="quantity-wrapper">
                             <p id="quantity_title_[[index]]" class="quantity-title">[[item.title]]</p>
-                            <planet-kiosk-quantity id="quantity_[[index]]" min="0" value="{{_quantitiesItem(quantities.*, index, 'value')}}" index="{{index}}" quantities="{{_getQuantities(quantities.*)}}" error-hidden="{{notFull}}" pmr="[[pmr]]" language="[[language]]" on-tap="_quantitiesTap"></planet-kiosk-quantity>
+                            <planet-kiosk-quantity id="quantity_[[index]]" min="0" value="{{_quantitiesItem(quantities.*, index, 'value')}}" index="{{index}}" quantities="{{_getQuantities(quantities.*)}}" is-multi-px="[[_isMultiPxFlag]]" error-hidden="{{notFull}}" pmr="[[pmr]]" language="[[language]]" on-tap="_quantitiesTap"></planet-kiosk-quantity>
                           </div>
                         </template>
                       </div>
@@ -31566,8 +31581,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           // BROWSE DAYS
           for(var j = 0; j < activities[i].dates.length; j++) {
             if (moment(activities[i].dates[j].date).isBetween(dayFilter.from, dayFilter.to, null, '[)')) {
-              var sessions = this._groupSessions(activities[i].dates[j].hours);
-              if (!this._isMultiPx(activities[i])) {
+              var isMultiPx = this._isMultiPx(activities[i]);
+              var sessions = this._groupSessions(activities[i].dates[j].hours, isMultiPx);
+              if (!isMultiPx) {
                   for (var k = 0; k < sessions.length;k++) {
                   sessions[k].dayIndex = j;
                   sessions[k].date = activities[i].dates[j].date;
@@ -31587,11 +31603,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
         this.set('_sessions', result);
       },
-      _groupConsecutiveSessions: function(sessions) {
+      _groupConsecutiveSessions: function(sessions, isMultiPx) {
         var begin = null;
         var beginIndex = 0;
         var end = null;
         var result = [];
+
+        // straighten sessions in multipx case
+        if (isMultiPx) {
+          var firstCode = sessions[0].code;
+          sessions = sessions.filter(function (item) {
+                return item.code === firstCode;
+          });
+        }
 
         for (var i = 0; i < sessions.length; i++) {
           if (sessions[i].availability <= 0) {
@@ -31616,12 +31640,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         return result;
       },
-      _groupSessions: function(sessions) {
+      _groupSessions: function(sessions, isMultiPx) {
         if (this._getNbSessionsAvailable(sessions) >= 6) {
           return [{begin:sessions[0].begin, end:sessions[sessions.length-1].end, hourIndex:0}];
         }
         else {
-          return this._groupConsecutiveSessions(sessions);
+          return this._groupConsecutiveSessions(sessions, isMultiPx);
         }
       },
       _getNbSessionsAvailable: function(sessions) {
