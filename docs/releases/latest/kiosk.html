@@ -15823,7 +15823,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">
       </div>
-      <p class="version">v1.4.2-1 - Hotfixes Qte &amp; MultiPx sessions</p>
+      <p class="version">v1.4.2-2 - HOTFIXES UPDATE 1.A</p>
     </div>
   </template>
 
@@ -25899,7 +25899,7 @@ Custom property | Description | Default
 
         if (day !== null) {
           selectedHours.forEach(function (hour) {
-            var price = parseInt(self._getPrice(self, activity, day, hour), 10);
+            var price = Number(self._getPrice(self, activity, day, hour), 10);
             sum += price * quantity;
           });
           return this._formatPrice(sum * 100, 2);
@@ -25925,7 +25925,7 @@ Custom property | Description | Default
               var selectedHour = dayHoursFiltered[hour];
               var price = 0;
               if (typeof selectedHour !== 'undefined') {
-                price = parseInt(selectedHour.price.value, 10) * quantity;
+                price = Number(selectedHour.price.value, 10) * quantity;
               }
               sum += price;
             });
@@ -31583,19 +31583,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             if (moment(activities[i].dates[j].date).isBetween(dayFilter.from, dayFilter.to, null, '[)')) {
               var isMultiPx = this._isMultiPx(activities[i]);
               var sessions = this._groupSessions(activities[i].dates[j].hours, isMultiPx);
-              if (!isMultiPx) {
-                  for (var k = 0; k < sessions.length;k++) {
-                  sessions[k].dayIndex = j;
-                  sessions[k].date = activities[i].dates[j].date;
-                  result.push(this._sessionAsActivity(sessions[k], activities[i]));
-                }
-              } else {
-                var step = activities[i].multiPx.length;
-                for (var k = 0; k < sessions.length;k+=step) {
-                  sessions[k].dayIndex = j;
-                  sessions[k].date = activities[i].dates[j].date;
-                  result.push(this._sessionAsActivity(sessions[k], activities[i]));
-                }
+              for (var k = 0; k < sessions.length;k++) {
+                sessions[k].dayIndex = j;
+                sessions[k].date = activities[i].dates[j].date;
+                result.push(this._sessionAsActivity(sessions[k], activities[i]));
               }
               break;
             }
