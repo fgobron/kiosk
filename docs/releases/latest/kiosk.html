@@ -15823,7 +15823,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">
       </div>
-      <p class="version">v1.4.2-2 - HOTFIXES UPDATE 1.A</p>
+      <p class="version">v1.4.2-3 - HOTFIXES SECONDE RENAISSANCE</p>
     </div>
   </template>
 
@@ -24631,6 +24631,10 @@ Custom property | Description | Default
       _getHours: function (day) {
         var hours = [];
         if (day !== null) {
+          if (typeof(this.dates[day]) === 'undefined') {
+            // Force first date temporay setting for init
+            day = 0;
+          }
           if (!this._isMultiPx) {
             hours = this.dates[day].hours;
           } else {
@@ -24656,6 +24660,10 @@ Custom property | Description | Default
         var availability = 0;
 
         if (day !== null) {
+          if (typeof(dates[day]) === 'undefined') {
+            // Force first date temporay setting for init
+            day = 0;
+          }
           var hours = dates[day].hours;
           if (index < hours.length) {
             availability = hours[index].availability;
@@ -25898,6 +25906,11 @@ Custom property | Description | Default
         var sum = 0;
 
         if (day !== null) {
+          if (typeof(activity.dates[day]) === 'undefined') {
+            // Force first date temporay setting for init
+            day = 0;
+            selectedHours = [];
+          }
           selectedHours.forEach(function (hour) {
             var price = Number(self._getPrice(self, activity, day, hour), 10);
             sum += price * quantity;
@@ -25914,6 +25927,11 @@ Custom property | Description | Default
         var sum = 0;
 
         if (day !== null) {
+          if (typeof(activity.dates[day]) === 'undefined') {
+            // Force first date temporay setting for init
+            day = 0;
+            selectedHours = [];
+          }
           if (index < activity.multiPx.length) {
             var code = this._getMultiPxPriceCodeByIndex(activity, index);
             var dayHours = activity.dates[day].hours;
@@ -25969,9 +25987,7 @@ Custom property | Description | Default
             var day = sessions.get('day');
             sessions.set('day', null);
             if (day !== null && day !== undefined) {
-              this.async(function() {
-                sessions.set('day', day);
-              });
+              sessions.set('day', day);
             }
           }
         }
@@ -29306,6 +29322,9 @@ Mixin | Description | Default
             day: activity.dayIndex,
             hour: activity.hourIndex
           });
+        } else {
+          // restore empty queryParams for futur navigation
+          globals.router.set('queryParams', {});
         }
         this.trackEvent('Activities selection - ' + globals.lastList, activity.code, activity.title, 'noevent');
         globals.router.set('route.path', '/detail/' + activity.code);
@@ -31594,6 +31613,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
         this.set('_sessions', result);
       },
+      _getStraightSessions : function (sessions) {
+        var firstCode = sessions[0].code;
+        sessions = sessions.filter(function (item) {
+              return item.code === firstCode;
+        });
+        return sessions;
+      },
       _groupConsecutiveSessions: function(sessions, isMultiPx) {
         var begin = null;
         var beginIndex = 0;
@@ -31602,10 +31628,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         // straighten sessions in multipx case
         if (isMultiPx) {
-          var firstCode = sessions[0].code;
-          sessions = sessions.filter(function (item) {
-                return item.code === firstCode;
-          });
+          sessions = this._getStraightSessions(sessions);
         }
 
         for (var i = 0; i < sessions.length; i++) {
@@ -31632,15 +31655,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return result;
       },
       _groupSessions: function(sessions, isMultiPx) {
-        if (this._getNbSessionsAvailable(sessions) >= 6) {
+        if (this._getNbSessionsAvailable(sessions, isMultiPx) >= 6) {
           return [{begin:sessions[0].begin, end:sessions[sessions.length-1].end, hourIndex:0}];
         }
         else {
           return this._groupConsecutiveSessions(sessions, isMultiPx);
         }
       },
-      _getNbSessionsAvailable: function(sessions) {
+      _getNbSessionsAvailable: function(sessions, isMultiPx) {
         var result = 0;
+
+        // straighten sessions in multipx case
+        if (isMultiPx) {
+          sessions = this._getStraightSessions(sessions);
+        }
+
         for (var i = 0; i < sessions.length; i++) {
           if (sessions[i].availability > 0) {
             result++;
