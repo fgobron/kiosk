@@ -13358,13 +13358,13 @@ AppLocalizeBehaviorImpl = {
  * @polymerBehavior
  */
 AppLocalizeBehavior = [AppLocalizeBehaviorImpl, Polymer.AppLocalizeBehavior];
-</script><dom-module id="app-tag-manager" assetpath="src/planet-kiosk-app/generic/">
+</script><dom-module id="app-tag-manager" assetpath="kiosk-components/generic/">
   <script>
     Polymer({
 
       is: 'app-tag-manager',
 
-      properties: {        
+      properties: {
         gtmId: {
           type: String
         },
@@ -13380,27 +13380,27 @@ AppLocalizeBehavior = [AppLocalizeBehaviorImpl, Polymer.AppLocalizeBehavior];
         lang: {
           type: String
         }
-      },      
+      },
       init: function() {
         this._setDataLayer();
-        this._setGtm();        
-      },            
+        this._setGtm();
+      },
       _setDataLayer: function () {
         dataLayer = [{
-          'session': this.session, 
+          'session': this.session,
           'id_kiosk': this.kioskId,
           'type_session': this.mode,
           'language': this.lang
-        }];        
+        }];
       },
       _setGtm : function () {
         (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
         new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
         j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer',this.gtmId);        
+        })(window,document,'script','dataLayer',this.gtmId);
       }
-      
+
     });
   </script>
 </dom-module><script>
@@ -13410,27 +13410,27 @@ AppLocalizeBehavior = [AppLocalizeBehaviorImpl, Polymer.AppLocalizeBehavior];
  * @polymerBehavior TagManagerBehavior
  */
 TagManagerBehavior = {
-  
-  trackEvent: function(category, action, label, event) {            
-    dataLayer.push({        
+
+  trackEvent: function(category, action, label, event) {
+    dataLayer.push({
       'eventCategory': category,
       'eventAction': action,
       'eventLabel': label,
       'event': event
-    });    
+    });
   },
   trackEventFromDataAttrs: function(e) {
     var target = e.currentTarget;
     var category = target.getAttribute('data-category');
     var action = target.getAttribute('data-action');
-    var label = target.getAttribute('data-label');    
+    var label = target.getAttribute('data-label');
     this.trackEvent(category, action, label, 'noevent');
   },
   setDataLayerItem: function(key, value) {
-    dataLayer.push({        
+    dataLayer.push({
       [key]: value
     });
-  }  
+  }
 };
 
 </script><!--
@@ -15823,7 +15823,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">
       </div>
-      <p class="version">v1.4.2-3 - HOTFIXES SECONDE RENAISSANCE</p>
+      <p class="version">v1.4.2-4 - COMPONENTS LIB</p>
     </div>
   </template>
 
