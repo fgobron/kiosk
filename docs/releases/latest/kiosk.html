@@ -15823,7 +15823,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">
       </div>
-      <p class="version">v1.4.4 - MAPS BT &amp; PZ</p>
+      <p class="version">v1.4.5</p>
     </div>
   </template>
 
@@ -23713,6 +23713,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host {
         position: fixed;
         z-index: 1000;
+        --planet-color-scroll-button-color: var(--planet-color-grey);
       }
 
       paper-button {
@@ -23727,7 +23728,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         width: 9.6em;
         height: 9.6em;
         border-radius: 50%;
-        fill: var(--planet-color-grey);
+        fill: var(--planet-color-scroll-button-color);
       }
 
       .up iron-icon {
@@ -34001,6 +34002,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var data = 'token=' + globals.token + '&booking=' + globals.bookingId + '&transaction=' + this.get('transaction') + '&kiosk=' + globals.kioskId;
         transactionrequest.headers = globals.headers;
         transactionrequest.body = data;
+        if (transactionrequest.lastRequest) {
+          transactionrequest.lastRequest.abort();
+        }
         transactionrequest.generateRequest();
       },
       _onCancelResponse: function (e) {
@@ -34282,14 +34286,38 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .buttons {
         text-align: center;
       }
+      .content {
+        overflow-y: scroll;
+        @apply(--layout-horizontal);
+      }
+      .content::-webkit-scrollbar {
+        display: none;
+      }
+      planet-kiosk-scroll-button {
+        position: absolute;
+        display: block;
+        --planet-color-scroll-button-color: var(--planet-color-paleRed);
+      }
+      planet-kiosk-scroll-button[left] {
+        top: 35%;
+        left: 0;
+      }
+      planet-kiosk-scroll-button[right] {
+        top: 35%;
+        right: 0em;
+      }
     </style>
-    <div class$="[[_getPMRClass(pmr)]]">
-        <h2>[[localize('map_title')]]</h2>
-        <div class="content">
-            <img src="./data/MAPS/ZOOM-[[dynamicSiteCode]]-BORNES-[[dynamicLanguage]].jpg">
-          <div class="buttons">
-            <paper-button class="primary confirm" on-tap="_confirm">[[localize('map_close_button')]]</paper-button>
-          </div>
+    <div id="layout" class$="[[_getPMRClass(pmr)]]">
+        <h2>[[localize('map_title')]] [[dynamicIndex]]</h2>
+        <div class="wrapper">
+            <div class="content">
+              <template id="imgList" is="dom-repeat" items="[[dynamicImgTab]]">
+                <img src="./data/MAPS/ZOOM-[[dynamicSiteCode]]-BORNES-[[dynamicLanguage]]-[[item]].jpg">
+              </template>
+            </div>
+        </div>
+        <div class="buttons">
+          <paper-button class="primary confirm" on-tap="_confirm">[[localize('map_close_button')]]</paper-button>
         </div>
     </div>
 
@@ -34300,9 +34328,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     is: 'planet-kiosk-map',
     behaviors: [
       AppLocalizeBehavior,
+      ScrollHorizontalBehavior,
       PMRBehavior
     ],
     properties: {
+      siteCodeMap : {
+        type: Object,
+        value: function () {
+          return {
+            "AG":1,
+            "BD":1,
+            "BF":1,
+            "BS":1,
+            "BT":1,
+            "CH":1,
+            "EH":1,
+            "HB":1,
+            "KV":1,
+            "LA":1,
+            "PZ":1,
+            "SL":1,
+            "TF":1,
+            "VM":1,
+            "VN":1
+          }
+        }
+      },
       dynamicLanguage: {
         type: String,
         computed: '_getUpperLanguage(language)'
@@ -34310,6 +34361,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       dynamicSiteCode: {
         type: String,
         computed: '_getSiteCode(language)'
+      },
+      dynamicImgTab: {
+        type: String,
+        computed: '_getImgTab(language, siteCodeMap)'
       }
     },
     _confirm : function () {
@@ -34320,6 +34375,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
     _getSiteCode: function (language) {
       return globals.siteCode;
+    },
+    _getImgTab: function (language, siteCodeMap) {
+      var siteCode = globals.siteCode;
+      var nbImg = this.siteCodeMap[siteCode];
+      var imgIndexTab = new Array();
+      for (var i=0; i<nbImg; i++) {
+        var formattedIndex = ("0" + (i+1)).slice(-2);
+        imgIndexTab.push(formattedIndex);
+      }
+      return imgIndexTab;
     }
   });
 
