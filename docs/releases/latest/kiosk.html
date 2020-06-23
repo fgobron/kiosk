@@ -15823,7 +15823,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">
       </div>
-      <p class="version">v1.4.8 - MAPS ZV</p>
+      <p class="version">v1.4.9 - Free multipx</p>
     </div>
   </template>
 
@@ -23004,6 +23004,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       if (typeof item.price !== 'undefined') {
         return item.price.value == 0;
       }
+      // Multipx shunt case
+      if (this._isMultiPx(item)) {
+        return 0;
+      }
       return this._getFirstHour(item).price.value == 0;
     },
     _getFirstPrice: function (item) {
@@ -23190,14 +23194,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var hours = date.hours;
         hours.forEach(function (hour) {
           var price = parseInt(hour.price.value);
-          if (min) {
+          if (typeof min !== 'undefined') {
             if (price < min) {
               min = price;
             }
           } else {
             min = price;
           }
-          if (max) {
+          if (typeof max !== 'undefined') {
             if (price > max) {
               max = price;
             }
