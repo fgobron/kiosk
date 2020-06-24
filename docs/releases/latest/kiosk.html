@@ -15823,7 +15823,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">
       </div>
-      <p class="version">v1.4.9 - Free multipx</p>
+      <p class="version">v1.4.9-2 - Free multipx &amp; fix hours slots</p>
     </div>
   </template>
 
@@ -24723,6 +24723,7 @@ Custom property | Description | Default
         }
       },
       _isOutOfavailability: function (item, selectedQuantity, index) {
+        var isOutOfavailability = false;
         var day = this.get('day');
         var mode = this.get('mode');
         var currentMaxAvaibility = this._getAvailabilityByIndex(index);
@@ -24735,7 +24736,15 @@ Custom property | Description | Default
             diff = globals.cart.computeNbItemsForSession(item.code, day, index);
           }
         }
-        return selectedQuantity > Number(currentMaxAvaibility - diff);
+        isOutOfavailability = selectedQuantity > Number(currentMaxAvaibility - diff);
+
+        // Check for non selection of an unavailable slot
+        if (isOutOfavailability && item.type !== "Facility") {
+          if (this.selectedHours[index].selected) {
+            this.updateHour(this._getFirstAvailableHour());
+          }
+        }
+        return isOutOfavailability;
       },
       _isHourDisplayed: function (index, start, nbElem) {
         if (nbElem < 0) {
