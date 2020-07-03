@@ -15823,7 +15823,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">
       </div>
-      <p class="version">v1.4.9-2 - Free multipx &amp; fix hours slots</p>
+      <p class="version">v1.4.9-3 - Fix hour slots</p>
     </div>
   </template>
 
@@ -24687,12 +24687,14 @@ Custom property | Description | Default
       },
       updateHour: function (index) {
         if (!this.multi) {
-          // Reset previous selection in single selection mode
-          this.initSelectedHours();
-          // Set value at index
-          this.splice('selectedHours', index, 1, {'selected':true});
-          // force event handler
-          this._hourChanged(index);
+          if (index !== null) {
+            // Reset previous selection in single selection mode
+            this.initSelectedHours();
+            // Set value at index
+            this.splice('selectedHours', index, 1, {'selected':true});
+            // force event handler
+            this._hourChanged(index);
+          }
         }
         else {
           if (index !== null) {
@@ -24740,10 +24742,33 @@ Custom property | Description | Default
 
         // Check for non selection of an unavailable slot
         if (isOutOfavailability && item.type !== "Facility") {
-          if (this.selectedHours[index].selected) {
-            this.updateHour(this._getFirstAvailableHour());
+          if (this.nbSelectedHours > 0 && this.selectedHours[index].selected) {
+            var firstAvailableHour = this._getFirstAvailableHour();
+            if (firstAvailableHour !== null) {
+              // Set first slot avalaible
+              this.updateHour(firstAvailableHour);
+            } else {
+              // Reset previous active element
+              var previousActivated = Polymer.dom(this.root).querySelector('.' + 'hour' + ' paper-fab[activated]');
+              if (previousActivated !== null) {
+                previousActivated.removeAttribute('activated');
+              }
+              // no slot avaible => reset
+              this.set('selectedHours', []);
+            }
           }
         }
+
+        if (!isOutOfavailability && item.type !== "Facility") {
+          if (typeof(this.selectedHours[index]) === 'undefined' || !this.selectedHours[index].selected) {
+            var current =  Polymer.dom(this.root).querySelectorAll('.' + 'hours' + ' paper-fab')[index];
+            if (current && current.hasAttribute('activated')) {
+              this.updateHour(index);
+            }
+
+          }
+        }
+
         return isOutOfavailability;
       },
       _isHourDisplayed: function (index, start, nbElem) {
