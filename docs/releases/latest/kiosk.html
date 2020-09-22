@@ -15823,7 +15823,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[localize('language_payment_desc')]]</p>
         <img src="images/cb.png">
       </div>
-      <p class="version">v1.4.9-3 - Fix hour slots</p>
+      <p class="version">v1.4.9-4 - Confirm villa for nfcscan</p>
     </div>
   </template>
 
@@ -21244,7 +21244,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   LoginBehavior = {
     _popIn: null,
     properties: {
-
+      // authType : info, nfcscan, qrscan
+      authType: {
+        type: String,
+        value: 'info'
+      },
     },
     attached: function () {
       // Init error popIn
@@ -21256,6 +21260,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       this.$.popcontainer.appendChild(this._popIn);
     },
     cancel: function () {
+      // Reset state to initial for login-info
+      if (this.state) {
+        this.set('state', 'initial');
+      }
       globals.router.set('route.path', '/identification');
     },
     didReceiveResponse: function(request) {
@@ -21293,7 +21301,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.hidePopIn();
         var identification = document.querySelector('planet-kiosk-identification');
         var action = identification.get('action');
-        switch (action) {
+        if (this.get('authType') === 'nfcscan') {
+          // Confirm authentification
+          var logInfo = document.querySelector('planet-kiosk-login-info');
+          logInfo.authByVilla()
+          globals.router.set('route.path', '/login');
+        } else {
+          // Redirect to correct previous page
+          switch (action) {
           case 'basket':
             globals.router.set('route.path', '/basket');
             break;
@@ -21301,6 +21316,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             // Detail
             var detail = document.querySelector('planet-kiosk-detail');
             detail.addPendingItems();
+          }
         }
       }, 2000);
     },
@@ -21379,8 +21395,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <template>
     <div class$="[[_getPMRClass(pmr)]]">
-      <h2>[[localize('login_title')]]</h2>
-      <p class="sub-title">[[localize('login_hub_title_info')]]</p>
+
+      <template is="dom-if" if="[[!_isEqualToVilla]]">
+        <h2>[[localize('login_title')]]</h2>
+        <p class="sub-title">[[localize('login_hub_title_info')]]</p>
+      </template>
+
+      <template is="dom-if" if="[[_isEqualToVilla]]">
+        <h2>[[localize('login_villa_title')]]</h2>
+      </template>
 
       <iron-meta-query id="appconfig" key="config" value="{{appconfig}}"></iron-meta-query>
 
@@ -21392,6 +21415,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <input name="villa" type="number" is="iron-input" placeholder="[[localize('login_cottage_placeholder')]]" autocomplete="off" required="">
               <label>[[localize('login_name_title')]]</label>
               <input name="lastname" is="iron-input" placeholder="[[localize('login_name_placeholder')]]" autocomplete="off" maxlength="3" pattern="^[a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ][a-zA-ZáàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ0-9-_\.]{2}$" required="">
+            </div>
+          </form>
+        </template>
+
+        <template is="dom-if" if="[[_isEqualToVilla]]">
+          <form is="iron-form" id="villaform" method="get" action="[[appconfig.api]]/getUserKiosk" on-iron-form-presubmit="_infoPreSubmit" on-iron-form-error="fail" on-iron-form-response="didReceiveResponse">
+            <div class="layout vertical center">
+              <label>[[localize('login_cottage_title')]]</label>
+              <input name="villa" type="number" is="iron-input" placeholder="[[localize('login_cottage_placeholder')]]" autocomplete="off" required="">
             </div>
           </form>
         </template>
@@ -21444,6 +21476,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: String,
           computed:'_isEqualTo(state, "initial")'
         },
+        _isEqualToVilla: {
+          type: String,
+          computed:'_isEqualTo(state, "villa")'
+        },
         _isEqualToDate: {
           type: String,
           computed:'_isEqualTo(state, "date")'
@@ -21454,6 +21490,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
       authByDate: function () {
         this.set('state', 'date');
+      },
+      authByVilla: function () {
+        this.set('state', 'villa');
       },
       fail: function () {
         var buttons = [
@@ -21481,6 +21520,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       _visibiltyChanged : function (visible) {
         if (visible) {
+          this.set('authType', 'info');
           this._resetForm();
         }
       },
@@ -21495,7 +21535,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       _resetForm: function () {
         var form = this._getForm();
-        this._resetFields(form);
+        if (form) {
+          this._resetFields(form);
+        }
       },
       _serializeAndStore: function (form) {
         var data = form.serialize();
@@ -21858,6 +21900,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       _visibilityChanged: function (visibility) {
         if (visibility) {
+          this.set('authType', 'qrscan');
           this.$.chrono.reset();
           this.scan();
         }
@@ -22061,6 +22104,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       _visibilityChanged: function (visibility) {
         if (visibility) {
+          this.set('authType', 'nfcscan');
           this.reset();
           this.scan();
         }
