@@ -9981,6 +9981,14 @@ Or, in a Polymer element, you can include a meta in your template:
         }
       });
       return promise;
+    },
+    checkReceptionPayment: function () {
+      var openings = globals.receptionOpenings;
+
+      var start = moment(openings.start, 'HH:mm:ss');
+      var end = moment(openings.end, 'HH:mm:ss');
+
+      return moment().isBetween(start, end);
     }
   });
   </script>
@@ -14143,9 +14151,85 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 		C55.558,25.965,56.461,25.618,57.363,25.618z"></path>
           <path class="circle" d="M47.499,2.5c24.854,0,45.001,20.147,45.001,45
 		c0,24.854-20.146,45-45.001,45C22.647,92.5,2.5,72.354,2.5,47.5C2.5,22.647,22.647,2.5,47.499,2.5z"></path>
-        </g>
+		</g>
+		<g id="infos">
+			<path fill="currentcolor" d="M48.863,10c21.505,0,39,17.496,39,39c0,21.506-17.495,39-39,39
+				s-39-17.494-39-39C9.863,27.496,27.358,10,48.863,10 M48.863,4c-24.853,0-45,20.147-45,45c0,24.854,20.147,45,45,45
+				c24.854,0,45-20.146,45-45C93.863,24.147,73.717,4,48.863,4z"></path>
+			<polygon fill="currentcolor" points="38.098,72.163 43.799,71.631 43.799,45.409 38.25,44.877 38.25,39.785 55.579,39.178 55.579,71.631
+				61.355,72.163 61.355,77.407 38.098,77.407 "></polygon>
+			<path fill="currentcolor" d="M48.739,21.012c4.333,0,6.993,2.128,6.993,6.613
+				c0,3.875-2.129,6.688-7.146,6.688c-5.548,0-7.068-3.496-7.068-6.612C41.519,24.128,43.495,21.012,48.739,21.012z"></path>
+		</g>
       </defs>
-    </svg>
+	</svg>
+
+	<iron-iconset-svg name="payment" size="350">
+		<svg>
+		  <defs>
+			<g id="cards">
+				<path d="M36.739,121.333l226.493-51.366l-3.139-13.845c-0.872-3.94-4.847-6.416-8.752-5.544
+				L39.075,98.387c-3.94,0.872-6.417,4.813-5.545,8.753C34.611,111.848,35.658,116.625,36.739,121.333L36.739,121.333z M34.856,85.833
+				l214.951-48.367c10.252-2.301,20.47,4.149,22.771,14.402l22.527,99.559h-13.461l-10.217-45.089L44.934,157.705l14.019,61.828
+				l1.255,5.476c0.488,2.197,2.685,3.626,4.917,3.104l1.673-0.384v13.182l-0.244,0.073c-8.509,1.918-16.982-3.488-18.936-11.961
+				L20.384,108.643c-1.151-5.126-0.314-9.938,2.476-14.402c2.79-4.464,6.87-7.254,11.996-8.405l0,0L34.856,85.833z M90.651,155.019
+				c-10.496,0-19.04,8.579-19.04,19.075V297.96c0,10.496,8.544,19.04,19.04,19.04h220.391c10.497,0,19.075-8.578,19.075-19.04V174.094
+				c0-10.496-8.578-19.075-19.075-19.075H90.651L90.651,155.019L90.651,155.019z M306.404,210.466c0-8.404,0-16.808,0-25.212
+				c0-1.64-1.291-2.93-2.93-2.93c-18.795,0-37.592,0-56.388,0c-1.604,0-2.929,1.324-2.929,2.93c0,8.404,0,16.808,0,25.212
+				c0,1.604,1.324,2.929,2.929,2.929c18.796,0,37.593,0,56.388,0C305.044,213.395,306.404,212.105,306.404,210.466L306.404,210.466z
+				 M264.837,286.905c-1.64,0-2.965-1.325-2.965-2.929v-5.859c0-1.604,1.325-2.93,2.965-2.93h38.603c1.604,0,2.93,1.326,2.93,2.93
+				v5.859c0,1.604-1.325,2.929-2.93,2.929H264.837L264.837,286.905L264.837,286.905z M210.959,286.905
+				c-1.604,0-2.929-1.325-2.929-2.929v-5.824c0-1.639,1.325-2.93,2.929-2.93h38.639c1.604,0,2.93,1.326,2.93,2.93v5.824
+				c0,1.604-1.326,2.929-2.93,2.929H210.959L210.959,286.905z M157.117,286.905c-1.604,0-2.929-1.325-2.929-2.929v-5.824
+				c0-1.639,1.325-2.93,2.929-2.93h38.639c1.604,0,2.929,1.326,2.929,2.93v5.824c0,1.604-1.325,2.929-2.929,2.929H157.117
+				L157.117,286.905z M103.274,286.905c-1.604,0-2.929-1.325-2.929-2.929v-5.824c0-1.639,1.325-2.93,2.929-2.93h38.639
+				c1.604,0,2.929,1.326,2.929,2.93v5.824c0,1.604-1.325,2.929-2.929,2.929H103.274z"></path>
+			</g>
+			<g id="reception">
+				<path d="M114.425,89.364c13.315,0,24.146-10.835,24.146-24.152c0-13.32-10.831-24.155-24.146-24.155
+					c-13.316,0-24.15,10.835-24.15,24.155C90.278,78.528,101.109,89.364,114.425,89.364z M114.425,49.319
+					c8.763,0,15.89,7.131,15.89,15.897c0,8.762-7.127,15.894-15.89,15.894s-15.896-7.132-15.896-15.894
+					C98.533,56.446,105.662,49.319,114.425,49.319z"></path>
+				<path d="M317.941,160.108h-11.354v-9.93c-0.004-0.099-0.445-10.059-0.445-12.863
+					c0-11.52-9.374-20.894-20.89-20.894H237.87c-9.736,0-18.501,6.4-21.476,15.617c0,0.003-0.004,0.012-0.008,0.017l-11.401,25.848
+					l-29.053-2.288c-0.371-0.028-0.743-0.004-1.11,0.071c-3.034,0.603-5.721,2.192-7.682,4.421h-4.845l-0.004-33.161
+					c0-0.007-0.408-9.988-0.408-12.879c0-11.52-9.37-20.894-20.885-20.894H85.194c-11.516,0-20.885,9.374-20.885,20.894
+					c0,2.944,0.367,13.048,0.372,13.048v32.992H33.353c-2.279,0-4.128,1.846-4.128,4.129v138.241c0,2.285,1.849,4.129,4.128,4.129
+					h284.589c2.283,0,4.129-1.844,4.129-4.129V164.238C322.07,161.954,320.223,160.108,317.941,160.108z M175.952,163.899l31.291,2.475
+					c1.722,0.086,3.395-0.844,4.103-2.448l12.42-28.142c0.182-0.318,0.325-0.661,0.426-1.02c1.823-5.938,7.434-10.079,13.674-10.079
+					h47.385c6.967,0,12.633,5.665,12.633,12.635c0,2.989,0.434,12.816,0.449,13.048v13.873v34.934c0,2.365-1.943,4.293-4.333,4.293
+					c-2.341,0-4.25-1.928-4.25-4.293v-34.934v-19.077c0-2.283-1.847-4.128-4.128-4.128h-2.064c-2.283,0-4.127,1.845-4.127,4.128v19.077
+					v126.059c0,3.076-2.498,5.58-5.572,5.58c-1.119,0-2.237-0.336-2.977-0.83c-0.338-0.252-0.672-0.523-0.957-0.811
+					c-1.057-1.057-1.635-2.455-1.635-3.936c0-0.193-0.016-0.387-0.047-0.576v-77.217c0-2.283-1.848-4.129-4.125-4.129h-12.715
+					c-2.277,0-4.125,1.846-4.125,4.129v77.213c-0.029,0.189-0.043,0.383-0.043,0.58c0,1.48-0.586,2.879-1.647,3.945
+					c-0.255,0.258-0.564,0.516-0.86,0.76c-0.931,0.574-1.982,0.875-3.064,0.875c-3.07,0-5.572-2.5-5.572-5.58V164.238v-19.076
+					c0-2.284-1.844-4.13-4.127-4.13h-2.022c-2.278,0-4.128,1.846-4.128,4.13v9.415l-10.338,20.262
+					c-0.793,1.063-1.949,1.795-3.158,2.061c-0.425,0.078-0.872,0.137-1.164,0.139l-35.464-2.361c-2.267-0.764-3.822-2.918-3.822-5.363
+					c0-1.016,0.29-2.027,0.871-2.98C173.436,165.159,174.586,164.292,175.952,163.899z M72.931,126.964c0,0-0.368-9.997-0.368-12.896
+					c0-6.97,5.668-12.635,12.631-12.635h55.804c6.967,0,12.63,5.666,12.63,12.635c0,2.944,0.408,13.048,0.413,13.052v32.988h-8.585
+					v-38.194c0-2.283-1.849-4.129-4.128-4.129h-2.021c-2.279,0-4.128,1.846-4.128,4.129v38.194H91.839v-38.194
+					c0-2.283-1.849-4.129-4.127-4.129h-2.064c-2.278,0-4.127,1.846-4.127,4.129v38.194h-8.585L72.931,126.964z M37.48,298.348V168.367
+					h31.327h16.84h2.064h51.594h2.021h16.841h5.481c-0.021,0.314-0.034,0.628-0.034,0.946c0,6.297,4.231,11.83,10.286,13.445
+					c0.261,0.074,0.532,0.113,0.802,0.131l35.066,2.359l1.225,0.043c0.954,0,1.912-0.105,2.944-0.295
+					c3.468-0.756,6.472-2.764,8.466-5.658c0.098-0.143,0.19-0.293,0.268-0.447l5.164-10.094v121.504c0,0.867,0.102,1.715,0.254,2.537
+					c0.051,0.26,0.121,0.508,0.188,0.764c0.135,0.568,0.305,1.117,0.511,1.65c0.1,0.26,0.206,0.525,0.327,0.777
+					c0.247,0.541,0.532,1.057,0.84,1.555c0.117,0.195,0.225,0.393,0.352,0.58c0.041,0.061,0.074,0.127,0.111,0.189H37.48V298.348z
+					M252.902,298.348c0.041-0.049,0.067-0.102,0.096-0.152c0.103-0.148,0.185-0.305,0.279-0.449c0.322-0.504,0.61-1.02,0.873-1.557
+					c0.102-0.227,0.2-0.451,0.292-0.68c0.205-0.51,0.379-1.029,0.523-1.559c0.062-0.223,0.131-0.441,0.181-0.67
+					c0.166-0.752,0.29-1.51,0.328-2.295c0.037-0.227,0.057-0.453,0.057-0.688v-73.666h4.457v73.666c0,0.238,0.02,0.467,0.063,0.691
+					c0.035,0.777,0.155,1.539,0.321,2.289c0.053,0.234,0.124,0.459,0.186,0.693c0.144,0.518,0.313,1.027,0.515,1.525
+					c0.096,0.24,0.199,0.473,0.306,0.707c0.253,0.518,0.532,1.014,0.838,1.496c0.108,0.164,0.203,0.342,0.313,0.504
+					c0.035,0.049,0.059,0.094,0.088,0.143H252.902z M313.816,298.348h-28.716c0.042-0.061,0.074-0.127,0.111-0.184
+					c0.127-0.188,0.234-0.389,0.352-0.582c0.313-0.5,0.603-1.018,0.849-1.561c0.112-0.256,0.219-0.51,0.314-0.771
+					c0.21-0.541,0.38-1.096,0.521-1.662c0.062-0.254,0.132-0.498,0.183-0.756c0.152-0.826,0.255-1.668,0.255-2.539v-80.291
+					c1.853,1.094,4.016,1.723,6.314,1.723c6.941,0,12.589-5.629,12.589-12.555v-30.803h7.223v129.981H313.816z"></path>
+				<path d="M258.697,112.61c13.314,0,24.146-10.835,24.146-24.15c0-13.317-10.831-24.152-24.146-24.152
+				s-24.146,10.834-24.146,24.152C234.552,101.775,245.385,112.61,258.697,112.61z M258.697,72.57c8.763,0,15.892,7.131,15.892,15.894
+				c0,8.762-7.129,15.893-15.892,15.893s-15.892-7.13-15.892-15.893C242.806,79.701,249.935,72.57,258.697,72.57z"></path>
+			</g>
+		  </defs>
+		</svg>
+	  </iron-iconset-svg>
 
     <iron-iconset-svg name="misc" size="32">
       <svg>
@@ -14162,7 +14246,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </g>
         </defs>
       </svg>
-    </iron-iconset-svg></iron-iconset-svg></iron-iconset-svg><dom-module id="planet-kiosk-page-styles" assetpath="src/planet-kiosk-app/common/">
+	</iron-iconset-svg></iron-iconset-svg></iron-iconset-svg><dom-module id="planet-kiosk-page-styles" assetpath="src/planet-kiosk-app/common/">
   <template>
     <style include="planet-kiosk-buttons-styles">
       h2 {
@@ -14303,6 +14387,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           font-family: var(--planet-font-family-heavy);
           color: var(--planet-color-theme-confirm);
           background-color: var(--planet-color-theme-primary);
+          text-align: center;
+        }
+
+        paper-button.confirm.disabled {
+          font-family: var(--planet-font-family-heavy);
+          color: var(--planet-color-theme-confirm);
+          background-color: var(--planet-color-theme-disabled);
           text-align: center;
         }
 
@@ -15820,10 +15911,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </div>
 
       <div class="payment">
-        <p>[[localize('language_payment_desc')]]</p>
+        <template is="dom-if" if="[[!_isPaymentDesk]]">
+          <p>[[localize('language_payment_desc')]]</p>
+        </template>
+        <template is="dom-if" if="[[_isPaymentDesk]]">
+          <p>[[localize('language_payment_reception_desc')]]</p>
+        </template>
+
         <img src="images/cb.png">
       </div>
-      <p class="version">v1.4.9-4 - Confirm villa for nfcscan</p>
+      <p class="version">1.5.0 - Payment Desk</p>
     </div>
   </template>
 
@@ -15833,7 +15930,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       behaviors: [
         AppLocalizeBehavior,
         PMRBehavior
-      ]
+      ],
+      properties: {
+        _isPaymentDesk: {
+          type: Boolean,
+          computed: '_checkPaymentDesk(language)'
+        },
+      },
+      _checkPaymentDesk : function (lang) {
+        return globals.services.checkReceptionPayment();
+      },
     });
 
   </script>
@@ -21623,8 +21729,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       text {
         font-family: var(--chrono-font-family ,--planet-font-family-heavy);
-        fill: var(-chrono-font-color, --planet-color-softGreen);
-        font-size: var(--chrono-font-size, 10em);
+        fill: var(--chrono-font-color, --planet-color-softGreen);
+        font-size: var(--chrono-font-size, 9em);
       }
     </style>
 
@@ -21640,7 +21746,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <svg viewBox="0 0 500 500" width$="{{size}}" height$="{{size}}">
         <path d="M253.9 479.5c-100 0-181.3-81.3-181.3-181.3C72.7 198.3 154 117 253.9 117s181.3 81.3 181.3 181.3c0 99.9-81.3 181.2-181.3 181.2zm0-320.2c-76.6 0-139 62.4-139 139s62.4 139 139 139 139-62.4 139-139c0-76.7-62.3-139-139-139z"></path>
         <path d="M 385.5,199.4 355.1,169 c -1.3,-1.3 -1.3,-3.5 0,-4.8 l 43.6,-43.6 c 1.3,-1.3 3.5,-1.3 4.8,0 l 30.4,30.4 c 1.3,1.3 1.3,3.5 0,4.8 l -43.6,43.6 c -1.3,1.3 -3.5,1.3 -4.8,0 z m -263.2,0 30.4,-30.4 c 1.3,-1.3 1.3,-3.5 0,-4.8 L 109,120.6 c -1.3,-1.3 -3.5,-1.3 -4.8,0 L 73.9,151 c -1.3,1.3 -1.3,3.5 0,4.8 l 43.6,43.6 c 1.4,1.3 3.5,1.3 4.8,0 z m 110.6,-114.3 42,0 0,39.7 -42,0 z m 66.3,-16.5 -90.6,0 c -1.8,0 -3.3,-1.5 -3.3,-3.3 l 0,-42 c 0,-1.8 1.5,-3.3 3.3,-3.3 l 90.6,0 c 1.8,0 3.3,1.5 3.3,3.3 l 0,42 c 0,1.8 -1.5,3.3 -3.3,3.3 z m -45.3,336.9 c -169.266667,63 -84.63333,31.5 0,0 z"></path>
-        <text x="250" y="300" text-anchor="middle" alignment-baseline="central">[[_count]]s</text>
+        <text x="250" y="310" text-anchor="middle" alignment-baseline="central">[[_formatCount(_count)]]</text>
       </svg>
     </template>
 
@@ -21679,6 +21785,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       _init: function () {
         this.set('_count', this.get('time'));
+      },
+      _formatCount: function (count) {
+        if (count > 59) {
+          return new Date(count * 1000).toISOString().substr(14, 5);
+        }
+        return count + 's';
       },
       _nextCount: function () {
         this._count--;
@@ -23415,10 +23527,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-family: var(--planet-font-family-roman);
         color: var(--planet-color-theme-primary);
         font-weight: bold;
+        text-align: center;
+        margin: 0.8em 0;
       }
 
       #dialog .description {
-        font-size: 1.42857142857em;
+        font-size: 1.8em;
         font-family: var(--planet-font-family-roman);
         color: var(--planet-color-theme-desc);
         text-align: justify;
@@ -23428,7 +23542,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-size: 0.71428571428em;
         font-family: var(--planet-font-family-roman);
         color: var(--planet-color-theme-desc);
-        margin: 5em;
+        margin: 2.2em;
       }
 
       .information {
@@ -24950,6 +25064,7 @@ Custom property | Description | Default
         padding: 4em 0;
         bottom: 42em;
         width: 100%;
+        height: 7em;
         background-color: var(--planet-color-theme-mainbg);
         transition-property: bottom;
         transition-duration: 2s;
@@ -25132,6 +25247,48 @@ Custom property | Description | Default
 
       .closed planet-kiosk-scroll-button[down] {
         bottom: 45em;
+      }
+
+      paper-button.infos {
+        border-radius: 50%;
+      }
+
+      .infos iron-icon {
+        width: 5em;
+        height: 5em;
+      }
+
+      .infos iron-icon.default {
+        fill: none;
+        stroke: var(--planet-color-theme-btn);
+        color: var(--planet-color-theme-btn);
+      }
+
+      #infos {
+        padding: 1em;
+      }
+
+      #infos .title {
+        font-size: 3.21428571429em;
+        font-family: var(--planet-font-family-roman);
+        color: var(--planet-color-theme-primary);
+        font-weight: bold;
+        text-align: center;
+        margin: 0.8em 0;
+      }
+
+      #infos .description {
+        font-size: 1.8em;
+        font-family: var(--planet-font-family-roman);
+        color: var(--planet-color-theme-desc);
+        text-align: justify;
+      }
+
+      #infos .action {
+        font-size: 0.71428571428em;
+        font-family: var(--planet-font-family-roman);
+        color: var(--planet-color-theme-desc);
+        margin: 2.2em;
       }
 
       /* DTK ACTIVITIES STYLE */
@@ -25413,6 +25570,14 @@ Custom property | Description | Default
       .pmr planet-kiosk-scroll-button {
         display: none;
       }
+
+      .pmr #infos {
+        font-size: 0.6em;
+      }
+
+      .pmr #infos .description {
+        font-size: 2.7em;
+      }
     </style>
 
     <app-header-layout id="layout">
@@ -25429,7 +25594,7 @@ Custom property | Description | Default
               <template is="dom-if" if="[[!_isFree(activity)]]">
                 <p class="price">[[_getPriceLabel(localize, activity)]]</p>
               </template>
-            </header>
+             </header>
 
 
             <!-- STEP 1 PMR !-->
@@ -25511,6 +25676,10 @@ Custom property | Description | Default
                 </template>
 
                 <paper-button id="confirm" class="primary detail confirm" on-tap="_checkWarning"></paper-button>
+
+                <paper-button class="infos">
+                  <iron-icon class="default" icon="buttons:infos" on-tap="_openInfos"></iron-icon>
+                </paper-button>
               </div>
             </div>
 
@@ -25576,7 +25745,20 @@ Custom property | Description | Default
       </template>
 
     </app-header-layout>
+
     <planet-kiosk-detail-warning language="[[language]]" pmr="[[pmr]]" id="warning" with-backdrop="" no-cancel-on-outside-click=""></planet-kiosk-detail-warning>
+
+    <!-- INFOS -->
+    <paper-dialog id="infos">
+      <p class="title">[[localize('payment_reception_infos_title')]]</p>
+      <p class="description">[[localize('payment_reception_infos_desc')]]</p>
+      <div class="action layout horizontal center-justified">
+        <paper-button class="primary detail confirm" dialog-confirm="" autofocus="">
+          [[localize('payment_reception_infos_button')]]
+        </paper-button>
+      </div>
+    </paper-dialog>
+    <!--END OF INFOS -->
   </template>
 
   <script>
@@ -26087,7 +26269,10 @@ Custom property | Description | Default
       },
       checkScrollButtons: function () {
         this.contentChanged();
-      }
+      },
+      _openInfos: function () {
+        this.$.infos.open();
+      },
     });
   </script>
 
@@ -32311,6 +32496,196 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </script>
 </dom-module><!-- Components -->
 <!-- Behaviors -->
+<dom-module id="planet-kiosk-payment-choice" assetpath="src/planet-kiosk-app/">
+  <template>
+    <style include="planet-kiosk-page-styles">
+    :host {
+        text-align: center;
+    }
+
+    .content {
+      @apply(--layout-horizontal);
+      @apply(--layout-center-justified);
+    }
+
+    .buttons  {
+      clear: both;
+      padding-top: 8em;
+    }
+
+    .card-container {
+      display: block;
+      float: left;
+      text-decoration: none;
+      margin: 0 0 5em 2em;
+      border: 8px transparent solid;
+    }
+
+    .card-container.active {
+      border: 8px var(--planet-color-theme-primary) solid;
+      border-radius: 2em;
+    }
+
+    paper-card {
+      display: block;
+      width: 44em;
+      height:44em;
+      border-radius: 1em;
+    }
+
+    .card-content iron-icon {
+      width:32em;
+      height:32em;
+      margin-bottom: 2em;
+      color: var(--planet-color-theme-primary);
+    }
+
+    .card-content h3 {
+      font-size: 3.4em;
+      font-family: var(--planet-font-family-heavy);
+      color: var(--planet-color-theme-title);
+      width: 11.8em;
+      overflow: hidden;
+      margin: 0;
+      text-align: center;
+    }
+
+    .card-content p {
+      font-size: 2em;
+      font-family: var(--planet-font-family-book);
+      color: var(--planet-color-theme-desc);
+      margin: 1em 1.5em;
+    }
+
+    /* PMR Mode override */
+    .pmr h2 {
+      padding: 0;
+    }
+    .pmr paper-button {
+      font-size: 1em;
+    }
+
+    .pmr.card-container {
+      margin: 0 0 0 2.2em;
+    }
+
+    .pmr paper-card {
+      width: 24em;
+      height: 24em;
+    }
+
+    .pmr .card-content iron-icon {
+      width: 16em;
+      height: 16em;
+    }
+
+    .pmr h3 {
+      margin: 0 0 0.3em 0;
+      font-size: 1.8em;
+      width: 12em;
+    }
+
+    .pmr p {
+      margin:0;
+      font-size: 1.5em;
+      text-align: center;
+    }
+    </style>
+    <div class$="[[_getPMRClass(pmr)]]">
+      <h2>[[localize('payment_reception_choice_title')]]</h2>
+      <div class="content layout horizontal center-justified">
+        <a class$="card-container [[_getCbClass(_selection)]] [[_getPMRClass(pmr)]]">
+          <paper-card class="vertical layout center-justified" elevation="3" on-tap="_selectCb">
+            <div class="card-content vertical layout center-justified">
+              <iron-icon icon="payment:cards"></iron-icon>
+              <h3>[[localize('payment_reception_choice_card')]]</h3>
+            </div>
+          </paper-card>
+        </a>
+        <a class$="card-container [[_getDeskClass(_selection)]] [[_getPMRClass(pmr)]]">
+          <paper-card class="vertical layout center-justified" elevation="3" on-tap="_selectDesk">
+            <div class="card-content vertical layout center-justified">
+              <iron-icon icon="payment:reception"></iron-icon>
+              <h3>[[localize('payment_reception_choice_cash')]]</h3>
+            </div>
+          </paper-card>
+        </a>
+        <br style="clear:both;">
+      </div>
+
+      <div class="buttons layout horizontal center-justified">
+        <paper-button class="primary cancel" on-tap="_cancel">[[localize('payment_reception_choice_cancel')]]</paper-button>
+        <paper-button class$="primary confirm [[_getPaymentBtnClass(_selection)]]" on-tap="_confirm">[[localize('payment_reception_choice_payment')]]</paper-button>
+      </div>
+    </div>
+  </template>
+
+  <script>
+  Polymer({
+    is: 'planet-kiosk-payment-choice',
+    behaviors: [
+      AppLocalizeBehavior,
+      PMRBehavior,
+      Polymer.IronOverlayBehavior
+    ],
+    properties: {
+      // State : null, cb, desk
+      _selection: {
+        type: String,
+        value: null
+      },
+    },
+    _getCbClass: function (selection) {
+      if (selection !== null && selection === 'cb') {
+        return 'active';
+      } else {
+        return ''
+      }
+    },
+    _getDeskClass: function (selection) {
+      if (selection !== null && selection === 'desk') {
+        return 'active';
+      } else {
+        return ''
+      }
+    },
+    _getPaymentBtnClass: function (selection) {
+      if (selection !== null) {
+        return '';
+      }
+      return 'disabled'
+    },
+    _selectCb: function () {
+      this.set('_selection', 'cb');
+    },
+    _selectDesk: function () {
+      this.set('_selection', 'desk');
+    },
+    _cancel : function () {
+      this.close();
+    },
+    _confirm : function () {
+      var basket = document.querySelector('planet-kiosk-basket');
+      var payment = document.querySelector('planet-kiosk-payment');
+      if (this._selection !== null) {
+        switch (this._selection) {
+          case 'cb':
+            payment.set('state', 'initial');
+            basket.confirmPayment();
+            break;
+          case 'desk':
+            payment.set('state', 'desk');
+            basket.doPayment();
+            break;
+        }
+        this.close();
+      }
+    }
+  });
+
+  </script>
+</dom-module><!-- Components -->
+<!-- Behaviors -->
 <dom-module id="planet-kiosk-basket-authentification" assetpath="src/planet-kiosk-app/">
   <template>
     <style include="planet-kiosk-page-styles planet-kiosk-popin-styles">
@@ -32675,7 +33050,7 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
               </div>
               <div class="buttons layout horizontal center-justified">
                 <paper-button class="primary cancel" on-tap="_cancel">[[localize('basket_continue_button')]]</paper-button>
-                <paper-button class="primary confirm" on-tap="_confirm">[[localize('basket_payment_button')]]</paper-button>
+                <paper-button class="primary confirm" on-tap="_openPaymentChoice">[[localize('basket_payment_button')]]</paper-button>
               </div>
             </div>
           </div>
@@ -32684,6 +33059,7 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
     </div>
 
     <planet-kiosk-cgu id="cgupopin" language="[[language]]" pmr="[[pmr]]" with-backdrop="" no-cancel-on-outside-click=""></planet-kiosk-cgu>
+    <planet-kiosk-payment-choice id="paymentchoicepopin" language="[[language]]" pmr="[[pmr]]" with-backdrop="" no-cancel-on-outside-click=""></planet-kiosk-payment-choice>
     <planet-kiosk-basket-authentification id="authentification" language="[[language]]" pmr="[[pmr]]" with-backdrop="" no-cancel-on-outside-click=""></planet-kiosk-basket-authentification>
     <planet-kiosk-basket-error id="error" language="[[language]]" pmr="[[pmr]]" with-backdrop="" no-cancel-on-outside-click=""></planet-kiosk-basket-error>
 
@@ -32774,6 +33150,18 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
       },
       _openCGU: function() {
         this.$.cgupopin.open();
+      },
+      _openPaymentChoice: function() {
+        var cguBlock = Polymer.dom(this.root).querySelector('.cgu-block');
+        if (this.$.cgu.checked) {
+          this.$.paymentchoicepopin.open();
+          this.trackEvent('Basket', 'payment type choice dialog opening', 'click', 'noevent');
+        } else {
+          cguBlock.classList.add('error');
+        }
+      },
+      confirmPayment: function () {
+        this._confirm();
       },
       _confirm: function() {
         var cguBlock = Polymer.dom(this.root).querySelector('.cgu-block');
@@ -33781,6 +34169,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         text-align: center;
       }
 
+      h3 {
+        font-size: 5em;
+        font-family: var(--planet-font-family-roman);
+        color: var(--planet-color-theme-maintitle);
+        font-weight: normal;
+        text-align: center;
+        margin: 0 0.714285714em 0 0.714285714em;
+        padding-top: 0.428571429em;
+      }
+
       .message {
         font-size: 4em;
         font-family: var(--planet-font-family-book);
@@ -33835,6 +34233,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin-top: 10em;
       }
 
+      .chrono {
+        margin: 3em 0;
+      }
+
       /* PMR Mode override */
       .pmr planet-kiosk-payment-error, .pmr planet-kiosk-printer-error {
         font-size: 0.6em;
@@ -33865,6 +34267,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .pmr .progress p.info {
         margin: 0.25em;
+      }
+
+      .pmr .chrono {
+        margin: 0.4em;
       }
     </style>
     <div class$="[[_getPMRClass(pmr)]]">
@@ -33948,6 +34354,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </div>
     </template>
 
+    <template is="dom-if" if="[[_isEqualToDesk]]">
+      <h2>[[localize('payment_reception_thanks')]]</h2>
+
+      <div class="content_partial">
+        <h3>[[localize('payment_reception_title')]]</h3>
+
+        <p class="chrono">
+          <planet-kiosk-chrono id="chrono2" size="[[_getChronoSize(pmr)]]" time="900"></planet-kiosk-chrono>
+        </p>
+
+        <p class="message">[[localize('payment_reception_success')]]</p>
+
+        <div class="progress">
+          <p class="info">[[_getPrintStateLabel(localize, printState)]]</p>
+          <paper-progress indeterminate="" hidden="[[!_isPrintInProgress(printState)]]"></paper-progress>
+        </div>
+
+        <template is="dom-if" if="[[isPrintSuccess]]">
+          <div class="information">
+            <p class="title">[[localize('payment_ticket_partial_title')]]</p>
+            <p>[[localize('payment_ticket_partial_desc')]]</p>
+          </div>
+        </template>
+
+        <div class="buttons">
+          <paper-button class="primary confirm" on-tap="_end">[[localize('payment_partial_button_end')]]</paper-button>
+        </div>
+
+      </div>
+    </template>
+
     <iron-meta-query id="appconfig" key="config" value="{{appconfig}}"></iron-meta-query>
     <iron-ajax id="transactionrequest" method="POST" content-type="application/x-www-form-urlencoded" url="[[appconfig.api]]/setBookingParisTransaction" on-response="_onTransactionResponse" on-error="_onTransactionError"></iron-ajax>
     <iron-ajax id="cancelrequest" method="POST" content-type="application/x-www-form-urlencoded" url="[[appconfig.api]]/cancelBookingTransaction" on-response="_onCancelResponse" on-error="_onCancelError"></iron-ajax>
@@ -33968,7 +34405,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         PMRBehavior
       ],
       properties: {
-        // State : initial, partial, success
+        // State : initial, partial, success, desk
         state: {
           type: String,
           value: 'initial'
@@ -34009,6 +34446,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: String,
           computed:'_isEqualTo(state, "success")'
         },
+        _isEqualToDesk: {
+          type: String,
+          computed:'_isEqualTo(state, "desk")'
+        },
         _isFree: {
           type: Boolean,
           computed: '_checkFree(amount)'
@@ -34031,8 +34472,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return printState === value;
       },
       _visibiltyChanged : function (visible) {
-        if (visible && this.state === 'initial') {
-          this.pay();
+        if (visible) {
+          if (this.state === 'initial') {
+            this.pay();
+          } else {
+            if (this.state === 'desk') {
+              this.payDesk();
+            }
+          }
         }
       },
       pay: function () {
@@ -34055,6 +34502,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.set('paymentInfo', []);
           this._setTransaction();
         }
+      },
+      payDesk: function () {
+        var chrono = document.getElementById('chrono2');
+        chrono.reset();
+        chrono.start();
+        this._launchPrint();
       },
       cancel: function () {
         this._cancelTransaction();
@@ -34172,9 +34625,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _getAllContent: function () {
         var content = '';
 
-        content += this._getCBContent();
+        if (!this._isEqualToDesk) {
+          content += this._getCBContent();
+        }
         content += this._getCartContent();
-        if (!this._isEqualToPartial) {
+        if (!this._isEqualToPartial || !this._isEqualToDesk) {
           content += this._getCounterMarks();
         }
 
@@ -34232,7 +34687,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         var content = this.partialCut() + this.logo() + this.center(header);
 
-        if (this._isEqualToPartial) {
+        if (this._isEqualToPartial || this._isEqualToDesk) {
           content += this.cr + this.center(provisionalHeader);
         }
         content +=   this.cr + this.cr;
@@ -34289,12 +34744,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var content = '';
         var counterMarks = this.get('counterMarks');
 
-        for (var i = 0; i < counterMarks.length; i++) {
+        if (counterMarks && counterMarks.length > 0) {
+          for (var i = 0; i < counterMarks.length; i++) {
+            content += this.partialCut();
+            content += this._getCounterMark(counterMarks[i]);
+          }
+
           content += this.partialCut();
-          content += this._getCounterMark(counterMarks[i]);
         }
 
-        content += this.partialCut();
         return content;
       },
       _getCounterMark : function(counterMark) {
@@ -34336,6 +34794,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         return content;
+      },
+      _getChronoSize: function (pmr) {
+        if (pmr) {
+          return '15em';
+        } else {
+          return '20em';
+        }
       },
       _fail: function () {
         this.$.paymenterror.open();
@@ -36042,6 +36507,8 @@ Custom property | Description | Default
               globals.kioskId = subConfig.kiosk;
               globals.siteCode = subConfig.site_code;
               globals.payment = subConfig.payment;
+              globals.paymentDesk = subConfig.paymentDesk;
+              globals.receptionOpenings = subConfig.receptionOpenings;
               globals.countryCode = subConfig.country_code;
               globals.pmr = subConfig.pmr;
               if (typeof (subConfig.nfc) !== 'undefined') {
