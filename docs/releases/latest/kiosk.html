@@ -9984,11 +9984,12 @@ Or, in a Polymer element, you can include a meta in your template:
     },
     checkReceptionPayment: function () {
       var openings = globals.receptionOpenings;
-
-      var start = moment(openings.start, 'HH:mm:ss');
-      var end = moment(openings.end, 'HH:mm:ss');
-
-      return moment().isBetween(start, end);
+      if (openings.start && openings.end) {
+        var start = moment(openings.start, 'HH:mm:ss');
+        var end = moment(openings.end, 'HH:mm:ss');
+        return moment().isBetween(start, end);
+      }
+      return false;
     }
   });
   </script>
@@ -15920,7 +15921,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <img src="images/cb.png">
       </div>
-      <p class="version">1.5.0 - Payment Desk</p>
+      <p class="version">v1.5.0 - Payment desk</p>
     </div>
   </template>
 
@@ -15938,7 +15939,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
       },
       _checkPaymentDesk : function (lang) {
-        return globals.services.checkReceptionPayment();
+        return globals.paymentDesk && globals.services.checkReceptionPayment();
       },
     });
 
@@ -33154,8 +33155,13 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
       _openPaymentChoice: function() {
         var cguBlock = Polymer.dom(this.root).querySelector('.cgu-block');
         if (this.$.cgu.checked) {
-          this.$.paymentchoicepopin.open();
-          this.trackEvent('Basket', 'payment type choice dialog opening', 'click', 'noevent');
+          if (globals.paymentDesk && globals.services.checkReceptionPayment()) {
+            this.$.paymentchoicepopin.open();
+            this.trackEvent('Basket', 'payment type choice dialog opening', 'click', 'noevent');
+          } else {
+            this._confirm();
+          }
+
         } else {
           cguBlock.classList.add('error');
         }
