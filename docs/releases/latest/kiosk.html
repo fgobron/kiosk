@@ -15921,7 +15921,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <img src="images/cb.png">
       </div>
-      <p class="version">v1.5.0 - Payment desk</p>
+      <p class="version">v1.5.0 - payment desk patch 01</p>
     </div>
   </template>
 
@@ -16118,43 +16118,46 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 </dom-module><dom-module id="planet-kiosk-hub" assetpath="src/planet-kiosk-app/">
   <style include="planet-kiosk-page-styles">
     .payment {
-      text-align: center;
-    }
-    .payment p {
-      font-size: 3em;
-      font-family: var(--planet-font-family-book);
-      color: var(--planet-color-theme-information);
-      max-width: 16em;
-      margin: 40px auto;
-    }
+        text-align: center;
+      }
+      .payment p {
+        font-size: 4em;
+        font-family: var(--planet-font-family-book);
+        color: var(--planet-color-theme-information);
+        max-width: 16em;
+        margin: 40px auto;
+      }
 
-    /* PMR Mode override */
+      p.version {
+        position: fixed;
+        bottom: 5.5em;
+        width: 100%;
+        text-align: center;
+        font-size: 2em;
+      }
+      /* PMR Mode override */
 
-    .pmr h2 {
-      border-bottom: 1px solid var(--planet-color-theme-disabled);
-    }
+      .pmr h2 {
+        border-bottom: 1px solid var(--planet-color-theme-disabled);
+      }
 
-    .pmr .payment p, .pmr.payment img {
-      display: inline-block;
-    }
+      .pmr .payment p, .pmr.payment img {
+        display: inline-block;
+      }
 
-    .pmr .payment {
-      margin: 20px auto;
-    }
+      .pmr .payment {
+        margin: 20px auto;
+      }
 
-    .pmr .payment p {
-      font-size: 3em;
-      margin: 0;
-    }
+      .pmr .payment p {
+        font-size: 2.8em;
+        margin: 0;
+      }
 
-    .pmr .payment img {
-      height: 5em;
-      padding: 0 0 0 3em;
-    }
-
-    .pmr p.version {
-      bottom: 2.5em;
-    }
+      .pmr .payment img {
+        height: 5em;
+        padding: 0 0 0 3em;
+      }
 
   </style>
 
@@ -16170,6 +16173,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <br style="clear:both;">
       </div>
 
+      <div class="payment">
+        <template is="dom-if" if="[[!_isPaymentDesk]]">
+          <p>[[localize('language_payment_desc')]]</p>
+        </template>
+        <template is="dom-if" if="[[_isPaymentDesk]]">
+          <p>[[localize('language_payment_reception_desc')]]</p>
+        </template>
+
+        <img src="images/cb.png">
+      </div>
+
     </div>
   </template>
 
@@ -16179,7 +16193,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       behaviors: [
         AppLocalizeBehavior,
         PMRBehavior
-      ]
+      ],
+      properties: {
+        _isPaymentDesk: {
+          type: Boolean,
+          computed: '_checkPaymentDesk(language)'
+        },
+      },
+      _checkPaymentDesk : function (lang) {
+        return globals.paymentDesk && globals.services.checkReceptionPayment();
+      },
     });
 
   </script>
@@ -23537,13 +23560,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-family: var(--planet-font-family-roman);
         color: var(--planet-color-theme-desc);
         text-align: justify;
+        line-height: 1.2em;
+        margin-bottom: 1.2em;
       }
 
       #dialog .buttons {
         font-size: 0.71428571428em;
         font-family: var(--planet-font-family-roman);
         color: var(--planet-color-theme-desc);
-        margin: 2.2em;
+        margin: 2em;
       }
 
       .information {
@@ -25283,13 +25308,15 @@ Custom property | Description | Default
         font-family: var(--planet-font-family-roman);
         color: var(--planet-color-theme-desc);
         text-align: justify;
+        line-height: 1.2em;
+        margin-bottom: 1.2em;
       }
 
       #infos .action {
         font-size: 0.71428571428em;
         font-family: var(--planet-font-family-roman);
         color: var(--planet-color-theme-desc);
-        margin: 2.2em;
+        margin: 2em;
       }
 
       /* DTK ACTIVITIES STYLE */
@@ -34665,6 +34692,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _getCartContent: function () {
         var header = this.localize('payment_ticket_cart_title');
         var provisionalHeader = this.localize('payment_ticket_cart_title_provisional');
+        var provisionalHeaderDesk = this.localize('payment_ticket_cart_title_provisional_desk');
         var provisionalMsg = this.localize('payment_ticket_cart_provisional_msg');
         var currency = this.localize('activity_currency');
         var parcLbl = this.localize('parc_' + globals.siteCode);
@@ -34691,11 +34719,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           { size:6, align:'right' }
         ];
 
-        var content = this.partialCut() + this.logo() + this.center(header);
+        //var content = this.partialCut() + this.logo() + this.center(header);
+        // TEMP
+        var content = this.partialCut() + this.center(header);
 
         if (this._isEqualToPartial || this._isEqualToDesk) {
-          content += this.cr + this.center(provisionalHeader);
+          content += this.cr + this.center('!!!' +  provisionalHeader + '!!!');
         }
+
+        if (this._isEqualToDesk) {
+          content += this.cr + this.center(provisionalHeaderDesk);
+        }
+
         content +=   this.cr + this.cr;
 
         content += parcLbl + this.cr;
@@ -34724,7 +34759,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // TOTAL
         var total = globals.cart.get('total').toFixed(2) + currency;
         content += this.cr + this.bold(this.alignRight(totalLbl + ' ' + total));
-        content += this.cr + this.bold(this.alignRight(paidLbl + ' ' + total));
+        if (!this._isEqualToDesk) {
+          content += this.cr + this.bold(this.alignRight(paidLbl + ' ' + total));
+        } else {
+          content += this.cr + this.bold(this.alignRight(paidLbl + ' ' + '0.00' + currency));
+        }
         if (this._isEqualToPartial) {
           content += this.cr + this.cr + provisionalMsg + this.cr + this.cr;
           content += this.partialCut();
