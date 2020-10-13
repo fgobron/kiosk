@@ -15921,7 +15921,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <img src="images/cb.png">
       </div>
-      <p class="version">v1.5.0 - payment desk patch 01</p>
+      <p class="version">v1.5.0 - patch 1 logo</p>
     </div>
   </template>
 
@@ -34644,7 +34644,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _print: function () {
         if (MBirdSdk.isConnected()) {
           var printContent = this._getAllContent();
-
           MBirdSdk.Printer.TagContent(printContent).then(function (result) {
             this.set('printState', this.printStates.SUCCESS);
             this.set('printInfo', result);
@@ -34719,9 +34718,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           { size:6, align:'right' }
         ];
 
-        //var content = this.partialCut() + this.logo() + this.center(header);
-        // TEMP
-        var content = this.partialCut() + this.center(header);
+        var content = this.partialCut() + this.logo() + this.center(header);
 
         if (this._isEqualToPartial || this._isEqualToDesk) {
           content += this.cr + this.center('!!!' +  provisionalHeader + '!!!');
