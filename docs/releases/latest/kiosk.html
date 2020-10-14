@@ -15921,7 +15921,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <img src="images/cb.png">
       </div>
-      <p class="version">v1.5.0 - patch 1 logo</p>
+      <p class="version">v1.5.0 - Payment desk partial cut</p>
     </div>
   </template>
 
@@ -34693,6 +34693,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var provisionalHeader = this.localize('payment_ticket_cart_title_provisional');
         var provisionalHeaderDesk = this.localize('payment_ticket_cart_title_provisional_desk');
         var provisionalMsg = this.localize('payment_ticket_cart_provisional_msg');
+        var provisionalMsgDesk = this.localize('payment_ticket_cart_provisional_desk_msg');
         var currency = this.localize('activity_currency');
         var parcLbl = this.localize('parc_' + globals.siteCode);
         var dateLbl = this.localize('payment_ticket_cart_date_label');
@@ -34747,7 +34748,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }));
 
         content += this.array(cartArray, layout);
-
         //// VAT
         if (globals.countryCode !== 'NL' && globals.countryCode !== 'BE') {
           content += this._getVATContent();
@@ -34761,8 +34761,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         } else {
           content += this.cr + this.bold(this.alignRight(paidLbl + ' ' + '0.00' + currency));
         }
-        if (this._isEqualToPartial) {
-          content += this.cr + this.cr + provisionalMsg + this.cr + this.cr;
+        if (this._isEqualToPartial || this._isEqualToDesk) {
+          if (this._isEqualToPartial) {
+            content += this.cr + this.cr + provisionalMsg + this.cr + this.cr;
+          }
+          if (this._isEqualToDesk) {
+            content += this.cr + this.cr + provisionalMsgDesk + this.cr + this.cr;
+          }
           content += this.partialCut();
         } else {
           content += this.cr + this.cr;
