@@ -15921,11 +15921,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <template is="dom-if" if="[[_isPaymentDesk]]">
           <p>[[localize('language_payment_reception_desc')]]</p>
         </template>
-
         <img src="images/cb.png">
       </div>
-      <p class="version">v1.5.0 - Patch 02</p>
     </div>
+    <p class="version">v1.5.0 - Fix authentification</p>
   </template>
 
   <script>
@@ -16287,7 +16286,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var detail = document.querySelector('planet-kiosk-detail');
         detail.clearPendingItems();
         detail.restoreItemDisplay();
-      }
+      },
+      resetIdentification: function ()  {
+        globals.token = null;
+        globals.bookingId = null;
+        globals.cottageNumbers = undefined;
+        globals.customer = undefined;
+        globals.name = undefined;
+        globals.uid = undefined;
+      },
     });
   </script>
 </dom-module><!-- Component !-->
@@ -32819,6 +32826,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.trackEvent('Basket', 'cottage validation', 'fail', 'noevent');
         var identification = document.querySelector('planet-kiosk-identification');
         identification.set('action', 'basket');
+        identification.resetIdentification();
         globals.router.set('route.path', '/identification');
       },
       _confirm : function () {
@@ -33261,6 +33269,12 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
             else {
               this.doPayment();
             }
+          } else {
+            // No token - force identification
+            var identification = document.querySelector('planet-kiosk-identification');
+            identification.set('action', 'basket');
+            identification.resetIdentification();
+            globals.router.set('route.path', '/identification');
           }
         } else {
           cguBlock.classList.add('error');
