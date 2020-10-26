@@ -15921,10 +15921,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <template is="dom-if" if="[[_isPaymentDesk]]">
           <p>[[localize('language_payment_reception_desc')]]</p>
         </template>
+
         <img src="images/cb.png">
       </div>
+      <p class="version">1.5.0 - Fix authentification (2)</p>
     </div>
-    <p class="version">v1.5.0 - Fix authentification</p>
   </template>
 
   <script>
@@ -21404,6 +21405,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       if (this.state) {
         this.set('state', 'initial');
       }
+      var identification = document.querySelector('planet-kiosk-identification');
+      identification.resetIdentification();
       globals.router.set('route.path', '/identification');
     },
     didReceiveResponse: function(request) {
@@ -26095,6 +26098,7 @@ Custom property | Description | Default
         if (this._checkingOK()) {
           if (!this._isMultiPxFlag) {
             var quantity = this.$$('#quantity').get('value');
+            this.clearPendingItems();
             hours.forEach(function (hour) {
               var item = {
                 "code": self.activity.code,
@@ -26127,6 +26131,7 @@ Custom property | Description | Default
               var quantity = quantityItem.value;
               if (quantity > 0) {
                 var subCode = self._getMultiPxPriceCodeByIndex(activity, index);
+                this.clearPendingItems();
                 hours.forEach(function (hour) {
                   var item = {
                     "code": self.activity.code,
@@ -26160,7 +26165,7 @@ Custom property | Description | Default
           if (globals.token !== null) {
             this.addPendingItems();
           } else {
-            // Authentification
+            // Force authentification
             var identification = document.querySelector('planet-kiosk-identification');
             identification.set('action', 'detail');
             globals.router.set('route.path', '/identification');
@@ -32824,6 +32829,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _cancel: function () {
         this.close();
         this.trackEvent('Basket', 'cottage validation', 'fail', 'noevent');
+        // Reset login form
+        var login = document.querySelector('planet-kiosk-login-info');
+        login.set('state', 'initial');
+        // Reset authentification and route
         var identification = document.querySelector('planet-kiosk-identification');
         identification.set('action', 'basket');
         identification.resetIdentification();
