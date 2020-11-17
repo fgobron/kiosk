@@ -15924,7 +15924,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <img src="images/cb.png">
       </div>
-      <p class="version">1.5.0 - Fix authentification (2)</p>
+      <p class="version">1.5.0 - Fix payment desk info button</p>
     </div>
   </template>
 
@@ -25718,9 +25718,11 @@ Custom property | Description | Default
 
                 <paper-button id="confirm" class="primary detail confirm" on-tap="_checkWarning"></paper-button>
 
-                <paper-button class="infos">
-                  <iron-icon class="default" icon="buttons:infos" on-tap="_openInfos"></iron-icon>
-                </paper-button>
+                <template is="dom-if" if="[[_isPaymentDesk]]">
+                  <paper-button class="infos">
+                    <iron-icon class="default" icon="buttons:infos" on-tap="_openInfos"></iron-icon>
+                  </paper-button>
+                </template>
               </div>
             </div>
 
@@ -25865,6 +25867,11 @@ Custom property | Description | Default
         computed: '_checkMultiPx(activity)'
         },
 
+        _isPaymentDesk: {
+          type: Boolean,
+          computed: '_checkPaymentDesk(language)'
+        },
+
         notFull: {
           type: Boolean
         }
@@ -25929,6 +25936,9 @@ Custom property | Description | Default
       },
       _checkMultiPx: function (activity) {
         return this._isMultiPx(activity);
+      },
+      _checkPaymentDesk : function (lang) {
+        return globals.paymentDesk && globals.services.checkReceptionPayment();
       },
       _resetDisplay: function () {
         var miniBasket = document.getElementById('minibasket');
