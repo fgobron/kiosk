@@ -15924,7 +15924,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <img src="images/cb.png">
       </div>
-      <p class="version">v1.5.1 - Payment desk with fixes</p>
+      <p class="version">v1.5.1 - Payment desk with fixes (2)</p>
     </div>
   </template>
 
@@ -26141,7 +26141,7 @@ Custom property | Description | Default
               var quantity = quantityItem.value;
               if (quantity > 0) {
                 var subCode = self._getMultiPxPriceCodeByIndex(activity, index);
-                this.clearPendingItems();
+                self.clearPendingItems();
                 hours.forEach(function (hour) {
                   var item = {
                     "code": self.activity.code,
@@ -35851,6 +35851,14 @@ Custom property | Description | Default
         return collection === value;
       },
       _onGlobalTap: function () {
+        // Check login state
+        var login = document.querySelector('planet-kiosk-login-info');
+        if (login.state === 'villa') {
+          login.set('state', 'initial');
+          var identification = document.querySelector('planet-kiosk-identification');
+          identification.resetIdentification();
+        }
+        // Check miniBasket state
         var miniBasket = document.getElementById('minibasket');
         miniBasket.checkBasketState();
         // restore empty queryParams for futur navigation
