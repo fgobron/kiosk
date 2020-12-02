@@ -15924,7 +15924,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <img src="images/cb.png">
       </div>
-      <p class="version">v1.5.1 - Payment desk with fixes (2)</p>
+      <p class="version">v1.5.1 - Payment desk fixed (3)</p>
     </div>
   </template>
 
@@ -26137,11 +26137,11 @@ Custom property | Description | Default
             });
           } else {
             var quantities = this.get('quantities');
+            self.clearPendingItems();
             quantities.forEach(function (quantityItem, index) {
               var quantity = quantityItem.value;
               if (quantity > 0) {
                 var subCode = self._getMultiPxPriceCodeByIndex(activity, index);
-                self.clearPendingItems();
                 hours.forEach(function (hour) {
                   var item = {
                     "code": self.activity.code,
