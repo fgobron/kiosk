@@ -15975,7 +15975,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <img src="images/cb.png">
         </template>
       </div>
-      <p class="version">v1.5.2 - Compensation (1)</p>
+      <p class="version">v1.5.2 - Compensation (2)</p>
     </div>
   </template>
 
@@ -34681,6 +34681,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <template is="dom-if" if="[[_isEqualToCompensation]]">
       <h2>[[localize('payment_compensation_title')]]</h2>
+
+      <div class="content_pay">
+        <p class="message">[[localize('payment_compensation_progress')]]</p>
+      </div>
     </template>
 
     <iron-meta-query id="appconfig" key="config" value="{{appconfig}}"></iron-meta-query>
@@ -34820,10 +34824,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       payCompensation: function () {
         this.set('state', 'compensation');
-        if (true) {
-          globals.loader.open();
-          this._putCompensation();
-        }
+        globals.loader.open();
+        this._putCompensation();
       },
       _putCompensation: function() {
         var putCompensationRequest = this.$.putcompensationrequest;
@@ -34890,7 +34892,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var data = 'token=' + globals.token
           + '&booking=' + globals.bookingId
           + '&transaction='  + this.get('transaction')
-          + '&paymentMode=' + this._getPaymentMode();
+          + '&paymentMode=' + this._getPaymentMode()
           + '&kiosk=' + globals.kioskId;
         transactionrequest.headers = globals.headers;
         transactionrequest.body = data;
