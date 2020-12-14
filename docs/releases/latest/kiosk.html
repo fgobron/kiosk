@@ -14231,6 +14231,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 				<text transform="matrix(1 0 0 1 98.5 217.2109)" font-family="'AvenirLTStd-Roman'" font-size="48">€</text>
 				<text transform="matrix(1 0 0 1 127.5 217.2109)" font-family="'AvenirLTStd-Roman'" font-size="48">€</text>
 			</g>
+			<g id="compensation" transform="matrix(3.1196731,0,0,3.0969314,27.11694,25.521762)">
+				<path d="M 16.772,2.327 C 12.211,3.695 7.701,6.191 4.136,9.401 c -2.937,2.615 -3.67,4.161 -2.779,6.004 0.892,1.903 2.884,1.427 5.926,-1.367 10.276,-9.512 24.434,-9.393 34.71,0.238 2.517,2.377 4.248,2.913 5.401,1.604 1.311,-1.486 0.683,-3.329 -2.098,-6.063 C 37.852,2.387 26.472,-0.585 16.772,2.327 Z"></path>
+				<path d="m 17.296,13.563 c -5.662,2.378 -9.962,6.658 -9.175,9.154 0.681,2.2 2.674,1.963 6.134,-0.711 6.974,-5.411 14.944,-5.173 21.289,0.534 2.098,1.961 4.143,2.259 5.138,0.891 1.626,-2.258 -1.364,-6.003 -7.183,-9.035 -4.039,-2.142 -12.06,-2.557 -16.203,-0.833 z"></path>
+				<path d="m 19.866,24.085 c -2.674,1.069 -5.505,4.518 -5.034,6.003 0.787,2.378 2.57,2.556 5.295,0.475 1.364,-1.069 2.623,-1.486 4.353,-1.486 1.731,0 2.989,0.417 4.353,1.486 3.04,2.318 5.558,1.784 5.558,-1.249 0,-1.604 -2.727,-4.16 -5.611,-5.349 -2.57,-1.01 -6.134,-0.95 -8.914,0.12 z"></path>
+				<path d="m 48.286,32.288 c -1.156,0.417 -3.2,1.486 -4.51,2.318 -2.255,1.485 -2.833,1.604 -8.494,1.604 h -6.135 v 19.32 19.32 h 3.565 c 3.933,0 4.299,0.238 7.026,5.054 3.409,6.064 10.907,11.771 17.619,13.316 1.572,0.356 8.338,0.653 15.362,0.653 H 85.356 L 84.99,91.911 c -0.681,-3.447 -1.993,-5.824 -4.091,-7.43 -1.889,-1.428 -2.675,-1.605 -7.656,-1.783 -9.7,-0.298 -7.548,-1.012 4.039,-1.309 11.012,-0.298 11.219,-0.298 12.218,-1.724 1.047,-1.428 1.414,-6.718 0.574,-8.204 -0.574,-1.069 -3.093,-1.962 -5.504,-1.962 -1.625,0 -1.993,-0.179 -1.417,-0.594 0.419,-0.297 2.624,-0.595 4.878,-0.595 3.616,0 4.247,-0.179 5.348,-1.485 1.836,-2.021 1.836,-6.304 0,-8.323 -1.151,-1.368 -1.68,-1.488 -6.03,-1.488 -5.609,0 -6.344,-0.947 -0.995,-1.306 4.612,-0.299 5.714,-1.427 5.714,-5.826 0,-4.339 -1.048,-5.409 -5.661,-5.825 -3.671,-0.297 -5.348,-1.308 -2.202,-1.308 3.723,0 5.663,-6.063 3.093,-9.749 l -1.05,-1.545 -17.932,0.06 c -12.899,10e-4 -18.511,0.238 -20.03,0.773 z"></path>
+				<polygon points="3.978,55.53 3.978,74.851 12.106,74.851 20.233,74.851 20.233,55.53 20.233,36.211 12.106,36.211 3.978,36.211 "></polygon>
+				<path d="m 21.859,41.205 c -0.368,0.536 -0.578,2.378 -0.472,4.934 l 0.157,4.043 3.041,0.178 3.041,0.179 -0.158,-4.935 -0.156,-4.934 -2.413,-0.178 c -1.625,-0.119 -2.622,0.119 -3.04,0.713 z"></path>
+			</g>
 		  </defs>
 		</svg>
 	  </iron-iconset-svg>
@@ -15853,7 +15861,45 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   });
 
   </script>
-</dom-module><dom-module id="planet-kiosk-lang" assetpath="src/planet-kiosk-app/">
+</dom-module><script>
+  /**
+   * Payment Mode helpers
+   *
+   * @polymerBehavior PaymentModeBehavior
+   */
+   PaymentModeBehavior = {
+    properties: {
+      _isPaymentDesk: {
+        type: Boolean,
+        computed: '_checkPaymentDesk(language)'
+      },
+      _isPaymentCompensation: {
+        type: Boolean,
+        computed: '_checkPaymentCompensation(language)'
+      },
+      _displayPaymentInfo: {
+        type: Boolean,
+        computed: '_checkDisplayingPaymentInfo(language)'
+      },
+    },
+    _checkPaymentDesk : function (lang) {
+      return globals.paymentDesk && globals.services.checkReceptionPayment();
+    },
+    _checkPaymentCompensation : function (lang) {
+      return globals.paymentCompensation;
+    },
+    _checkDisplayingPaymentInfo: function (lang) {
+      return this._isPaymentDesk || this._isPaymentCompensation;
+    },
+    _getPaymentMode: function () {
+      var paymentMode = 'creditCard';
+      if (this._isPaymentCompensation) {
+        paymentMode= 'Compensation';
+      }
+      return paymentMode;
+    },
+  };
+</script><dom-module id="planet-kiosk-lang" assetpath="src/planet-kiosk-app/">
   <template>
     <style include="planet-kiosk-page-styles">
       .payment {
@@ -15863,8 +15909,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-size: 4em;
         font-family: var(--planet-font-family-book);
         color: var(--planet-color-theme-information);
-        max-width: 16em;
-        margin: 40px auto;
+        max-width: 22em;
+        margin: 30px auto;
       }
 
       p.version {
@@ -15890,6 +15936,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .pmr .payment p {
         font-size: 3em;
+        max-width: 16em;
         margin: 0;
       }
 
@@ -15921,10 +15968,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <template is="dom-if" if="[[_isPaymentDesk]]">
           <p>[[localize('language_payment_reception_desc')]]</p>
         </template>
-
-        <img src="images/cb.png">
+        <template is="dom-if" if="[[_isPaymentCompensation]]">
+          <p>[[localize('language_payment_compensation_desc')]]</p>
+        </template>
+        <template is="dom-if" if="[[!_isPMRActive(pmr)]]">
+          <img src="images/cb.png">
+        </template>
       </div>
-      <p class="version">v1.5.1 - Payment desk fixed (3)</p>
+      <p class="version">v1.5.2 - Compensation (1)</p>
     </div>
   </template>
 
@@ -15933,17 +15984,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'planet-kiosk-lang',
       behaviors: [
         AppLocalizeBehavior,
-        PMRBehavior
-      ],
-      properties: {
-        _isPaymentDesk: {
-          type: Boolean,
-          computed: '_checkPaymentDesk(language)'
-        },
-      },
-      _checkPaymentDesk : function (lang) {
-        return globals.paymentDesk && globals.services.checkReceptionPayment();
-      },
+        PMRBehavior,
+        PaymentModeBehavior
+      ]
     });
 
   </script>
@@ -16127,8 +16170,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         font-size: 4em;
         font-family: var(--planet-font-family-book);
         color: var(--planet-color-theme-information);
-        max-width: 16em;
-        margin: 40px auto;
+        max-width: 22em;
+        margin: 30px auto;
       }
 
       p.version {
@@ -16154,6 +16197,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .pmr .payment p {
         font-size: 2.8em;
+        max-width: 16em;
         margin: 0;
       }
 
@@ -16183,8 +16227,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <template is="dom-if" if="[[_isPaymentDesk]]">
           <p>[[localize('language_payment_reception_desc')]]</p>
         </template>
-
-        <img src="images/cb.png">
+        <template is="dom-if" if="[[_isPaymentCompensation]]">
+          <p>[[localize('language_payment_compensation_desc')]]</p>
+        </template>
+        <template is="dom-if" if="[[!_isPMRActive(pmr)]]">
+          <img src="images/cb.png">
+        </template>
       </div>
 
     </div>
@@ -16195,17 +16243,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'planet-kiosk-hub',
       behaviors: [
         AppLocalizeBehavior,
-        PMRBehavior
-      ],
-      properties: {
-        _isPaymentDesk: {
-          type: Boolean,
-          computed: '_checkPaymentDesk(language)'
-        },
-      },
-      _checkPaymentDesk : function (lang) {
-        return globals.paymentDesk && globals.services.checkReceptionPayment();
-      },
+        PMRBehavior,
+        PaymentModeBehavior
+      ]
     });
 
   </script>
@@ -21401,13 +21441,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       this.$.popcontainer.appendChild(this._popIn);
     },
     cancel: function () {
+      var nfcScan = document.querySelector('planet-kiosk-login-nfcscan');
+      var identification = document.querySelector('planet-kiosk-identification');
+
+      console.log('this.state:', this.state);
+      console.log('nfcScan.mode:', nfcScan.mode);
       // Reset state to initial for login-info
       if (this.state) {
         this.set('state', 'initial');
       }
-      var identification = document.querySelector('planet-kiosk-identification');
-      identification.resetIdentification();
-      globals.router.set('route.path', '/identification');
+
+      if (nfcScan.mode === 'uid') {
+        nfcScan.set('mode', 'default');
+        globals.router.set('route.path', '/basket');
+      } else {
+        identification.resetIdentification();
+        globals.router.set('route.path', '/identification');
+      }
+
     },
     didReceiveResponse: function(request) {
       var response = request.detail.response;
@@ -21421,7 +21472,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             globals.cottageNumbers = results.cottageNumbers;
             globals.customer = results.lastName;
             globals.name = results.firstName + ' ' + results.lastName;
-            globals.uid = results.uid;
             this._trackAuthentification();
             this.redirectAfterLogin();
             break;
@@ -22156,7 +22206,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: String,
           value: 'initial'
         },
+        mode: {
+          // default : scan booking
+          // uid : scanUID wwristband
+          type: String,
+          value: 'default'
+        },
         bookingId: String,
+        uid: String,
         _time: {
           type: Object
         },
@@ -22211,6 +22268,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.fail();
         }
       },
+      scanUID: function() {
+        if (MBirdSdk.isConnected()) {
+          this.$.chrono.start();
+          // Start scanning
+          MBirdSdk.Nfc.Read(this.get('_scanDuration')).then(function (result) {
+            if (this._validResult(result)) {
+              this.set('uid', result.ReadContent);
+              this.$.chrono.stop();
+              this._successUIDScan();
+            } else {
+              this.fail();
+            }
+          }.bind(this)).catch(function (error) {
+            this.fail();
+          }.bind(this));
+        } else {
+          this.fail();
+        }
+      },
       fail: function () {
         var buttons = [
           {
@@ -22230,7 +22306,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.trackEvent('Error', 'login error', this.localize('login_nfc_error_line1'), 'noevent');
       },
       retry: function() {
-        this.scan();
+        if (this.get('mode') === 'uid') {
+          this._successUIDScan();
+        } else {
+          this.scan();
+        }
       },
       reset: function() {
         // reset api config
@@ -22255,7 +22335,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (visibility) {
           this.set('authType', 'nfcscan');
           this.reset();
-          this.scan();
+          if (this.get('mode') === 'uid') {
+            this.scanUID();
+          } else {
+            this.scan();
+          }
         }
       },
       _successScan: function () {
@@ -22268,6 +22352,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         loginRequest.params.siteCode = globals.siteCode;
         loginRequest.params.kiosk = globals.kioskId;
         loginRequest.generateRequest();
+      },
+      _successUIDScan: function () {
+        globals.nfcScan = true;
+        globals.uid = this.get('uid');
+        var basket = document.querySelector('planet-kiosk-basket');
+        this.showPopIn('', this.localize('login_success'), '', [], true);
+        this.async(function() {
+          // Reset state
+          this.set('mode', 'default')
+          this.hidePopIn();
+          basket.doPayment();
+        }, 2000);
       }
     });
   </script>
@@ -25718,7 +25814,7 @@ Custom property | Description | Default
 
                 <paper-button id="confirm" class="primary detail confirm" on-tap="_checkWarning"></paper-button>
 
-                <template is="dom-if" if="[[_isPaymentDesk]]">
+                <template is="dom-if" if="[[_displayPaymentInfo]]">
                   <paper-button class="infos">
                     <iron-icon class="default" icon="buttons:infos" on-tap="_openInfos"></iron-icon>
                   </paper-button>
@@ -25793,8 +25889,14 @@ Custom property | Description | Default
 
     <!-- INFOS -->
     <paper-dialog id="infos">
-      <p class="title">[[localize('payment_reception_infos_title')]]</p>
-      <p class="description">[[localize('payment_reception_infos_desc')]]</p>
+      <template is="dom-if" if="[[_isPaymentDesk]]">
+        <p class="title">[[localize('payment_reception_infos_title')]]</p>
+        <p class="description">[[localize('payment_reception_infos_desc')]]</p>
+    </template>
+      <template is="dom-if" if="[[_isPaymentCompensation]]">
+        <p class="title">[[localize('payment_compensation_infos_title')]]</p>
+        <p class="description">[[localize('payment_compensation_infos_desc')]]</p>
+      </template>
       <div class="action layout horizontal center-justified">
         <paper-button class="primary detail confirm" dialog-confirm="" autofocus="">
           [[localize('payment_reception_infos_button')]]
@@ -25811,7 +25913,8 @@ Custom property | Description | Default
         AppLocalizeBehavior,
         ActivityBehavior,
         ScrollVerticalBehavior,
-        PMRBehavior
+        PMRBehavior,
+        PaymentModeBehavior
       ],
       properties: {
         step : {
@@ -25865,11 +25968,6 @@ Custom property | Description | Default
         _isMultiPxFlag: {
         type: Boolean,
         computed: '_checkMultiPx(activity)'
-        },
-
-        _isPaymentDesk: {
-          type: Boolean,
-          computed: '_checkPaymentDesk(language)'
         },
 
         notFull: {
@@ -25936,9 +26034,6 @@ Custom property | Description | Default
       },
       _checkMultiPx: function (activity) {
         return this._isMultiPx(activity);
-      },
-      _checkPaymentDesk : function (lang) {
-        return globals.paymentDesk && globals.services.checkReceptionPayment();
       },
       _resetDisplay: function () {
         var miniBasket = document.getElementById('minibasket');
@@ -32554,11 +32649,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style include="planet-kiosk-page-styles">
     :host {
         text-align: center;
-    }
-
-    .content {
-      @apply(--layout-horizontal);
-      @apply(--layout-center-justified);
+        min-height: 1920px;
     }
 
     .buttons  {
@@ -32570,7 +32661,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       display: block;
       float: left;
       text-decoration: none;
-      margin: 0 0 5em 2em;
+      margin: 0 0 5em 5em;
       border: 8px transparent solid;
     }
 
@@ -32673,25 +32764,40 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
     <div class$="[[_getPMRClass(pmr)]]">
       <h2>[[localize('payment_reception_choice_title')]]</h2>
-      <div class="content layout horizontal center-justified">
-        <a class$="card-container [[_getCbClass(_selection)]] [[_getPMRClass(pmr)]]">
-          <paper-card class="vertical layout center-justified" elevation="3" on-tap="_selectCb">
-            <div class="card-content vertical layout center-justified">
-              <iron-icon icon="payment:cards"></iron-icon>
-              <h3>[[localize('payment_reception_choice_card')]]</h3>
-            </div>
-          </paper-card>
-        </a>
-        <a class$="card-container [[_getDeskClass(_selection)]] [[_getPMRClass(pmr)]]">
-          <paper-card class="vertical layout center-justified" elevation="3" on-tap="_selectDesk">
-            <div class="card-content vertical layout center-justified">
-              <iron-icon icon="payment:reception"></iron-icon>
-              <h3>[[localize('payment_reception_choice_cash')]]</h3>
-            </div>
-          </paper-card>
-        </a>s
+      <div class="content">
+        <template is="dom-if" if="true">
+          <a class$="card-container [[_getCbClass(_selection)]] [[_getPMRClass(pmr)]]">
+            <paper-card class="vertical layout center-justified" elevation="3" on-tap="_selectCb">
+              <div class="card-content vertical layout center-justified">
+                <iron-icon icon="payment:cards"></iron-icon>
+                <h3>[[localize('payment_reception_choice_card')]]</h3>
+              </div>
+            </paper-card>
+          </a>
+        </template>
+        <template is="dom-if" if="[[deskVisible]]">
+          <a class$="card-container [[_getDeskClass(_selection)]] [[_getPMRClass(pmr)]]">
+            <paper-card class="vertical layout center-justified" elevation="3" on-tap="_selectDesk">
+              <div class="card-content vertical layout center-justified">
+                <iron-icon icon="payment:reception"></iron-icon>
+                <h3>[[localize('payment_reception_choice_cash')]]</h3>
+              </div>
+            </paper-card>
+          </a>
+        </template>
+        <template is="dom-if" if="[[compensationVisible]]">
+          <a class$="card-container [[_getCompensationClass(_selection)]] [[_getPMRClass(pmr)]]">
+            <paper-card class="vertical layout center-justified" elevation="3" on-tap="_selectCompensation">
+              <div class="card-content vertical layout center-justified">
+                <iron-icon icon="payment:compensation"></iron-icon>
+                <h3>[[localize('payment_reception_choice_compensation')]]</h3>
+              </div>
+            </paper-card>
+          </a>
+        </template>
         <br style="clear:both;">
       </div>
+
       <p class="warning">[[localize('payment_reception_choice_warning')]]</p>
       <p class="delay">[[localize('payment_reception_choice_delay')]]</p>
 
@@ -32711,11 +32817,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       Polymer.IronOverlayBehavior
     ],
     properties: {
-      // State : null, cb, desk
+      // State : null, cb, desk, compensation
       _selection: {
         type: String,
         value: null
       },
+      deskVisible: {
+        type: Boolean,
+        value: false
+      },
+      compensationVisible: {
+        type: Boolean,
+        value: false
+      }
     },
     _getCbClass: function (selection) {
       if (selection !== null && selection === 'cb') {
@@ -32726,6 +32840,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
     _getDeskClass: function (selection) {
       if (selection !== null && selection === 'desk') {
+        return 'active';
+      } else {
+        return ''
+      }
+    },
+    _getCompensationClass: function (selection) {
+      if (selection !== null && selection === 'compensation') {
         return 'active';
       } else {
         return ''
@@ -32743,6 +32864,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _selectDesk: function () {
       this.set('_selection', 'desk');
     },
+    _selectCompensation: function () {
+      this.set('_selection', 'compensation');
+    },
     _cancel : function () {
       this.close();
     },
@@ -32753,11 +32877,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         switch (this._selection) {
           case 'cb':
             payment.set('state', 'initial');
-            basket.confirmPayment();
+            basket.doPayment();
             break;
           case 'desk':
             payment.set('state', 'desk');
             basket.doPayment();
+            break;
+          case 'compensation':
+            payment.set('state', 'compensation');
+            basket.scanforUID();
             break;
         }
         this.close();
@@ -33137,7 +33265,7 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
               </div>
               <div class="buttons layout horizontal center-justified">
                 <paper-button class="primary cancel" on-tap="_cancel">[[localize('basket_continue_button')]]</paper-button>
-                <paper-button class="primary confirm" on-tap="_openPaymentChoice">[[localize('basket_payment_button')]]</paper-button>
+                <paper-button class="primary confirm" on-tap="_confirm">[[localize('basket_payment_button')]]</paper-button>
               </div>
             </div>
           </div>
@@ -33152,6 +33280,7 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
 
     <iron-meta-query id="appconfig" key="config" value="{{appconfig}}"></iron-meta-query>
     <iron-ajax id="basketrequest" method="POST" content-type="application/json" url="[[appconfig.api]]/setBookingParisBasket" on-response="_onBasketResponse" on-error="_onBasketError"></iron-ajax>
+    <iron-ajax id="checkcompensationrequest" method="get" content-type="application/json" url="[[appconfig.pda]]/v1/kiosk/compensation" on-response="_onCompensationCheckResponse" on-error="_onCompensationCheckError"></iron-ajax>
 
   </template>
   <script>
@@ -33160,6 +33289,7 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
       behaviors: [
         AppLocalizeBehavior,
         PMRBehavior,
+        PaymentModeBehavior,
         ScrollHorizontalBehavior,
         TagManagerBehavior
       ],
@@ -33184,12 +33314,12 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
         visible: {
           type: Boolean,
           observer: '_refreshLayout'
-        },
+        }
       },
       listeners: {
         'cart-delete-item': '_onCartdeleteItem',
         'cart-edit-item': '_onCartEditItem',
-        'do-payment': 'doPayment'
+        'do-payment': '_checkPaymentPossibilities'
       },
       _refreshLayout: function () {
         // Hack to avoid wrong positioning of the content in the layout
@@ -33238,22 +33368,87 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
       _openCGU: function() {
         this.$.cgupopin.open();
       },
-      _openPaymentChoice: function() {
-        var cguBlock = Polymer.dom(this.root).querySelector('.cgu-block');
-        if (this.$.cgu.checked) {
-          if (globals.paymentDesk && globals.services.checkReceptionPayment()) {
-            this.$.paymentchoicepopin.open();
-            this.trackEvent('Basket', 'payment type choice dialog opening', 'click', 'noevent');
-          } else {
-            this._confirm();
-          }
-
+      _checkPaymentPossibilities: function() {
+        var self = this;
+        var paymentDesk = this._isPaymentDesk; // computed from PaymentModeBehavior
+        var paymentDeskOnly = paymentDesk && !globals.paymentCompensation;
+        var paymentCompensationOnly = !paymentDesk && globals.paymentCompensation;
+        var bothPayments = paymentDesk && globals.paymentCompensation;
+        if (bothPayments || paymentCompensationOnly) {
+          // Check compensation
+          globals.loader.open();
+          this._checkCompensation().then(
+            // Compensation call success
+            function(request) {
+              if (paymentDesk) {
+                self._setPaymentDeskVisible();
+              }
+              globals.loader.close();
+              self.$.paymentchoicepopin.open();
+            },
+            // Compensation call fail
+            function (request) {
+              if (paymentDesk) {
+                self._setPaymentDeskVisible();
+                globals.loader.close();
+                self.$.paymentchoicepopin.open();
+              } else {
+                globals.loader.close();
+                self.doPayment();
+              }
+            }
+          );
         } else {
-          cguBlock.classList.add('error');
+          if (paymentDeskOnly) {
+            this._setPaymentDeskVisible();
+            this.$.paymentchoicepopin.open();
+          } else {
+            // Direct CB payment
+            this.doPayment();
+          }
         }
       },
-      confirmPayment: function () {
-        this._confirm();
+      // TODO add this methods to payment-choice component itself
+      _setPaymentDeskVisible: function () {
+        var paymentChoiceMenu = document.querySelector('planet-kiosk-payment-choice');
+        paymentChoiceMenu.set('deskVisible', true);
+      },
+      _setCompensationVisible: function () {
+        var paymentChoiceMenu = document.querySelector('planet-kiosk-payment-choice');
+        paymentChoiceMenu.set('compensationVisible', true);
+      },
+      _checkCompensation: function() {
+        var checkCompensationRequest = this.$.checkcompensationrequest;
+        var config = new Polymer.IronMetaQuery({key: 'config'}).value;
+        checkCompensationRequest.url = config.pda + "/compensation";
+        checkCompensationRequest.url += "/" + globals.bookingId.substring(4);
+        checkCompensationRequest.url += "/" + globals.kioskId;
+        checkCompensationRequest.headers = {"Authorization": "Basic YmF0Y2g6TDNRaEFwTDM="};
+        return checkCompensationRequest.generateRequest().completes;
+      },
+      _onCompensationCheckResponse: function (e) {
+        var response = e.detail.response;
+        console.log('_onCompensationCheckResponse');
+        console.log(response);
+        var paymentChoiceMenu = document.querySelector('planet-kiosk-payment-choice');
+        var basketAmount = this.total * 100;
+        if (response.total) {
+          var compensationAmount = Number(response.total);
+          if (compensationAmount >= basketAmount) {
+            this._setCompensationVisible();
+          }
+        }
+      },
+      _onCompensationCheckError: function (e) {
+        // Silence fail for compensation not available
+        var response = e.detail.response;
+        console.log('_onCompensationCheckError');
+        console.log(response);
+      },
+      scanforUID: function () {
+        var nfcScan = document.querySelector('planet-kiosk-login-nfcscan');
+        nfcScan.set('mode', 'uid');
+        globals.router.set('route.path', '/nfclogin');
       },
       _confirm: function() {
         var cguBlock = Polymer.dom(this.root).querySelector('.cgu-block');
@@ -33286,7 +33481,7 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
               this.$.authentification.open();
             }
             else {
-              this.doPayment();
+              this._checkPaymentPossibilities();
             }
           } else {
             // No token - force identification
@@ -33409,6 +33604,7 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
       },
       doPayment: function() {
         var parisBasket = {
+          "paymentMode": this._getPaymentMode(),
           "activities": this._getParisActivities()
         };
         var body = JSON.stringify(parisBasket);
@@ -33422,7 +33618,7 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
         };
         globals.loader.open();
         basketRequest.generateRequest();
-      }
+      },
     });
   </script>
 </dom-module><!-- Components -->
@@ -34483,9 +34679,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </div>
     </template>
 
+    <template is="dom-if" if="[[_isEqualToCompensation]]">
+      <h2>[[localize('payment_compensation_title')]]</h2>
+    </template>
+
     <iron-meta-query id="appconfig" key="config" value="{{appconfig}}"></iron-meta-query>
     <iron-ajax id="transactionrequest" method="POST" content-type="application/x-www-form-urlencoded" url="[[appconfig.api]]/setBookingParisTransaction" on-response="_onTransactionResponse" on-error="_onTransactionError"></iron-ajax>
     <iron-ajax id="cancelrequest" method="POST" content-type="application/x-www-form-urlencoded" url="[[appconfig.api]]/cancelBookingTransaction" on-response="_onCancelResponse" on-error="_onCancelError"></iron-ajax>
+
+    <iron-ajax id="putcompensationrequest" method="PUT" content-type="application/json" url="[[appconfig.pda]]/v1/kiosk/compensation" on-response="_onCompensationPutResponse" on-error="_onCompensationPutError"></iron-ajax>
 
     <planet-kiosk-payment-error id="paymenterror" language="[[language]]" with-backdrop="" no-cancel-on-outside-click=""></planet-kiosk-payment-error>
     <planet-kiosk-printer-error id="printererror" language="[[language]]" with-backdrop="" no-cancel-on-outside-click=""></planet-kiosk-printer-error>
@@ -34500,7 +34702,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         TagManagerBehavior,
         ActivityBehavior,
         PrintBehavior,
-        PMRBehavior
+        PMRBehavior,
+        PaymentModeBehavior
       ],
       properties: {
         // State : initial, partial, success, desk
@@ -34548,6 +34751,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: String,
           computed:'_isEqualTo(state, "desk")'
         },
+        _isEqualToCompensation: {
+          type: String,
+          computed:'_isEqualTo(state, "compensation")'
+        },
         _isFree: {
           type: Boolean,
           computed: '_checkFree(amount)'
@@ -34576,6 +34783,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           } else {
             if (this.state === 'desk') {
               this.payDesk();
+            } else {
+              if (this.state === 'compensation') {
+                this.payCompensation();
+              }
             }
           }
         }
@@ -34607,6 +34818,50 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         chrono.start();
         this._launchPrint();
       },
+      payCompensation: function () {
+        this.set('state', 'compensation');
+        if (true) {
+          globals.loader.open();
+          this._putCompensation();
+        }
+      },
+      _putCompensation: function() {
+        var putCompensationRequest = this.$.putcompensationrequest;
+        var config = new Polymer.IronMetaQuery({key: 'config'}).value;
+        var compensationBody = {
+          "uid":globals.uid,
+          "amount":this.get('amount')
+        };
+        var body = JSON.stringify(compensationBody);
+        putCompensationRequest.url = config.pda + "/compensation";
+        putCompensationRequest.url += "/" + globals.bookingId.substring(4);
+        putCompensationRequest.url += "/" + globals.kioskId;
+        putCompensationRequest.headers = {"Authorization": "Basic YmF0Y2g6TDNRaEFwTDM="};
+        putCompensationRequest.body = body;
+        putCompensationRequest.generateRequest();
+      },
+      _onCompensationPutResponse: function (e) {
+        var response = e.detail.response;
+        console.log('_onCompensationPutResponse');
+        console.log(response);
+        var response = e.detail.response;
+        if (response.total) {
+          this._setTransaction();
+        } else {
+          this._cancelTransaction();
+          this._transactionFail();
+        }
+        globals.loader.close();
+      },
+      _onCompensationPutError: function (e) {
+        // Silence fail for compensation not available
+        var response = e.detail.response;
+        console.log('_onCompensationPutError');
+        console.log(response);
+        this._cancelTransaction();
+        this._transactionFail();
+        globals.loader.close();
+      },
       cancel: function () {
         this._cancelTransaction();
       },
@@ -34632,7 +34887,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       _setTransaction: function () {
         var transactionrequest = this.$.transactionrequest;
-        var data = 'token=' + globals.token + '&booking=' + globals.bookingId + '&transaction=' + this.get('transaction') + '&kiosk=' + globals.kioskId;
+        var data = 'token=' + globals.token
+          + '&booking=' + globals.bookingId
+          + '&transaction='  + this.get('transaction')
+          + '&paymentMode=' + this._getPaymentMode();
+          + '&kiosk=' + globals.kioskId;
         transactionrequest.headers = globals.headers;
         transactionrequest.body = data;
         if (transactionrequest.lastRequest) {
@@ -34757,6 +35016,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var header = this.localize('payment_ticket_cart_title');
         var provisionalHeader = this.localize('payment_ticket_cart_title_provisional');
         var provisionalHeaderDesk = this.localize('payment_ticket_cart_title_provisional_desk');
+        var provisionalHeaderCompensation = this.localize('payment_ticket_cart_title_compensation');
         var provisionalMsg = this.localize('payment_ticket_cart_provisional_msg');
         var provisionalMsgDesk = this.localize('payment_ticket_cart_provisional_desk_msg');
         var currency = this.localize('activity_currency');
@@ -34792,6 +35052,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         if (this._isEqualToDesk) {
           content += this.cr + this.center(provisionalHeaderDesk);
+        }
+
+        if (this._isEqualToCompensation) {
+          content += this.cr + this.center(provisionalHeaderCompensation);
         }
 
         content +=   this.cr + this.cr;
@@ -36627,6 +36891,7 @@ Custom property | Description | Default
               globals.kioskId = subConfig.kiosk;
               globals.siteCode = subConfig.site_code;
               globals.payment = subConfig.payment;
+              globals.paymentCompensation = subConfig.payment_compensation;
               globals.paymentDesk = subConfig.paymentDesk;
               globals.receptionOpenings = subConfig.receptionOpenings;
               globals.countryCode = subConfig.country_code;
