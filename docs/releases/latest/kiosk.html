@@ -15892,11 +15892,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       return this._isPaymentDesk || this._isPaymentCompensation;
     },
     _getPaymentMode: function () {
-      var paymentMode = 'creditCard';
-      if (this._isPaymentCompensation) {
-        paymentMode= 'Compensation';
-      }
-      return paymentMode;
+      return globals.paymentMode.selected;
     },
   };
 </script><dom-module id="planet-kiosk-lang" assetpath="src/planet-kiosk-app/">
@@ -15975,7 +15971,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <img src="images/cb.png">
         </template>
       </div>
-      <p class="version">v1.5.2 - Compensation (2)</p>
+      <p class="version">v1.5.2 - Compensation (3)</p>
     </div>
   </template>
 
@@ -21444,8 +21440,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var nfcScan = document.querySelector('planet-kiosk-login-nfcscan');
       var identification = document.querySelector('planet-kiosk-identification');
 
-      console.log('this.state:', this.state);
-      console.log('nfcScan.mode:', nfcScan.mode);
       // Reset state to initial for login-info
       if (this.state) {
         this.set('state', 'initial');
@@ -22360,9 +22354,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.showPopIn('', this.localize('login_success'), '', [], true);
         this.async(function() {
           // Reset state
-          this.set('mode', 'default')
-          this.hidePopIn();
+          this.set('mode', 'default');
+          globals.router.set('route.path', '/basket');
           basket.doPayment();
+          this.hidePopIn();
         }, 2000);
       }
     });
@@ -32814,6 +32809,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     behaviors: [
       AppLocalizeBehavior,
       PMRBehavior,
+      PaymentModeBehavior,
       Polymer.IronOverlayBehavior
     ],
     properties: {
@@ -32860,12 +32856,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
     _selectCb: function () {
       this.set('_selection', 'cb');
+      globals.paymentMode = {selected:'CreditCard'};
     },
     _selectDesk: function () {
       this.set('_selection', 'desk');
+      globals.paymentMode = {selected:'CreditCard'};
     },
     _selectCompensation: function () {
       this.set('_selection', 'compensation');
+      globals.paymentMode = {selected:'Compensation'};
     },
     _cancel : function () {
       this.close();
@@ -36974,6 +36973,7 @@ Custom property | Description | Default
       globals.token = null;
       globals.bookingId = null;
       globals.lastList = null;
+      globals.paymentMode = {selected:'CreditCard'};
       globals.loader = document.getElementById('loader');
       globals.router = document.querySelector('app-route');
       globals.cart = document.getElementById('cart');
