@@ -15971,7 +15971,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <img src="images/cb.png">
         </template>
       </div>
-      <p class="version">v1.5.2 (6)</p>
+      <p class="version">v1.5.2 (7)</p>
     </div>
   </template>
 
@@ -34990,7 +34990,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _getAllContent: function () {
         var content = '';
 
-        if (!this._isEqualToDesk) {
+        if (!this._isEqualToDesk && !this._printCompensation) {
           content += this._getCBContent();
         }
         content += this._getCartContent();
