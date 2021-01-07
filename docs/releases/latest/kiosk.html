@@ -15971,7 +15971,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <img src="images/cb.png">
         </template>
       </div>
-      <p class="version">v1.5.2 (5) - Compensation scanUID fix reading</p>
+      <p class="version">v1.5.2 (6)</p>
     </div>
   </template>
 
@@ -34726,6 +34726,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         orderId: String,
         counterMarks: Object,
         notifications: String,
+        _printCompensation : {
+          type: Boolean,
+          value: false
+        },
         printStates: {
           type: Object,
           value: function () {
@@ -34791,6 +34795,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               this.payDesk();
             } else {
               if (this.state === 'compensation') {
+                this._printCompensation = true;
                 this.payCompensation();
               }
             }
@@ -35058,7 +35063,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           content += this.cr + this.center(provisionalHeaderDesk);
         }
 
-        if (this._isEqualToCompensation) {
+        if (this._printCompensation) {
           content += this.cr + this.center(provisionalHeaderCompensation);
         }
 
