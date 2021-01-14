@@ -15911,7 +15911,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       p.version {
         position: fixed;
-        bottom: 5.5em;
+        top: -0.6em;
         width: 100%;
         text-align: center;
         font-size: 2em;
@@ -15940,11 +15940,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         height: 5em;
         padding: 0 0 0 3em;
       }
-
-      .pmr p.version {
-        bottom: 2.5em;
-      }
-
     </style>
 
     <div class$="[[_getPMRClass(pmr)]]">
@@ -15971,7 +15966,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <img src="images/cb.png">
         </template>
       </div>
-      <p class="version">v1.5.2 (8)</p>
+      <p class="version">v1.5.2 (9)</p>
     </div>
   </template>
 
@@ -34477,6 +34472,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin: 1em 0 0 0;
       }
 
+      .message {
+        font-size: 4em;
+        font-family: var(--planet-font-family-book);
+        color: var(--planet-color-theme-message);
+        text-align: center;
+        margin: 1em 0 0 0;
+      }
+
       .information {
         margin: 5em;
         padding: 2em 3em;
@@ -34679,7 +34682,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <h2>[[localize('payment_compensation_title')]]</h2>
 
       <div class="content_pay">
-        <p class="message">[[localize('payment_compensation_progress')]]</p>
+        <div class="progress">
+          <p class="info">[[localize('payment_compensation_progress')]]</p>
+          <paper-progress indeterminate=""></paper-progress>
+        </div>
+      </div>
+    </template>
+
+    <template is="dom-if" if="[[_isEqualToCompensationFailed]]">
+
+      <h2>[[localize('payment_compensation_title')]]</h2>
+
+      <div class="content_partial">
+        <img src="images/warning.png">
+
+        <p class="message">[[localize('payment_compensation_error')]]</p>
+
+        <div class="buttons">
+          <paper-button class="primary confirm" on-tap="_backToPaymentChoice">[[localize('payment_compensation_button')]]</paper-button>
+        </div>
+
       </div>
     </template>
 
@@ -34706,7 +34728,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         PaymentModeBehavior
       ],
       properties: {
-        // State : initial, partial, success, desk
+        // State : initial, partial, success, desk, compensation, compensationFailed
         state: {
           type: String,
           value: 'initial'
@@ -34720,6 +34742,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         orderId: String,
         counterMarks: Object,
         notifications: String,
+        _compensationHandle: Object,
         _compensationUpdateSuccess : {
           type: Boolean,
           value: false
@@ -34762,6 +34785,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         _isEqualToCompensation: {
           type: String,
           computed:'_isEqualTo(state, "compensation")'
+        },
+        _isEqualToCompensationFailed: {
+          type: String,
+          computed:'_isEqualTo(state, "compensationFailed")'
         },
         _isFree: {
           type: Boolean,
@@ -34829,7 +34856,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       payCompensation: function () {
         this.set('state', 'compensation');
-        globals.loader.open();
         this._putCompensation();
       },
       _putCompensation: function() {
@@ -34851,15 +34877,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var response = e.detail.response;
         if (response.total) {
           this._compensationUpdateSuccess = true;
+          this.trackEvent('Payment', 'put compensation', globals.uid, 'noevent');
           this._setTransaction();
         } else {
-          this._transactionFail();
+          this._compensationFail();
         }
-        globals.loader.close();
       },
       _onCompensationPutError: function (e) {
-        this._transactionFail();
-        globals.loader.close();
+        this._compensationFail();
       },
       cancel: function () {
         this._cancelTransaction();
@@ -34932,6 +34957,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.set('state', 'partial');
         this.trackEvent('Error', 'set transaction error', this.get('transaction'), 'noevent');
         this._launchPrint();
+      },
+      _compensationFail: function () {
+        this.set('state', 'compensationFailed');
+        this.trackEvent('Error', 'update compensation error', globals.uid, 'noevent');
+        this._compensationHandle = this.async(this._end, 30000);
       },
       _success: function () {
         this.set('state', 'success');
@@ -35180,6 +35210,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _fail: function () {
         this.$.paymenterror.open();
         this.trackEvent('Error', 'payment error', this.localize('payment_error_title'), 'noevent');
+      },
+      _backToPaymentChoice: function () {
+        var basket = document.querySelector('planet-kiosk-basket');
+        this.cancelAsync(this._compensationHandle);
+        globals.router.set('route.path', '/basket');
+        basket.$.paymentchoicepopin.open();
       },
       _end: function () {
         if (MBirdSdk.isConnected()) {
