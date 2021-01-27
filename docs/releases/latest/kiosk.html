@@ -15966,7 +15966,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <img src="images/cb.png">
         </template>
       </div>
-      <p class="version">v1.5.2 (11)</p>
+      <p class="version">v1.5.2 (12)</p>
     </div>
   </template>
 
@@ -33377,7 +33377,7 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
       },
       _checkPaymentPossibilities: function() {
         var self = this;
-        var paymentDesk = this._isPaymentDesk; // computed from PaymentModeBehavior
+        var paymentDesk = globals.paymentDesk;
         var paymentDeskOnly = paymentDesk && !globals.paymentCompensation;
         var paymentCompensationOnly = !paymentDesk && globals.paymentCompensation;
         var bothPayments = paymentDesk && globals.paymentCompensation;
@@ -33390,8 +33390,13 @@ ScrollHorizontalBehavior = [ScrollCommonBehavior, ScrollHorizontalBehaviorImpl];
               if (paymentDesk) {
                 self._setPaymentDeskVisible();
               }
-              globals.loader.close();
-              self.$.paymentchoicepopin.open();
+              if (paymentDesk || self.$.paymentchoicepopin.get('compensationVisible')) {
+                globals.loader.close();
+                self.$.paymentchoicepopin.open();
+              } else {
+                globals.loader.close();
+                self.doPayment();
+              }
             },
             // Compensation call fail
             function (request) {
@@ -36300,7 +36305,7 @@ Custom property | Description | Default
         display: block;
         width: 100%;
         height: 100%;
-        margin-top: 90em;
+        padding-top: 54em;
       }
       .message {
         font-size: 4em;
