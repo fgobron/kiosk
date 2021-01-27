@@ -15966,7 +15966,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <img src="images/cb.png">
         </template>
       </div>
-      <p class="version">v1.5.2 (10)</p>
+      <p class="version">v1.5.2 (11)</p>
     </div>
   </template>
 
@@ -22238,6 +22238,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
         return isNotEmpty && isNotAnErr;
       },
+      _validUIDResult: function (result) {
+        isNotEmpty = result && typeof (result) !== 'undefined' && result != '';
+        if (isNotEmpty) {
+          isNotAnErr = result.indexOf('TIMEOUT') === -1;
+        }
+        return isNotEmpty && isNotAnErr;
+      },
       scan: function() {
         if (MBirdSdk.isConnected()) {
           this.$.chrono.start();
@@ -22262,7 +22269,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.$.chrono.start();
           // Start scanning
           MBirdSdk.Nfc.Read(this.get('_scanDuration')).then(function (result) {
-            if (result) {
+            if (this._validUIDResult(result)) {
               MBirdSdk.Board.ShowNotification("ScanUID debug - Success", JSON.stringify(result), MBirdSdk.NotificationType.HtmlContent, "", false);
               this.set('uid', result);
               this.$.chrono.stop();
