@@ -15966,7 +15966,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <img src="images/cb.png">
         </template>
       </div>
-      <p class="version">v1.5.2 (9)</p>
+      <p class="version">v1.5.2 (10)</p>
     </div>
   </template>
 
@@ -22263,16 +22263,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           // Start scanning
           MBirdSdk.Nfc.Read(this.get('_scanDuration')).then(function (result) {
             if (result) {
+              MBirdSdk.Board.ShowNotification("ScanUID debug - Success", JSON.stringify(result), MBirdSdk.NotificationType.HtmlContent, "", false);
               this.set('uid', result);
               this.$.chrono.stop();
               this._successUIDScan();
             } else {
+              MBirdSdk.Board.ShowNotification("ScanUID debug - Fail", JSON.stringify(result), MBirdSdk.NotificationType.HtmlContent, "", false);
               this.fail();
             }
           }.bind(this)).catch(function (error) {
+            MBirdSdk.Board.ShowNotification("ScanUID debug - Error", JSON.stringify(error), MBirdSdk.NotificationType.HtmlContent, "", false);
             this.fail();
           }.bind(this));
         } else {
+          MBirdSdk.Board.ShowNotification("ScanUID debug - No MBirdSdk", '', MBirdSdk.NotificationType.HtmlContent, "", false);
           this.fail();
         }
       },
