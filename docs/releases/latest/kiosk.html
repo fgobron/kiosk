@@ -15966,7 +15966,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <img src="images/cb.png">
         </template>
       </div>
-      <p class="version">v1.5.2 - Compensation (13)</p>
+      <p class="version">v1.5.2 - Compensation (14)</p>
     </div>
   </template>
 
@@ -34848,6 +34848,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
       pay: function () {
+        var amount = this.get('amount');
+        var transaction = this.get('transaction');
+
         if (amount !== 0) {
           if (MBirdSdk.isConnected()) {
             MBirdSdk.Payment.Pay(amount, transaction).then(function (result) {
